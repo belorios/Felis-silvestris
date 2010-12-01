@@ -1,0 +1,25 @@
+.forumpost {
+	background: #eaeaea;
+	border: 1px solid #eaeaea;
+	height: auto;
+	margin: 5px 0px;
+}
+
+.post_uInfo {
+	background: #DAE3ED;
+	float:left;
+	width: 130px;
+	padding: 5px;
+}
+
+.post_mess {
+	border-left: 140px solid #DAE3ED;
+	min-height: 100px;
+	padding: 5px;
+}
+
+	.post_header {
+		border-bottom: 1px solid #AAA;
+		padding: 0px 10px;
+		margin: 0px 0px 5px 0px;
+	}

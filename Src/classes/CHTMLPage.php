@@ -5,7 +5,8 @@
 		protected 	$menuArr, 
 					$charset, 
 					$layout,
-		 			$stylesheet = array(),
+					$javascript  = array(),
+		 			$stylesheet  = array(),
 		 			$layoutTypes = array();
 		
 		//Hanterar sidlayout		
@@ -20,6 +21,8 @@
 		function __construct($layout = false, $menuArr = false, $stylesheet = false) {
 			$this->menuArr = ($menuArr != false) ? $menuArr : unserialize(APP_MENU);
 			$this->stylesheet[APP_STYLE] = ($stylesheet != false) ? $stylesheet : "<link rel='stylesheet'  href='".APP_STYLE."' type='text/css' media='screen' /> ";
+			$this->stylesheet = array_merge($this->stylesheet, unserialize(PATH_MODCSS));
+			
 			$this->charset = "UTF-8";
 			
 			$layout = ($layout != false) ? $layout : "2col_std";
@@ -125,10 +128,72 @@
 			foreach ($this->stylesheet as $style) {
 				$stylesheets .= $style;
 			}
+			//markitup
+			#$stylesheets .= "<link rel='stylesheet' type='text/css' href='" . PATH_JS . "markitup/skins/markitup/style.css' />";
+			#$stylesheets .= "<link rel='stylesheet' type='text/css' href='" . PATH_JS . "markitup/sets/default/style.css' />";
 			
+			//Jquery
+			$this->javascript[] = PATH_JS . "jquery/jquery.js";
 			
+			//nicEdit
+			#$this->javascript[] = PATH_JS . "nicEdit.js";
 			
-			return html_layout($this->Title, $this->Heading, $this->Menu, $this->Body, $this->Footer, $Charset='UTF-8', $this->BodyExtra, $stylesheets, $JavaScript=false, $MetaTags=false);
+			//TinyMCE
+			$this->javascript[] = PATH_JS . "/tiny_mce/tiny_mce.js";
+
+			//Wymeditor
+			#$this->javascript[] = PATH_JS . "wymeditor/jquery.wymeditor.pack.js";
+			
+			//markitup
+			#$this->javascript[] = PATH_JS . "markitup/jquery.markitup.js";
+			#$this->javascript[] = PATH_JS . "markitup/sets/default/set.js";
+			
+			$JavaScript = null;
+			foreach ($this->javascript as $js) {
+				$JavaScript .= "<script type='text/javascript' src='$js'></script>";
+			}
+			
+			//nicEdit
+			#$JavaScript .= "<script type='text/javascript'>bkLib.onDomLoaded(nicEditors.allTextAreas);</script>";
+			
+			//Wymeditor
+			#$JavaScript .= " <script type=\"text/javascript\"> jQuery(function() { jQuery(\".editor\").wymeditor(); }); </script> ";
+			
+			//markitup
+			#$JavaScript .= ' <script type="text/javascript"> $(document).ready(function() {$(".editor").markItUp(mySettings); }); </script> ';
+			$JavaScript .= '
+				<script type="text/javascript">
+					tinyMCE.init({
+						mode : "textareas",
+						theme : "advanced",
+						plugins : "save",
+						
+						theme_advanced_buttons1 : "save,newdocument,|,bold,italic,underline,strikethrough,|,justifyleft,justifycenter,justifyright,justifyfull",
+						theme_advanced_buttons2 : "",
+						theme_advanced_toolbar_location : "top",
+						theme_advanced_toolbar_align : "center",
+						theme_advanced_statusbar_location : "bottom",
+						theme_advanced_resizing : true,
+						editor_selector : "simpleeditor",
+					});
+					
+					tinyMCE.init({
+						mode : "textareas",
+						theme : "advanced",
+						plugins : "safari,spellchecker,style,layer,table,save,advhr,advimage,advlink,emotions,iespell,inlinepopups,insertdatetime,preview,media,searchreplace,print,contextmenu,paste,directionality,fullscreen,noneditable,visualchars,nonbreaking,xhtmlxtras,template",
+						// Theme options
+						theme_advanced_buttons1 : "save,|,bold,italic,underline,strikethrough,|,justifyleft,justifycenter,justifyright,justifyfull,|,styleselect,formatselect,fontselect,fontsizeselect,forecolor,backcolor",
+						theme_advanced_buttons2 : "cut,copy,paste,pastetext,pasteword,|,bullist,numlist,|,outdent,indent,|,undo,redo,|,link,unlink,anchor,image,cleanup,code,|,preview,|,hr,sub,sup,|,charmap,emotions,media,fullscreen",
+						theme_advanced_buttons3 : "",
+						theme_advanced_toolbar_location : "top",
+						theme_advanced_toolbar_align : "left",
+						theme_advanced_statusbar_location : "bottom",
+						theme_advanced_resizing : true,
+						editor_selector : "editor",
+					});
+				</script>
+			';	
+			return html_layout($this->Title, $this->Heading, $this->Menu, $this->Body, $this->Footer, $Charset='UTF-8', $this->BodyExtra, $stylesheets, $JavaScript, $MetaTags=false);
 		}
 		
 		private function setLoggedInMenu() {
@@ -136,8 +201,21 @@
 			$Users = new Users();
 			$menu = array();
 			
-			$menu[] = array("url" => "createArticle", "desc" => "Skriv nytt inlägg");
-			$menu[] = array("url" => "logout", "desc" => "Logga ut"); 
+			$menu['createArticle'] = array("url" => "createArticle", "desc" => "Write new article");
+			
+			//Checks if the modulemenu exists and then adds all record that is not doublets 
+			if (defined('MODULE_USERMENU')) {
+				$modMenu = unserialize(MODULE_USERMENU);
+			
+				foreach($modMenu as $key => $item) {
+					if (!array_key_exists($key, $menu)) {
+						$menu[$key] = $item;
+					}	
+				}
+			}
+			
+			
+			$menu['logout'] 		 = array("url" => "logout", "desc" => "Log out"); 
 			
 			return $menu;			
 		}

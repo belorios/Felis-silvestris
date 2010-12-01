@@ -14,6 +14,8 @@
 					<!--[if IE 7]>
 						<link rel='stylesheet' type='text/css' href='".PATH_CSS."ie.css' />
 					<![endif]-->
+					
+					$JavaScript
 
 				</head>
 				<body>
@@ -37,11 +39,8 @@
 										
 									</div>
 									<div id='pageBody_Content'>
-								
 										$Body
 										<div class='clear'></div>
-										
-										
 									</div>
 									<div id='pageBody_Footer'>
 										<div style='float:right;'>

@@ -30,78 +30,52 @@
 	$_SESSION['currentPage'] = $page;
 	$currentPage = "?p=$page";
 	
+	$selectedPage = null;
+	
+	function require_file($path) {
+		if (file_exists($path)) {
+			require_once($path);
+		}
+	}
+	
+	foreach ($modules as $module) {
+		$module_path =  PATH_MODULES . $module['folder'];
+		if (file_exists("$module_path/func/loadPages.php")) {
+			require_once("$module_path/func/loadPages.php");
+			if (array_key_exists($page, $modulePages)) {
+				$selectedPage = "$module_path/pages/" . $modulePages[$page];
+				
+				//Get config file related to the loaded module
+				require_file("$module_path/config.php");
+				
+				//Load sideboxes related to page and module
+				require_file("$module_path/sideboxes/activated.php");
+				
+				//Load forms
+				require_file("$module_path/layout/forms.php");
+				
+				if (isset($activated_Sideboxes)) {
+					$sideBox = null;
+					foreach($activated_Sideboxes as $box) {
+						$sideBox .= require_once("$module_path/sideboxes/$box");
+					}
+				}
+				
+			}
+		}
+	}
+	
 	switch ($page) {
-		
-		case "home":
-			$selectedPage = "home.php";
-		break;
-		
-		case "hem":
-			$selectedPage = "home.php";
-		break;
-		
-		//Install pages
-		
-		case "install":
-			$selectedPage = "install/install.php";
-		break;
-		
-		//Inlog utlogg sidor
-		
-		case "login":
-			$selectedPage = "login/login.php";
-		break;
-		
-		case "loginprocess":
-			$selectedPage = "login/loginProcess.php";
-		break;
-		
-		case "logout":
-			$selectedPage = "login/logoutProcess.php";
-		break;
-		
-		//Handles articles
-		case "createArticle": 
-			$selectedPage = "articles/createArticle.php";
-		break;
-		
-		case "editArticle": 
-			$selectedPage = "articles/editArticle.php";
-		break;
-		
-		case "deleteArticle": 
-			$selectedPage = "articles/delArticle.php";
-		break;
-		
-		case "handleArticles": 
-			$selectedPage = "articles/handleArticles.php";
-		break;
-		
-		case "article": 
-			$selectedPage = "articles/showArticle.php";
-		break;
-		
-		//Handles the style of the page
-		case "changestyle":
-			$selectedPage = "sitestyle.php";
-		break;
-		
-		//Visar alla filer
-		case "showfiles": 
-			$selectedPage = "viewfiles/showfiles.php";
-		break;
 		
 		//Hanterar användare
 		
-		case "visaAnvandare":
-			$selectedPage = "users/showUser.php";
+		case "install":
+			$selectedPage = "install.php";
 		break;
-		
-		default:
-			$selectedPage = "nofind.php";
-		break;
-		
-		
 	}
 	
-	require_once(PATH_PAGES . $selectedPage);
+	if ($selectedPage == null) {
+		$selectedPage = PATH_MODULES . $modules['core']['folder'] . "/pages/nofind.php";
+	}
+	
+	require_once($selectedPage);

@@ -3,21 +3,32 @@
 
 							<channel>
 
-									<title>Rss feed for "Template" </title>
+									<title>Rss feed for "Felis silvestris" </title>
 
 									<description>This rss feed holds parts off all the articles</description>
 
-									<link>http://127.0.0.1/bth2/mom02/index.php</link>
+									<link>http://127.0.0.1/bth2/mom03/index.php</link>
 
-									<lastBuildDate>Tue, 16 Nov 2010 16:36:16 +0100</lastBuildDate>
+									<lastBuildDate>Thu, 18 Nov 2010 09:42:33 +0100</lastBuildDate>
 
-									<pubDate>Tue, 16 Nov 2010 16:36:16 +0100</pubDate>
+									<pubDate>Thu, 18 Nov 2010 09:42:33 +0100</pubDate>
 
 							
 								<item>
+										<title>awdawd</title> 
+
+										<link>http://127.0.0.1/bth2/mom03/index.php/article/id-4</link> 
+
+										<description> Hejsan Jag  jag är en galen gris gris som heter gösta och är blå...</description> 
+
+										<pubDate>Thu, 18 Nov 2010 09:42:33 +0100</pubDate> 
+
+								</item>
+					
+								<item>
 										<title>Den första test artikel</title> 
 
-										<link>http://127.0.0.1/bth2/mom02/index.php/article/id-1</link> 
+										<link>http://127.0.0.1/bth2/mom03/index.php/article/id-1</link> 
 
 										<description>Här testar vi må en massa!k...</description> 
 
@@ -28,7 +39,7 @@
 								<item>
 										<title>Den andra test artikeln</title> 
 
-										<link>http://127.0.0.1/bth2/mom02/index.php/article/id-2</link> 
+										<link>http://127.0.0.1/bth2/mom03/index.php/article/id-2</link> 
 
 										<description>Här testar vi må en massa!...</description> 
 
@@ -39,7 +50,7 @@
 								<item>
 										<title>Den tredje test artikeln</title> 
 
-										<link>http://127.0.0.1/bth2/mom02/index.php/article/id-3</link> 
+										<link>http://127.0.0.1/bth2/mom03/index.php/article/id-3</link> 
 
 										<description>Här testar vi må en massa!...</description> 
 

@@ -40,7 +40,11 @@
 	}
 	
 	function html_Body($body, $float) {
-		return "<div id='pageBody_Content_Big' class='content_float_$float'>$body</div>";
+		return "
+			<div id='pageBody_Content_Big' class='content_float_$float'>
+				$body
+			</div>
+		";
 	}
 	
 	function sidebox_Login() {
