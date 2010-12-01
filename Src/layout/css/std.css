@@ -1,0 +1,197 @@
+body {
+	background: #8b8989;
+	margin: 0;
+	padding: 0;
+	font-family: "Arial";
+	font-size: 11pt;
+	color: #363636;
+}
+
+img {
+	border: none;
+}
+
+label {
+	display: inline-block;
+	font-size: 10pt;
+	font-weight: bold;
+	margin: 6px 0px 0px 3px;
+}
+
+input {
+	color: #4a4a4a;
+}
+
+textarea {
+	height: 250px;
+	width: 400px;
+}
+
+a, a:visited, a:active {
+	color: #4a4a4a;
+	text-decoration: none;
+}
+
+a:hover {
+	color: #6f6f6f;
+	text-decoration: underline;
+}
+
+h1 {
+	padding: 0;
+	margin: 0;
+}
+
+.clear {
+	clear:both;
+}
+
+.warning {
+	color:#E62011;
+	font-weight:bold;
+}
+
+.righty_buttons {
+	float: right; 
+}
+
+#Container {
+	width: auto;
+	height: auto;
+	margin: 0 50px;
+}
+
+#LogoBox {
+	height: 130px;
+	background: #2E5480; 
+	color: #DAE3ED;
+	margin: 0px 0px 5px 0px;
+	border: solid;
+	border-width: 0px 3px 3px 3px;
+	-moz-border-radius-bottomleft:  5px 5px;
+	-moz-border-radius-bottomright: 5px 5px;
+	border-bottom-left-radius:  5px 5px;
+	border-bottom-right-radius: 5px 5px;
+}
+
+	#LogoBox #logo_heading {
+		float: left;
+		font-size: 40px;
+		font-weight: bold;
+		margin: 25px 0px 0px 70px;
+	}
+	
+	#LogoBox #logo_decoration {
+		float: left;
+		margin: 8px 0px 0px 10px;
+		background: url('../images/BigArrows.png'); 
+		width: 70px;
+		height: 78px;
+	}
+	
+	#LogoBox #logo_desc {
+		margin: 8px 0px 0px 10px;
+		font-size: 13pt;
+		float: left;
+	}
+	
+	#MenuHolder ul {
+		margin: 0;
+		padding: 0;
+		list-style-type: none;
+		margin: 10px 0px 0px 0px;
+		height: 31px;
+		background: #3d6491;
+		border-top: 3px solid;
+		-moz-border-radius-bottomleft:  5px 5px;
+		-moz-border-radius-bottomright: 5px 5px;
+		border-bottom-left-radius:  5px 5px;
+		border-bottom-right-radius: 5px 5px;
+	}
+
+		#MenuHolder ul li {
+			float: left;
+			display: block;
+			padding: 2px 10px 0px 10px;
+			height: 30px;
+		}
+		
+			#MenuHolder ul li a {
+				color: #fff;
+				font-size: 16pt;
+				text-decoration: none;
+				
+			}
+			
+			#MenuHolder ul li:first-child {
+				margin-left: 10px;
+			}
+			
+			#MenuHolder ul li.CurrentPage a {
+				color: #d4d4d4;
+			}
+			
+			#MenuHolder ul li a:hover {
+				color: #d4d4d4;
+			}
+
+#pageBody {
+	margin: 5px 0px 0px 0px;
+	height: auto;
+	background: #f3f3f3;
+	border: 3px solid #3D6491;
+	-moz-border-radius: 5px 5px;
+	border-radius: 5px 5px;
+}
+
+#pageBody_Top {
+	height: 5px;
+	padding: 0px 5px 0px 5px;
+}
+
+#pageBody_Content {
+	min-height: 400px;
+	padding: 0px 5px 0px 5px;
+	color: #363636;
+}	
+			
+#pageBody_Footer {
+	min-height: 5px;
+	padding: 0px 5px 0px 5px;
+}
+
+#FooterInfo {
+	color: #ddd;
+	font-size: 10pt;
+	margin: 0px 5px 0px 5px;
+}
+	
+	#FooterInfo a {
+		color: #ddd;
+	}
+
+	#FooterInfo_Left {
+		float: left;
+	}
+	
+	#FooterInfo_Right {
+		float: right;
+	}
+	
+#loginBox {
+	color: #e1e7ef;
+	float:right; 
+	margin: 0px 10px 0px 0px; 
+}
+	#loginBox a{
+		color: #e1e7ef;
+	}	
+
+.login {
+	padding: 0;
+	margin: -2px 0px -2px 0px;
+}
+	
+	.login a {
+		font-size: 10pt;
+	}

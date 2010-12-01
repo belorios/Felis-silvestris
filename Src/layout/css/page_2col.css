@@ -1,0 +1,44 @@
+#pageBody_Content_Big {
+}
+
+	.content_float_left {
+		border-left: 225px solid #f3f3f3;
+	}
+	
+	.content_float_right {
+		border-right: 225px solid #f3f3f3;
+	}
+
+#pageBody_Content_Sidebox {
+	width: 220px;
+	height: auto;
+	margin: -15px 0px 0px 0px;
+	padding: 0;
+}
+
+
+.SideBox_Header {
+	height: 33px;
+	margin: 0px 0px 0px 0px;
+	background: #3D6491;
+	-moz-border-radius:  5px 5px;
+	border-radius:  5px 5px;
+}
+
+.SideBox_Header h2 {
+	padding: 3px 0px 0px 18px;
+	font-weight: 100;
+	font-size: 18pt;
+	color: #DAE3ED;
+}
+
+.SideBox_Box .body {
+	width: 200px;
+	margin: 10px 10px 0px 15px;
+}
+
+h1 {
+	font-size: 16pt;
+	padding: 0px 0px 0px 0px;
+}
+
