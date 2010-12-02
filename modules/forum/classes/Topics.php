@@ -47,11 +47,13 @@
 				"authorId" => $row['idUsers'],
 				"author"   => $row['username'],
 				"date"     => $date,
+				"time"     => date("H:m", $row['created']),
 				"title"    => $row['title'],
 			);
 			
 			if (isset($row['updated'])) {
 				$result['updated']  = $defaults->sweDate($dateformat, $row['updated']);
+				$result['Updtime']  = date("H:i", $row['updated']);
 				$result['postUser'] = $row['postUser'];
 				$result['postId']   = $row['postId'];
 				$result['answers']  = $row['rows'];
@@ -93,13 +95,13 @@
 			 		U2.username as postUser, 
 			 		COUNT(P.idPosts) as rows, 
 			 		MAX(P.created) as updated,
-			 		P.idPosts as postId 
+			 		MAX(P.idPosts) as postId 
 			 	FROM {$this->prefix}Topics T 
 				JOIN {$this->prefix}Users U1 ON U1.idUsers = T.idUsers
 				JOIN {$this->prefix}Posts P ON P.idTopics = T.idTopics 
 				JOIN {$this->prefix}Users U2 ON U2.idUsers = P.idUsers
-				GROUP BY idTopics 
-				ORDER BY updated 
+				GROUP BY idTopics ASC
+				ORDER BY updated DESC
 				$limit			
 			";
 			

@@ -1,47 +1,27 @@
 <?php
-
+	
+	require_once(PATH_MODULES . "forum/layout/html_elements.php");
+	
 	$Topics = new Topics();
 	
 	try {
-		$getTopic = $Topics->getAllTopics("d-m-Y");
+		$getTopic = $Topics->getAllTopics("Y-m-d");
 	}
 	catch ( Exception $e) {
 		$_SESSION['errorMessage'][] = $e->getMessage();
 		return;
 	}
 
-	$allTopics = "
-		<table id='postsTable'>
-			<tr id='header'>
-				<td style='width: 75%;'>Topic</td>
-				<td>Latest post</td>
-				<td>Answers</td>
-			</tr>
-	";
+	$topics = null;
 	foreach ($getTopic as $topic) {
-		$allTopics .= "
-		<tr>
-			<td>
-				<a href='".PATH_SITE."/topic/id-$topic[id]'>$topic[title]</a> <br />
-				<span style='font-size: 10pt'>Created by $topic[author] on $topic[date]</span>
-			</td>
-			<td>
-				<a href='".PATH_SITE."/topic/id-$topic[id]#$topic[postId]'>
-					<span style='font-size: 10pt'>
-						$topic[updated] <br />
-						$topic[postUser]
-					</span>
-				</a> 
-			</td>
-			<td>
-				$topic[answers]
-			</td>
-		</tr>
-			
-			
-		";
+		$topics .= forum_topicTableItems($topic['id'], $topic['postId'], $topic['time'], $topic['Updtime'], 
+										 $topic['date'], $topic['date'], $topic['author'], $topic['postUser'], 
+										 $topic['title'], $topic['answers']
+		);
 	}
-	$allTopics .= "</table>";
+	
+	$allTopics = forum_topicTable($topics);
+	
 	$body = "
 		<h1>Forum</h1>
 		

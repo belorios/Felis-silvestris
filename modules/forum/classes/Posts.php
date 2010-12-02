@@ -13,7 +13,7 @@
 			}
 			
 			$this->prefix = DB_PREFIX;
-			$this->dateformat = "H:m, j F Y";
+			$this->dateformat = "Y-m-d";
 		}
 		
 		public function getConnection() {
@@ -47,6 +47,7 @@
 				"authorId" => $row['idUsers'],
 				"author"   => $row['username'],
 				"date"     => $date,
+				"time"     => date("H:i", $row['updated']),
 				"content"  => $row['post'],
 				"title"    => $row['title'],
 				"topic"	   => $row['idTopics'],

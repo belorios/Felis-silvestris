@@ -2,8 +2,10 @@
 	background: #eaeaea;
 	border: 1px solid #eaeaea;
 	height: auto;
-	margin: 5px 0px;
+	margin: 10px 0px;
 	border: 1px solid grey;
+	-moz-border-radius:  5px 5px;
+	
 }
 
 .post_uInfo {
@@ -15,16 +17,26 @@
 
 .post_mess {
 	border-left: 140px solid #dddddd;
+	-moz-border-radius-bottomleft: 5px 5px;
 }
 
 	.post_header {
 		border-bottom: 1px solid grey;
 		padding: 3px 5px;
 		color: #fff;
+		background: #2E5480;
 		background: -moz-linear-gradient(100% 70% 90deg, #2E5480, #5487c0);
  		background: -webkit-gradient(linear, 0% 20%, 0% 100%, from(#5487c0), to(#2E5480));
 	}
 	
+	.post_handle {
+		float: right;
+		
+	}
+		.post_handle a {
+			color: #fff;
+		}
+		
 	.post_cont {
 		border-left: 1px solid grey;
 		min-height: 100px;
@@ -39,6 +51,7 @@
 
 	#postsTable td {
 		background: #eaeaea;
+		padding: 5px;
 	}
 
 	#postsTable #header td{
@@ -47,3 +60,14 @@
 		background: -moz-linear-gradient(100% 70% 90deg, #2E5480, #5487c0);
  		background: -webkit-gradient(linear, 0% 20%, 0% 100%, from(#5487c0), to(#2E5480));
 	}
+
+	#postsTable .topicMiddle {
+		background: #dddddd; 
+		font-size: 10pt;
+		text-align: right;
+	}
+	
+	#postsTable .topicTime {
+		color: #3e71aa;
+	}
+	

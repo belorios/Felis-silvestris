@@ -7,54 +7,32 @@
 
 									<description>This rss feed holds parts off all the articles</description>
 
-									<link>http://127.0.0.1/bth2/mom03/index.php</link>
+									<link>http://127.0.0.1/Felis-silvestris/index.php</link>
 
-									<lastBuildDate>Thu, 18 Nov 2010 09:42:33 +0100</lastBuildDate>
+									<lastBuildDate>Thu, 02 Dec 2010 14:11:15 +0100</lastBuildDate>
 
-									<pubDate>Thu, 18 Nov 2010 09:42:33 +0100</pubDate>
+									<pubDate>Thu, 02 Dec 2010 14:11:15 +0100</pubDate>
 
 							
 								<item>
-										<title>awdawd</title> 
+										<title>Dens tredje test artikeln</title> 
 
-										<link>http://127.0.0.1/bth2/mom03/index.php/article/id-4</link> 
+										<link>http://127.0.0.1/Felis-silvestris/index.php/article/id-3</link> 
 
-										<description> Hejsan Jag  jag är en galen gris gris som heter gösta och är blå...</description> 
+										<description>Här testar vi må en massa!...</description> 
 
-										<pubDate>Thu, 18 Nov 2010 09:42:33 +0100</pubDate> 
+										<pubDate>Thu, 02 Dec 2010 14:11:15 +0100</pubDate> 
 
 								</item>
 					
 								<item>
 										<title>Den första test artikel</title> 
 
-										<link>http://127.0.0.1/bth2/mom03/index.php/article/id-1</link> 
-
-										<description>Här testar vi må en massa!k...</description> 
-
-										<pubDate>Tue, 16 Nov 2010 16:36:16 +0100</pubDate> 
-
-								</item>
-					
-								<item>
-										<title>Den andra test artikeln</title> 
-
-										<link>http://127.0.0.1/bth2/mom03/index.php/article/id-2</link> 
+										<link>http://127.0.0.1/Felis-silvestris/index.php/article/id-1</link> 
 
 										<description>Här testar vi må en massa!...</description> 
 
-										<pubDate>Tue, 16 Nov 2010 16:25:30 +0100</pubDate> 
-
-								</item>
-					
-								<item>
-										<title>Den tredje test artikeln</title> 
-
-										<link>http://127.0.0.1/bth2/mom03/index.php/article/id-3</link> 
-
-										<description>Här testar vi må en massa!...</description> 
-
-										<pubDate>Tue, 16 Nov 2010 16:25:30 +0100</pubDate> 
+										<pubDate>Thu, 18 Nov 2010 17:10:35 +0100</pubDate> 
 
 								</item>
 					 
