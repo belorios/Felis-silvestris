@@ -37,11 +37,11 @@
 		<a href=\"http://validator.w3.org/check?uri=referer\">XHTML 5</a> &nbsp; 
 		<a href=\"http://jigsaw.w3.org/css-validator/check/referer?profile=css3\">CSS3</a> &nbsp;
 	");
-	define("APP_STYLE" , PATH_CSS . "std.css");	
+	define("APP_STYLE" , "std.css");	
 	
 	$menuArr = array(
-		PATH_SITE => "Home",
-		PATH_SITE . "/install" => "Install",
+		"home" 		=> "Home",
+		"install" 	=> "Install",
 	
 	);
 	
@@ -55,7 +55,7 @@
 	foreach ($modules as $module) {
 		$modulepath = PATH_MODULES . $module['folder'];
 		if ($module['menuEntry'] != null) {
-			$menuArr[PATH_SITE . '/' . $module['folder']] = $module['menuEntry'];
+			$menuArr[$module['folder']] = $module['menuEntry'];
 		}
 		$classes[] .= "$modulepath/classes/";
 		
@@ -77,8 +77,8 @@
 	define("PATH_CLASSES", serialize($classes));
 	define("PATH_MODCSS",  serialize($css));
 	
-	$menuArr[PATH_SITE . "/showfiles"] = "Show files";
-	$menuArr[PATH_SITE . "/changestyle/purple"] = "Change Stylesheet";
+	$menuArr["showfiles"] = "Show files";
+	$menuArr["changestyle/purple"] = "Change Stylesheet";
 	//Menu array
 	
 	define("APP_MENU", serialize($menuArr));

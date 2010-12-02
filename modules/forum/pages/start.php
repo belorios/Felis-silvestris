@@ -11,9 +11,9 @@
 	}
 
 	$allTopics = "
-		<table>
-			<tr>
-				<td>Topic</td>
+		<table id='postsTable'>
+			<tr id='header'>
+				<td style='width: 75%;'>Topic</td>
 				<td>Latest post</td>
 				<td>Answers</td>
 			</tr>

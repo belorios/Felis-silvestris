@@ -4,7 +4,7 @@
 	 */
     	
 	$data = (isset($_SERVER['PATH_INFO'])) ? explode("/",$_SERVER['PATH_INFO']) : null;
-	$page = isset($data[1]) ? $data[1] : "hem";
+	$page = isset($data[1]) ? $data[1] : "home";
 			
 	if (isset($data[2])) {
 		

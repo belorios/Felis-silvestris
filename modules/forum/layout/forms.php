@@ -11,11 +11,10 @@
 						<p>
 						Title <input type='text' name='heading' value='$title' />
 						<div></div>
-						<textarea name='content' class='editor' >$content</textarea> 
+						<textarea name='content' class='editor' style='height: 350px;' >$content</textarea> 
 						</p>
 					<div class='righty_buttons'>
-						<input type='reset'  value='Empty' /> &nbsp;
-						<input type='submit' name='add' value='Save' />
+						<input type='submit' name='add' value='Save' class='wymupdate' />
 					</div>
 				</form>
 			</div>
@@ -34,11 +33,10 @@
 						<p>
 						Title <input type='text' name='heading' />
 						<div></div>
-						<textarea name='content' class='simpleeditor' style='width: 100%; height: 140px;' ></textarea> 
+						<textarea name='content' class='simpleeditor' ></textarea> 
 						</p>
 					<div class='righty_buttons'>
-						<input type='reset'  value='Empty' /> &nbsp;
-						<input type='submit' name='add' value='Save' />
+						<input type='submit' name='add' value='Save' class='wymupdate' />
 					</div>
 				</form>
 			</div>

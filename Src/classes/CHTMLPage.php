@@ -1,15 +1,16 @@
 <?php
 	class CHTMLPage {
 		
-		//Hanterar data till sidlayouten
+		//Holds data for the layout
 		protected 	$menuArr, 
 					$charset, 
 					$layout,
 					$javascript  = array(),
+					$javascriptf = false,
 		 			$stylesheet  = array(),
 		 			$layoutTypes = array();
 		
-		//Hanterar sidlayout		
+		//Handles the site layout		
 		private $Footer, 
 				$Heading = array(), 
 				$Title,
@@ -19,17 +20,36 @@
 				
 		
 		function __construct($layout = false, $menuArr = false, $stylesheet = false) {
-			$this->menuArr = ($menuArr != false) ? $menuArr : unserialize(APP_MENU);
-			$this->stylesheet[APP_STYLE] = ($stylesheet != false) ? $stylesheet : "<link rel='stylesheet'  href='".APP_STYLE."' type='text/css' media='screen' /> ";
+			
+			//Handles stylesheet
+			$this->addStyleSheet(APP_STYLE, PATH_CSS);
 			$this->stylesheet = array_merge($this->stylesheet, unserialize(PATH_MODCSS));
 			
 			$this->charset = "UTF-8";
 			
+			//Sets layout
 			$layout = ($layout != false) ? $layout : "2col_std";
 			$this->setLayoutTypes();
 			if (!$this->setLayout($layout)) {
 				throw new Exception("Wrong layout type set!");
 			}
+			
+			//Adds js library Jquery
+			$this->addJavascriptSrc("jquery/jquery.js");
+			
+			//Sets default edtior
+			$this->setHtmlEditor("wymeditor");
+			
+			//Creates the menu
+			$this->menuArr = ($menuArr != false) ? $menuArr : unserialize(APP_MENU);
+			$menuItems = null;
+			
+			foreach ($this->menuArr as $link => $name) {
+				$current = ($link == $_SESSION['currentPage']) ? true : false;
+				$menuItems .= html_Menu_Items($link, $name, $current);
+			}
+			
+			$this->Menu = html_Menu($menuItems);
 			
 		}
 		
@@ -37,15 +57,15 @@
 			;
 		}
 		
+		//Creates an array holding the standard layouts
 		private function setLayoutTypes() {
 			$this->layoutTypes = array(
 				"2col_std"  => "page_2col.css",
 				"1col_std"  => "page_1col.css",
-				"2col_xtra" => "xtravisible_2col.css",
-				"1col_xtra" => "xtravisible_1col.css",
 			);
 		}
 		
+		//Sets a layout if it exists in the layouts array
 		public function setLayout($layout) {
 			
 			if (array_key_exists($layout, $this->layoutTypes)) {
@@ -58,27 +78,14 @@
 			
 		}
 		
-		function defineHTMLHeader($aTitle = APP_HEADER) {
-			$this->Title   = $aTitle;
-		}
-		
-		function definePageHeader($header = APP_HEADER, $description = APP_DESCRIPTION) {
-			$menuItems = null;
-			
-			$curPage = (isset($_GET['p'])) ? $_GET['p'] : ".";
-			
-			foreach ($this->menuArr as $link => $name) {
-				$current = ($link == $curPage) ? true : false;
-				$menuItems .= html_Menu_Items($link, $name, $current);
-			}
-			
+		//Function for defining the page title and headers
+		function defineHeaders($header = APP_HEADER, $description = APP_DESCRIPTION) {
+			$this->Title   				  = $header;
 			$this->Heading['Header']      = $header;
 			$this->Heading['Description'] = $description;
-			
-			$this->Menu = html_Menu($menuItems);
-			
 		}
-	
+		
+		//Defines the pagebody with content and sideboxes and also writes out errorMsgs
 		function definePageBody($aBody, $sideBox=false, $sideBoxFloat='right') {
 			
 			$errorMsg = $this->getErrorMessage();
@@ -111,12 +118,14 @@
 			";
 		}
 		
+		//Defines the pagefooter
 		function definePageFooter($footer = APP_FOOTER, $validation = APP_VALIDATION) {
 			$this->Footer = array();
 			$this->Footer['left']  = $footer;
 			$this->Footer['right'] = $validation;
 		}
 		
+		//Prints the page to screen
 		function printPage() {
 			
 			$stylesheets = null;
@@ -125,76 +134,20 @@
 				$stylesheets .= "<link rel='stylesheet'  href='".PATH_CSS."{$this->layout}' type='text/css' media='screen' />";
 			}
 			
-			foreach ($this->stylesheet as $style) {
+			foreach ($this->stylesheet as $key => $style) {
 				$stylesheets .= $style;
 			}
-			//markitup
-			#$stylesheets .= "<link rel='stylesheet' type='text/css' href='" . PATH_JS . "markitup/skins/markitup/style.css' />";
-			#$stylesheets .= "<link rel='stylesheet' type='text/css' href='" . PATH_JS . "markitup/sets/default/style.css' />";
-			
-			//Jquery
-			$this->javascript[] = PATH_JS . "jquery/jquery.js";
-			
-			//nicEdit
-			#$this->javascript[] = PATH_JS . "nicEdit.js";
-			
-			//TinyMCE
-			$this->javascript[] = PATH_JS . "/tiny_mce/tiny_mce.js";
-
-			//Wymeditor
-			#$this->javascript[] = PATH_JS . "wymeditor/jquery.wymeditor.pack.js";
-			
-			//markitup
-			#$this->javascript[] = PATH_JS . "markitup/jquery.markitup.js";
-			#$this->javascript[] = PATH_JS . "markitup/sets/default/set.js";
 			
 			$JavaScript = null;
 			foreach ($this->javascript as $js) {
 				$JavaScript .= "<script type='text/javascript' src='$js'></script>";
 			}
 			
-			//nicEdit
-			#$JavaScript .= "<script type='text/javascript'>bkLib.onDomLoaded(nicEditors.allTextAreas);</script>";
+			$JavaScript .= "<script type='text/javascript'>{$this->javascriptf}</script>";
 			
-			//Wymeditor
-			#$JavaScript .= " <script type=\"text/javascript\"> jQuery(function() { jQuery(\".editor\").wymeditor(); }); </script> ";
-			
-			//markitup
-			#$JavaScript .= ' <script type="text/javascript"> $(document).ready(function() {$(".editor").markItUp(mySettings); }); </script> ';
-			$JavaScript .= '
-				<script type="text/javascript">
-					tinyMCE.init({
-						mode : "textareas",
-						theme : "advanced",
-						plugins : "save",
-						
-						theme_advanced_buttons1 : "save,newdocument,|,bold,italic,underline,strikethrough,|,justifyleft,justifycenter,justifyright,justifyfull",
-						theme_advanced_buttons2 : "",
-						theme_advanced_toolbar_location : "top",
-						theme_advanced_toolbar_align : "center",
-						theme_advanced_statusbar_location : "bottom",
-						theme_advanced_resizing : true,
-						editor_selector : "simpleeditor",
-					});
-					
-					tinyMCE.init({
-						mode : "textareas",
-						theme : "advanced",
-						plugins : "safari,spellchecker,style,layer,table,save,advhr,advimage,advlink,emotions,iespell,inlinepopups,insertdatetime,preview,media,searchreplace,print,contextmenu,paste,directionality,fullscreen,noneditable,visualchars,nonbreaking,xhtmlxtras,template",
-						// Theme options
-						theme_advanced_buttons1 : "save,|,bold,italic,underline,strikethrough,|,justifyleft,justifycenter,justifyright,justifyfull,|,styleselect,formatselect,fontselect,fontsizeselect,forecolor,backcolor",
-						theme_advanced_buttons2 : "cut,copy,paste,pastetext,pasteword,|,bullist,numlist,|,outdent,indent,|,undo,redo,|,link,unlink,anchor,image,cleanup,code,|,preview,|,hr,sub,sup,|,charmap,emotions,media,fullscreen",
-						theme_advanced_buttons3 : "",
-						theme_advanced_toolbar_location : "top",
-						theme_advanced_toolbar_align : "left",
-						theme_advanced_statusbar_location : "bottom",
-						theme_advanced_resizing : true,
-						editor_selector : "editor",
-					});
-				</script>
-			';	
 			return html_layout($this->Title, $this->Heading, $this->Menu, $this->Body, $this->Footer, $Charset='UTF-8', $this->BodyExtra, $stylesheets, $JavaScript, $MetaTags=false);
 		}
+		
 		
 		private function setLoggedInMenu() {
 			
@@ -279,18 +232,65 @@
 	
 	    }
 		
-		public function addStyleSheet($style, $media="screen", $string=false) {
-			if ($string != false) {
+		public function addStyleSheet($style, $path, $media="screen", $string=false) {
+			if ($string != false && !is_null($string)) {
 				$this->stylesheet[$style] = $string;
 			}
 			else {
-				$this->stylesheet[$style] = "<link rel='stylesheet'  href='$style' type='text/css' media='$media' /> ";
+				$this->stylesheet[$style] = "<link rel='stylesheet'  href='{$path}{$style}' type='text/css' media='$media' /> ";
 			}
 			
 		}
 		
 		public function getStyleSheets() {
 			return $this->stylesheet;
+		}
+		
+		public function addJavascriptFunc($js) {
+			if ($this->javascriptf != false) {
+				$this->javascriptf .= "\n " . $js;
+			}
+			else {
+				$this->javascriptf = $js;
+			}	
+		}
+		
+		public function addJavascriptSrc($jsPath) {
+			$this->javascript[] = PATH_JS . $jsPath;
+		}
+		
+		public function setHtmlEditor($editor) {
+			
+			switch($editor) {
+				case "wymeditor": 
+					$this->addJavascriptSrc("wymeditor/jquery.wymeditor.pack.js");
+					$this->addJavascriptFunc("jQuery(function() { jQuery(\".editor\").wymeditor(); }); jQuery(function() { jQuery(\".simpleeditor\").wymeditor(); });");
+				break;
+				case "markitup":
+					$this->addJavascriptSrc("markitup/jquery.markitup.js");
+					$this->addJavascriptSrc("markitup/sets/default/set.js");
+					
+					$this->addStyleSheet("markitup/skins/markitup/style.css", PATH_JS);
+					$this->addStyleSheet("markitup/sets/default/style.css", PATH_JS);	
+					
+					$this->addJavascriptFunc('
+						$(document).ready(function() {$(".editor").markItUp(mySettings); });
+						$(document).ready(function() {$(".simpleeditor").markItUp(mySettings); });
+					');
+					
+				break;
+				case "nicEdit":
+					$this->addJavascriptSrc("nicEdit.js");
+					$this->addJavascriptFunc("bkLib.onDomLoaded(nicEditors.allTextAreas);");
+				break;
+				case "tinymce":
+					$this->addJavascriptSrc("tiny_mce/tiny_mce.js");
+					$this->addJavascriptSrc("tiny_mce/toolsets.js");
+				break;
+				
+				
+			}
+			
 		}
 		
 	}

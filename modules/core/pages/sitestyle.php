@@ -1,16 +1,16 @@
 <?php
-
+	
 	$defaults = new defaults;
 	$Pages = new CHTMLPage;
 	
 	switch ($action) {
 		
 		case "purple":
-			if (isset($_SESSION['stylesheet'][PATH_CSS . "purple.css"])) {
+			if (isset($_SESSION['stylesheet']["purple.css"])) {
 				$_SESSION['stylesheet'] = array();
 			}
 			else {
-				$Pages->addStyleSheet(PATH_CSS . "purple.css");
+				$Pages->addStyleSheet("purple.css", PATH_CSS);
 				$_SESSION['stylesheet'] = $Pages->getStyleSheets();
 			}
 			

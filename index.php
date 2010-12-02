@@ -37,11 +37,10 @@
 		
 	$_SESSION['stylesheet'] = isset($_SESSION['stylesheet']) ? $_SESSION['stylesheet'] : array();
 	foreach ($_SESSION['stylesheet'] as $key => $style) {
-		$PageClass->addStyleSheet($key, false, $style);
+		$PageClass->addStyleSheet($key, null, false, $style);
 	}
 	
-	echo $PageClass->defineHTMLHeader(); 
-	echo $PageClass->definePageHeader();
+	echo $PageClass->defineHeaders(); 
 	echo $PageClass->definePageBody($body, $sideBox, $sideBoxFloat);
 	echo $PageClass->definePageFooter(); 
 		

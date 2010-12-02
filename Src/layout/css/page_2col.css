@@ -1,18 +1,19 @@
 #pageBody_Content_Big {
+	margin-left: 5px;
 }
 
 	.content_float_left {
-		border-left: 230px solid #f3f3f3;
+		border-left: 240px solid #f3f3f3;
 	}
 	
 	.content_float_right {
-		border-right: 230px solid #f3f3f3;
+		border-right: 240px solid #f3f3f3;
 	}
 
 #pageBody_Content_Sidebox {
 	width: 220px;
 	height: auto;
-	margin: -15px 0px 0px 0px;
+	margin: -15px 5px 0px 0px;
 	padding: 0;
 }
 

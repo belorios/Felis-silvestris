@@ -22,7 +22,7 @@
 	function html_Menu_Items($link, $name, $current=false) {
 		$class = ($current != false) ? "class='CurrentPage'" : null;
 		return "
-			<li $class><a href='$link'>$name</a></li>
+			<li $class><a href='" . PATH_SITE . "/$link'>$name</a></li>
 		";
 		
 	}
@@ -31,7 +31,7 @@
 		
 		return "
 			<div class='errorMessage'>
-				<b>Följande fel påträffades: </b>
+				<b>Following faults was found: </b>
 				<p>
 					{$messages}
 				</p>
@@ -48,17 +48,17 @@
 	}
 	
 	function sidebox_Login() {
-		return sideboxLayout("Logga in", "
+		return sideboxLayout("Login", "
 			<div id='LoginBox'>
 				<form action='".PATH_SITE."/loginprocess' method='post'>
 					<p>
-						<input type='text' name='uname' value='Användarnamn' onclick='this.value=\"\"' />
+						<input type='text' name='uname' value='Username' onclick='this.value=\"\"' />
 					</p>
 					<p>
 						<input type='password' name='passwd' value='11111' onclick='this.value=\"\"'  />
 					</p>
 					<div class='righty_buttons' >
-						<input type='submit' name='login' value='Logga in' />
+						<input type='submit' name='login' value='Login' />
 					</div>
 					<div class='clear'></div>
 				</form>
@@ -72,7 +72,7 @@
 			$menuItems .= "<li><a href='".PATH_SITE."/$item[url]'>$item[desc]</a></li>";
 		}
 		
-		return sideboxLayout("Inloggad som", "
+		return sideboxLayout("Logged in as", "
 			<span class='mark'>$realname</span><br />
 			<ul id='loginMenu'>
 				$menuItems
