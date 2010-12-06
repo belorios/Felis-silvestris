@@ -16,6 +16,10 @@
 	
 	require_once(PATH_LIB . "htmlpurifier/library/HTMLPurifier.auto.php");
 	
+	//Startar klasser
+	$defaults  = new defaults();
+	$PageClass = new CHTMLPage();
+	
 	//Startar kontrollv�rde s� att man kan anv�nda pagecontrollers
 	$indexIsVisited  = true;
 	$updateCssValues = false;
@@ -30,10 +34,10 @@
 	$layout       = (isset($layout)) ? $layout : false;
 	$sideBoxFloat = (isset($sideBoxFloat)) ? $sideBoxFloat : 'right';
 	$layout 	  = (isset($_SESSION['Layout'])) ? $_SESSION['Layout'] : $layout;
-		
-	//Startar klasser
-	$defaults  = new defaults();
-	$PageClass = new CHTMLPage($layout);
+	
+	if ($layout != false) {
+		$PageClass->setLayout($layout);
+	}
 		
 	$_SESSION['stylesheet'] = isset($_SESSION['stylesheet']) ? $_SESSION['stylesheet'] : array();
 	foreach ($_SESSION['stylesheet'] as $key => $style) {

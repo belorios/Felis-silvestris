@@ -2,6 +2,17 @@
 	
 	require_once(PATH_MODULES . "forum/layout/html_elements.php");
 	
+	$PageClass->addJavascriptSrc("js/jgrowl/jquery.jgrowl.js", PATH_SITE_LIBS);
+	$PageClass->addJavascriptSrc("js/jquery.jgrowl.js", PATH_SITE_LIBS);
+	$PageClass->addJavascriptFunc("
+		$(document).ready(function(){
+			$.jGrowl(\"Hello World. This is Growl. Page was now loaded, or re-loaded, I'm not sure on which...\");
+			
+		});
+	");
+	
+	
+	
 	$Topics = new Topics();
 	
 	try {

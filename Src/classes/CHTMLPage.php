@@ -30,15 +30,14 @@
 			//Sets layout
 			$layout = ($layout != false) ? $layout : "2col_std";
 			$this->setLayoutTypes();
-			if (!$this->setLayout($layout)) {
-				throw new Exception("Wrong layout type set!");
-			}
+			
+			$this->setLayout($layout);
 			
 			//Adds js library Jquery
 			$this->addJavascriptSrc("jquery/jquery.js");
 			
 			//Sets default edtior
-			$this->setHtmlEditor("wymeditor");
+			$this->setHtmlEditor("plain");
 			
 			//Creates the menu
 			$this->menuArr = ($menuArr != false) ? $menuArr : unserialize(APP_MENU);
@@ -67,13 +66,11 @@
 		
 		//Sets a layout if it exists in the layouts array
 		public function setLayout($layout) {
-			
-			if (array_key_exists($layout, $this->layoutTypes)) {
+			if (array_key_exists($layout, $this->layoutTypes) === TRUE) {
 				$this->layout = $this->layoutTypes[$layout];
-				return true;
 			}
 			else {
-				return false;	
+				throw new Exception("Wrong layout type set!");
 			}
 			
 		}
@@ -255,8 +252,8 @@
 			}	
 		}
 		
-		public function addJavascriptSrc($jsPath) {
-			$this->javascript[] = PATH_JS . $jsPath;
+		public function addJavascriptSrc($jsPath, $src=PATH_JS) {
+			$this->javascript[] = $src . $jsPath;
 		}
 		
 		public function setHtmlEditor($editor) {
@@ -287,7 +284,8 @@
 					$this->addJavascriptSrc("tiny_mce/tiny_mce.js");
 					$this->addJavascriptSrc("tiny_mce/toolsets.js");
 				break;
-				
+				case "plain":
+				break;
 				
 			}
 			

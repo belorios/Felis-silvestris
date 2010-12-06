@@ -186,13 +186,7 @@
 				$fail[] = "Innehållet har inte blivit korrekt inmatat (minst 20 tecken) ";
 			}
 			
-			if (count($fail) > 0) {
-				$_SESSION['errorMessage'] = $fail;
-				return false;
-			}
-			else {
-				return true;
-			}
+			return $fail;
 		}
 		
 		//Saves inserted data to sessions

@@ -37,9 +37,9 @@
 		$stmt = $dbc->query("DROP FUNCTION IF EXISTS $udf;");	$body .= ctlPrint($udf, "Removing the", "udf");
 	}
 	
-	//Removes old triggers if the exists in db
+	//Removes old triggers if they exists in db
 	foreach ($triggers as $trigger) {
-		$stmt = $dbc->query("DROP TRIGGER IF EXISTS TInsertUser;");	$body .= ctlPrint($trigger, "Removing the", "trigger");
+		$stmt = $dbc->query("DROP TRIGGER IF EXISTS $trigger;");	$body .= ctlPrint($trigger, "Removing the", "trigger");
 	}
 	
 	//Removes old proceduers if they exists
