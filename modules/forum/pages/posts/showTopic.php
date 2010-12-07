@@ -22,6 +22,7 @@
 	$body = "
 		<h1>Showing the thread $getTopic[title]</h1>
 		$allPosts
+		<a href='".PATH_SITE."/newPost/id-{$id}'>Reply</a>
 	";
 	
-	$body .= postsFormSmall("Quick answer", $id);
+	#$body .= postsFormSmall("Quick answer", $id);

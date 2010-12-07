@@ -17,6 +17,7 @@
 		
 		//Posts
 		"handlePosts" 	=> "posts/handlePosts.php",
+		"ajaxHandlePosts" 	=> "posts/ajaxHandlePosts.php",
 		"newPost" 		=> "posts/newPost.php",
 		"editPost" 		=> "posts/editPost.php",
 	);

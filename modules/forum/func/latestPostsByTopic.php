@@ -4,7 +4,7 @@
 	
 	$Topics = new Topics();
 	$Posts  = new Posts();
-	$topicId = $_SESSION['posts']['topic'];
+	$topicId = $_SESSION['posts']['topicId'];
 	
 	try {
 		$getTopic  = $Topics->getTopic($topicId);

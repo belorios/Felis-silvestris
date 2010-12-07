@@ -28,6 +28,7 @@
 	define("PATH_SITE_RSS"	  , PATH_SITE_LOC . "/Src/rss/feed.xml");
 	define("PATH_JS" 	 	  , PATH_SITE_LOC . "/Src/javascript/");
 	define("PATH_SITE_LIBS"	  , PATH_SITE_LOC . "/libs/");
+	define("PATH_SITE_MODS"   , PATH_SITE_LOC . "/modules/");
 	
 	//Default values
 	define("APP_HEADER",      "Felis silvestris");

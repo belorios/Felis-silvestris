@@ -12,14 +12,31 @@
 		return;
 	}
 	
+	if (isset($_SESSION['posts']['topicId'])) {
+		if ($_SESSION['posts']['topicId'] != $getPost['topic']) {
+			$_SESSION['posts'] = array();
+		}
+	}
+	
+	
 	//Gets temporary data for the post
 	$title   = (isset($_SESSION['posts']['title']))   ? $_SESSION['posts']['title']   : $getPost['title']; 
 	$content = (isset($_SESSION['posts']['content'])) ? $_SESSION['posts']['content'] : $getPost['content']; 
-	$_SESSION['posts']['topic'] = $getPost['topic'];
+	$_SESSION['posts']['topicId'] = (isset($_SESSION['posts']['topicId'])) ? $_SESSION['posts']['topicId'] : $getPost['topic'];
+	$_SESSION['posts']['postId']  = (isset($_SESSION['posts']['postId']))  ? $_SESSION['posts']['postId']  : $id;
+	$_SESSION['posts']['topicId'] = $getPost['topic'];
+	
+	$PageClass->addJavascriptSrc("js/jgrowl/jquery.jgrowl.js", 	 PATH_SITE_LIBS);
+	$PageClass->addJavascriptSrc("js/jquery.form.js", 			 PATH_SITE_LIBS);
+	$PageClass->addJavascriptSrc("js/jquery.autosave.js", 		 PATH_SITE_LIBS);
+	$PageClass->addJavascriptSrc("forum/js/ajax_handlePosts.js", PATH_SITE_MODS);
+	
+	$PageClass->addStyleSheet("jquery.jgrowl.css", PATH_SITE_LIBS . "js/jgrowl/");	
 	
 	//Creates the editform
-	$body = postsForm("Editing post", "edit", $title, $content, $id);
+	$body = postsForm("Editing post", "save-post", $title, $content, $id);
 	
+	$body .= "<div id='latest'>";
 	$body .= require_once(PATH_MODULES . "forum/func/latestPostsByTopic.php");
-	
+	$body .= "</div>";
 	

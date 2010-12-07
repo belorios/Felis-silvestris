@@ -1,14 +1,43 @@
 <?php
-	$defaults = new defaults;
-	$body = null;
+	$save = isset($_POST['save']) ? $_POST['save'] : null;
 	
-	$Users = new Users();
-	$Users->checkPrivilegies();
+	if ($save == "discard") {
+		if (isset($_SESSION['posts']['topicId'])) {
+			header("Location: " . PATH_SITE);
+			exit;
+		}
+		else {
+			header("Location: " . PATH_SITE . "/topic/id-$_SESSION[posts][topicId]");
+			exit;
+		}
+	}
 	
-	$ajaxRequest = isset($_POST['ajax']) ? $_POST['ajax'] : false;
+	if ($action == "save-topic" || $action == "save-post") {
+		
+		$Topics   = new Topics();
+		$Posts    = new Posts();
+		$purifier = new HTMLPurifier();
+		
+		$header   = $_POST['heading'];
+		$content  = $purifier->purify($_POST['content']);
+		$ajax	  = isset($_POST['ajax']) ? true : false;
+		
+		$Pid	  = isset($_SESSION['posts']['postId'])  ? $_SESSION['posts']['postId']  : null;
+		$Tid	  = isset($_SESSION['posts']['topicId']) ? $_SESSION['posts']['topicId'] : null;
+		
+		
+		//Validates inputed values
+		$validate = $Posts->validatePosts($header, $content);
+		
+		//Checks if it should flush the sessions
+		$flush = true;
+		if (isset($_POST['flush'])) {
+			$flush = ($_POST['flush'] == 0) ? false : true;
+		}
+	}
 
-	function redirect($ajaxRequest, $path, $error=false) {
-		if ($ajaxRequest == false) {
+	function handleError($path, $ajax=false, $error=false) {
+		if ($ajax == false) {
 			if ($error != false) {
 				$_SESSION['errorMessage'] = $error;
 			}	
@@ -16,100 +45,106 @@
 			exit;
 		}
 		else {
-			foreach ($error as $err) {
-				echo "$err <br />" ;
-			}	
+			$fail = $error;
+			if (is_array($error)) {
+				$fail = implode("<br />", $error);
+			}
+			echo '{ "header": "Faults found", 
+					"error": "' . $fail . '"
+			}';
+		}
+		exit;
+	}
+	
+	function success($message) {
+		$Tid = $GLOBALS['Tid'];
+		$Pid = $GLOBALS['Pid'];
+		
+		$returnPath = PATH_SITE . "/topic/id-$Tid#$Pid";
+		if ($GLOBALS['ajax'] == true) {
+			echo '{
+				"path":    "' . $returnPath . '",
+				"message": "' . $message . '",
+				"PostId":  "' . $Pid . '",
+				"TopicId": "' . $Tid . '"
+			}';
 			exit;
 		}
-	}
-	
-	
-	if ($action == "create" || $action == "edit") {
-		$Topics = new Topics();
-		$Posts  = new Posts();
-		$purifier = new HTMLPurifier();
-		
-		$header   = $_POST['heading'];
-		$content  = $purifier->purify($_POST['content']);
-		
-		//Validates inputed values
-		$validate = $Posts->validatePosts($header, $content);
-		
-		//Checks if it should flush the sessions
-		$flush = ($ajaxRequest != false) ? false : true;
-	}
-	
-	//Adds a post/topic
-	if ($action == "create") {
-		
-		$page 	  = "/newPost/id-$id";
-		$event 	  = "post";
-				
-		if (count($validate) == 0) {
-			//Creates the posts/and topic
-			try {
-				
-				//Checks if an id is givin, if not it creates a topic with the posts heading
-				if (is_null($id)) {
-					$Topics->createTopic($header);
-					$id = $Topics->getLastId();
-					$page = "/newTopic";
-					$event = "topic";
-				}
-				
-				$Posts->createPost($id, $header, $content,  $flush);
-				$lastId = $Posts->getLastId();
-				
-				if ($ajaxRequest != false) {
-					$_SESSION['posts']['post'] = $lastId;
-					echo $lastId;
-					exit;
-				}
-				else {
-					$body .= $defaults->redirect(PATH_SITE . "/topic/id-$id#$lastId", "2", "The $event is now saved");
-				}
-				
-			}
-			catch ( exception $e ) {
-				redirect($ajaxRequest, PATH_SITE . $page, $e->getMessage());
-			}
-		}
 		else {
-			redirect($ajaxRequest, PATH_SITE . $page, $validate);
-		}
-		
-	}
-	
-	//Edits a post
-	if ($action == "edit") {
-		
-		$header   = $_POST['heading'];
-		$content  = $purifier->purify($_POST['content']);
-		$topicId  = $_SESSION['posts']['topic'];
-		$failpage = "/editPost/id-$id";
-				
-		//Validates inputed values
-		if (count($validate) == 0) {
+			$time = 2;
+			if ($GLOBALS['save'] == "draft"){
+				$returnPath = $_SERVER['HTTP_REFERER'];
+				$time = 0;
+			}
+			return $GLOBALS['defaults']->redirect($returnPath, $time, $message);
+		}	
+	}	
 			
-			//Creates the posts/and topic
+	if ($action == "save-topic") {
+		if (count($validate) == 0) {
 			try {
-				$Posts->editPost($id, $header, $content, $flush);
-				
-				if ($ajaxRequest != false) {
-					echo $id;
-					exit;
+				if (isset($_SESSION['posts']['topicId'])) {
+					$Topics->updateTopic($id, $header);
+				}	
+				else {
+					$Topics->createTopic($header);
+					$Tid = $Topics->getLastId();
+					
+				}
+				if (is_null($Pid)) {
+					$Posts->createPost($Tid, $header, $content, $flush);
+					$Pid = $Posts->getLastId();
 				}
 				else {
-					$body .= $defaults->redirect(PATH_SITE . "/topic/id-$id#$lastId", "2", "The post is now saved");
+					$Posts->editPost($Pid, $header, $content, $flush);
 				}
 				
+				if ($flush != true) {
+					$_SESSION['posts']['postId']  = $Pid;
+					$_SESSION['posts']['topicId'] =	$Tid;
+				}
+				
+				$body = success("Successfully saved the topic");
+				
 			}
-			catch ( exception $e ) {
-				redirect($ajaxRequest, PATH_SITE . $failpage, $e->getMessage());
+			catch ( Exception $e) {
+				handleError(PATH_SITE . "/newTopic", $ajax, $e->getMessage());
 			}
 		}
 		else {
-			redirect($ajaxRequest, PATH_SITE . $failpage, $validate);
-		}
+			handleError(PATH_SITE . "/newTopic", $ajax, $validate);
+		} 
 		
 	}
+	
+	if ($action == "save-post") {
+		
+		if (count($validate) == 0) {
+			try {
+				if (is_null($Pid)) {
+					$Posts->createPost($Tid, $header, $content, $flush);
+					$Pid = $Posts->getLastId();
+				}
+				else {
+					$Posts->editPost($Pid, $header, $content, $flush);
+				}
+				
+				if ($flush != true) {
+					$_SESSION['posts']['postId']  = $Pid;
+					$_SESSION['posts']['topicId'] =	$Tid;
+				}
+				
+				$body = success("Successfully saved the post");
+			}
+			catch ( Exception $e) {
+				handleError(PATH_SITE . "/newPost", $ajax, $e->getMessage());
+			}
+		}
+		else {
+			handleError(PATH_SITE . "/newPost", $ajax, $validate);
+		} 
+		
+	}
+
+	
+	

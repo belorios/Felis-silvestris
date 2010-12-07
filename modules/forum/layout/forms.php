@@ -9,14 +9,13 @@
 			<div style='width: 605px'>
 				<form method='post' id='postEditor' action='".PATH_SITE."/handlePosts/$action{$idString}'>
 					<p>
-						Title <input type='text' name='heading' id='heading' value='$title' />
-						<div>
-							<textarea name='content' class='editor' id='content' style='height: 350px; width: 100%;' >$content</textarea> 
-						</div>
+						Title <input type='text' name='heading' value='$title' />
+						<textarea name='content' class='editor' style='height: 350px; width: 100%;' >$content</textarea> 
 					</p>
 					<div class='righty_buttons'>
-						<button type='submit'  id='button_draft' class='wymupdate'>Save draft</button>
-						<button type='submit'  id='button_publish' class='wymupdate'>Publish</button>
+						<button type='submit'  id='button_discard' name='save' value='discard'				  	>Discard</button>
+						<button type='submit'  id='button_draft'   name='save' value='draft' class='wymupdate'	>Save draft</button>
+						<button type='submit'  id='button_publish' name='save' value='publish' class='wymupdate'>Publish</button>
 					</div>
 					<div class='clear'></div>
 				</form>

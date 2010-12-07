@@ -19,7 +19,7 @@
 		public function getConnection() {
 			if (!is_object($this->db)) {
 				$pdo = new pdoConnection();
-				$this->db = $pdo->getConnection(false);
+				$this->db = $pdo->getConnection(true);
 			}
  		}
 		

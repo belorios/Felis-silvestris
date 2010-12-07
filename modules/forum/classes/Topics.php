@@ -139,13 +139,34 @@
 			$get->bindParam(':created', $date,	 	PDO::PARAM_INT);
 			$get->bindParam(':id',  	$user, 		PDO::PARAM_INT);
 			
-      //Kontrollerar så att databastransaktionen lyckades
+     		 //Controls if the databasetransation succeded
 			if ($get->execute()) {
 				$this->lastInsertedId = $this->db->lastInsertId();
 				return true;
 			}
 			else {
-				$this->debug("Couldnt save the new article", $query);
+				$this->debug("Couldnt save the new topic", $query);
+				return false;
+			}
+		}
+		
+		public function updateTopic($id, $title) {
+			
+			$query = "
+				UPDATE {$this->prefix}Topics SET title = :title WHERE idTopics = :id
+			";
+			
+			$get = $this->db->prepare($query);
+			$get->bindParam(':title',   $title, 	PDO::PARAM_STR);
+			$get->bindParam(':id',  	$id, 		PDO::PARAM_INT);
+			
+			 //Controls if the databasetransation succeded
+			if ($get->execute()) {
+				$this->lastInsertedId = $this->db->lastInsertId();
+				return true;
+			}
+			else {
+				$this->debug("Couldnt save the topic", $query);
 				return false;
 			}
 		}
