@@ -6,7 +6,7 @@
 		
 		return "
 			<h1>$header</h1>
-			<div style='width: 605px'>
+			<div style='width: 605px' id='editore'>
 				<form method='post' id='postEditor' action='".PATH_SITE."/handlePosts/$action{$idString}'>
 					<p>
 						Title <input type='text' name='heading' value='$title' />

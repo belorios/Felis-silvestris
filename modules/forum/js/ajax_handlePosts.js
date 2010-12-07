@@ -1,4 +1,31 @@
 $(document).ready(function(){
+
+	var autosave = {
+		interval: 5000,
+		
+		save: function() {
+			$('#postEditor').submit();
+		},
+		
+		timer: null,
+		
+		stop: function() {
+			$('#button_draft').attr('disabled', 'disabled');
+			clearTimeout(autosave.timer);
+			$('#postEditor').live('keyup', autosave.start);
+		},
+		
+		start: function() {
+			$('#postEditor').die('keyup');
+			$('#button_draft').removeAttr('disabled');
+			autosave.timer = setTimeout(autosave.save, autosave.interval);
+			$.jGrowl('Timer started!');
+		}
+	}
+	
+	$('#postEditor').live('keyup', autosave.start);
+	$('#button_draft').attr('disabled', 'disabled');
+
 			
 	$('#postEditor').click(function(event) {
 		var flush = 0;	
@@ -24,6 +51,7 @@ $(document).ready(function(){
 			dataType:  'json', 
 			data: { ajax: true, flush: flush },
 			success: function(data) {
+				autosave.stop();
 				$('div.jGrowl').find('div.jGrowl-notification').children().parent().remove();		//Removes previous notifications
 				if (data.error !== undefined) {
 					$.jGrowl(data.error, { header: data.header, sticky: true });

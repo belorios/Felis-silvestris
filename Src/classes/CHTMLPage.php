@@ -37,7 +37,7 @@
 			$this->addJavascriptSrc("jquery/jquery.js");
 			
 			//Sets default edtior
-			$this->setHtmlEditor("wymeditor");
+			$this->setHtmlEditor("markitup");
 			
 			//Creates the menu
 			$this->menuArr = ($menuArr != false) ? $menuArr : unserialize(APP_MENU);
