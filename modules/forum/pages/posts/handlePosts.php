@@ -12,28 +12,28 @@
 		}
 	}
 	
+	$Posts    = new Posts();
+	
+	$Pid = isset($_SESSION['posts']['postId'])  ? $_SESSION['posts']['postId']  : null;
+	$Tid = isset($_SESSION['posts']['topicId']) ? $_SESSION['posts']['topicId'] : null;
+	$ajax	  = isset($_POST['ajax']) ? true : false;
+	//Checks if it should flush the sessions
+	$flush = true;
+	if (isset($_POST['flush'])) {
+		$flush = ($_POST['flush'] == 0) ? false : true;
+	}
+	
 	if ($action == "save-topic" || $action == "save-post") {
 		
-		$Topics   = new Topics();
-		$Posts    = new Posts();
 		$purifier = new HTMLPurifier();
 		
 		$header   = $_POST['heading'];
 		$content  = $purifier->purify($_POST['content']);
-		$ajax	  = isset($_POST['ajax']) ? true : false;
-		
-		$Pid	  = isset($_SESSION['posts']['postId'])  ? $_SESSION['posts']['postId']  : null;
-		$Tid	  = isset($_SESSION['posts']['topicId']) ? $_SESSION['posts']['topicId'] : null;
 		
 		
 		//Validates inputed values
 		$validate = $Posts->validatePosts($header, $content);
 		
-		//Checks if it should flush the sessions
-		$flush = true;
-		if (isset($_POST['flush'])) {
-			$flush = ($_POST['flush'] == 0) ? false : true;
-		}
 	}
 
 	function handleError($path, $ajax=false, $error=false) {
@@ -56,11 +56,11 @@
 		exit;
 	}
 	
-	function success($message) {
+	function success($message, $path=false) {
 		$Tid = $GLOBALS['Tid'];
 		$Pid = $GLOBALS['Pid'];
 		
-		$returnPath = PATH_SITE . "/topic/id-$Tid#$Pid";
+		$returnPath = ($path == false) ? PATH_SITE . "/topic/id-$Tid#$Pid" : PATH_SITE . $path;
 		if ($GLOBALS['ajax'] == true) {
 			echo '{
 				"path":    "' . $returnPath . '",
@@ -82,6 +82,9 @@
 			
 	if ($action == "save-topic") {
 		if (count($validate) == 0) {
+			
+			$Topics   = new Topics();
+			
 			try {
 				if (isset($_SESSION['posts']['topicId'])) {
 					$Topics->updateTopic($id, $header);
@@ -92,11 +95,12 @@
 					
 				}
 				if (is_null($Pid)) {
-					$Posts->createPost($Tid, $header, $content, $flush);
+					$Pid = 0;
+					$Posts->editCreatePost($Pid, $Tid, $header, $content, $flush);
 					$Pid = $Posts->getLastId();
 				}
 				else {
-					$Posts->editPost($Pid, $header, $content, $flush);
+					$Posts->editCreatePost($Pid, $Tid, $header, $content, $flush);
 				}
 				
 				if ($flush != true) {
@@ -118,15 +122,16 @@
 	}
 	
 	if ($action == "save-post") {
-		
+
 		if (count($validate) == 0) {
 			try {
 				if (is_null($Pid)) {
-					$Posts->createPost($Tid, $header, $content, $flush);
+					$Pid = 0;
+					$Posts->editCreatePost($Pid, $Tid, $header, $content, $flush);
 					$Pid = $Posts->getLastId();
 				}
 				else {
-					$Posts->editPost($Pid, $header, $content, $flush);
+					$Posts->editCreatePost($Pid, $Tid, $header, $content, $flush);
 				}
 				
 				if ($flush != true) {
@@ -145,6 +150,15 @@
 		} 
 		
 	}
-
+	
+	if ($action == "discard") {
+		try {
+			$Posts->discardPost($Pid);
+			$body = success("The post was successfully discarded");
+		}
+		catch ( Exception $e) {
+			handleError(PATH_SITE . "/forum", $ajax, $e->getMessage());
+		}
+	}
 	
 	

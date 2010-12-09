@@ -35,20 +35,13 @@
 			
 			//Adds js library Jquery
 			$this->addJavascriptSrc("jquery/jquery.js");
+			$this->addJavascriptSrc("std.js");
 			
 			//Sets default edtior
 			$this->setHtmlEditor("markitup");
 			
 			//Creates the menu
 			$this->menuArr = ($menuArr != false) ? $menuArr : unserialize(APP_MENU);
-			$menuItems = null;
-			
-			foreach ($this->menuArr as $link => $name) {
-				$current = ($link == $_SESSION['currentPage']) ? true : false;
-				$menuItems .= html_Menu_Items($link, $name, $current);
-			}
-			
-			$this->Menu = html_Menu($menuItems);
 			
 		}
 		
@@ -76,10 +69,18 @@
 		}
 		
 		//Function for defining the page title and headers
-		function defineHeaders($header = APP_HEADER, $description = APP_DESCRIPTION) {
+		function defineHeaders($page, $header = APP_HEADER, $description = APP_DESCRIPTION) {
 			$this->Title   				  = $header;
 			$this->Heading['Header']      = $header;
 			$this->Heading['Description'] = $description;
+			
+			$menuItems = null;
+			
+			foreach ($this->menuArr as $link => $name) {
+				$current = ($link == $page) ? true : false;
+				$menuItems .= html_Menu_Items($link, $name, $current);
+			}
+			$this->Menu = html_Menu($menuItems);
 		}
 		
 		//Defines the pagebody with content and sideboxes and also writes out errorMsgs

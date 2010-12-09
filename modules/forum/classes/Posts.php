@@ -36,9 +36,14 @@
 		}
 		
 		//Handles the data for an post
-		public function returnPost($row, $dateformat=false) {
+		public function returnPost($row, $draft=false, $dateformat=false) {
 			
 			$defaults  = new defaults();
+			
+			if ($draft == true) {
+				$row['username'] = null;
+				$row['created']  = null;
+			}
 			
 			$dateformat = ($dateformat == false) ? $this->dateformat : $dateformat;
 			$date = $defaults->sweDate($dateformat, $row['created']);
@@ -77,6 +82,23 @@
 			}
 		}
 		
+		public function getPostOrDraftById($id) {
+			
+			$query = "call {$this->prefix}getPostOrDraft(:id)";
+			
+			$get = $this->db->prepare($query);
+			$get->bindParam(':id', $id, PDO::PARAM_INT);
+			
+      		//Checks if the transaction to the database succeded
+			if ($get->execute()) {
+				return $this->returnPost($get->fetch(), true);
+			}
+			else {
+				$this->debug("Couldnt get the post", $query);
+				return false;
+			}
+		}
+		
 		public function getPostsByTopic($id, $limitStart=null, $limitAmount=30, $order="ASC") {
 			
 			$limit = (!is_null($limitStart)) ? "LIMIT {$limitStart},{$limitAmount}" : null;
@@ -84,7 +106,7 @@
 			$query = "
 				SELECT P.*, U.username FROM {$this->prefix}Posts P 
 				JOIN {$this->prefix}Users U ON U.idUsers = P.idUsers
-				WHERE idTopics = :id ORDER BY created $order $limit
+				WHERE idTopics = :id AND Published = 1 ORDER BY created $order $limit
 			";
 			
 			$get = $this->db->prepare($query);
@@ -105,67 +127,57 @@
 			}
 		}
 		
-		public function createPost($idTopics, $title, $content, $flush=true) {
-			
-			$user = $_SESSION['userId'];
-			$date   = time();
-			
-			$query = "
-				INSERT INTO {$this->prefix}Posts (title, post, created, updated, idUsers, idTopics)
-				VALUES (:title, :content, :created, :updated, :id, :topicId)
-			";
-			
+		public function discardPost($idPosts) {
+			$query = "call {$this->prefix}discardPost(:postId)";
 			$get = $this->db->prepare($query);
-			$get->bindParam(':title',   $title, 	PDO::PARAM_STR);
-			$get->bindParam(':content', $content, 	PDO::PARAM_STR);
-			$get->bindParam(':created', $date,	 	PDO::PARAM_INT);
-			$get->bindParam(':updated', $date,	 	PDO::PARAM_INT);
-			$get->bindParam(':id',  	$user, 		PDO::PARAM_INT);
-			$get->bindParam(':topicId', $idTopics, 	PDO::PARAM_INT);
-			
-      		//Kontrollerar så att databastransaktionen lyckades
+			$get->bindParam(':postId',   $idPosts, 	PDO::PARAM_INT);
 			if ($get->execute()) {
-				if ($flush == true) {
-					$this->unsetSessions();
-				}
-				#$this->createRssFeed();
-				$this->lastInsertedId = $this->db->lastInsertId();
+				$this->unsetSessions();
 				return true;
 			}
 			else {
 				$this->debug("Couldnt save the new post", $query);
 				return false;
 			}
-			
 		}
-
-		public function editPost($idPosts, $title, $content, $flush=true) {
+		
+		public function editCreatePost($idPosts, $idTopics, $title, $content, $flush=true) {
 			
+			$user = $_SESSION['userId'];
 			$date   = time();
-			
-			$query = "
-				UPDATE {$this->prefix}Posts SET
-					title = :title, post = :content, updated = :updated
-				WHERE idPosts = :id
-			";
+				
+			$query = "call {$this->prefix}handleDraftPost(:postId, :title, :content, :created, :userId, :topicId, @outId)";
 			
 			$get = $this->db->prepare($query);
 			$get->bindParam(':title',   $title, 	PDO::PARAM_STR);
 			$get->bindParam(':content', $content, 	PDO::PARAM_STR);
-			$get->bindParam(':updated', $date,	 	PDO::PARAM_INT);
-			$get->bindParam(':id', 		$idPosts, 	PDO::PARAM_INT);
+			$get->bindParam(':created', $date,	 	PDO::PARAM_INT);
+			$get->bindParam(':userId', 	$user, 		PDO::PARAM_INT);
+			$get->bindParam(':topicId', $idTopics, 	PDO::PARAM_INT);
+			$get->bindParam(':postId',  $idPosts, 	PDO::PARAM_INT);
 			
       		//Kontrollerar så att databastransaktionen lyckades
 			if ($get->execute()) {
 				if ($flush == true) {
-					$this->unsetSessions();
+					$query = "call {$this->prefix}publishPost(:postId);";
+					$get = $this->db->prepare($query);
+					$get->bindParam(':postId', $idPosts, PDO::PARAM_INT);
+					if (!$get->execute()) {
+						$this->debug("Couldnt save the new post", $query);
+						return false;
+					}
+					else {
+						$this->unsetSessions();
+					}
 				}
-				#$this->createRssFeed();
-				$this->lastInsertedId = $this->db->lastInsertId();
+					$getId = $this->db->query("SELECT @outId");
+					$fetId = $getId->fetch();
+					$this->lastInsertedId = $fetId['@outId'];
+				
 				return true;
 			}
 			else {
-				$this->debug("Couldnt save the updated post", $query);
+				$this->debug("Couldnt save the new post", $query);
 				return false;
 			}
 			

@@ -5,7 +5,7 @@
 	$Posts = new Posts();
 	
 	try {
-		$getPost = $Posts->getPostById($id);
+		$getPost = $Posts->getPostOrDraftById($id);
 	}
 	catch ( Exception $e) {
 		$_SESSION['errorMessage'][] = $e->getMessage();
@@ -18,13 +18,18 @@
 		}
 	}
 	
-	
-	//Gets temporary data for the post
 	$title   = (isset($_SESSION['posts']['title']))   ? $_SESSION['posts']['title']   : $getPost['title']; 
 	$content = (isset($_SESSION['posts']['content'])) ? $_SESSION['posts']['content'] : $getPost['content']; 
 	$_SESSION['posts']['topicId'] = (isset($_SESSION['posts']['topicId'])) ? $_SESSION['posts']['topicId'] : $getPost['topic'];
 	$_SESSION['posts']['postId']  = (isset($_SESSION['posts']['postId']))  ? $_SESSION['posts']['postId']  : $id;
-	$_SESSION['posts']['topicId'] = $getPost['topic'];
+	
+	//Gets temporary data for the post
+	if (!empty($id) && $id != $_SESSION['posts']['postId']) {
+		$title   = $getPost['title']; 
+		$content = $getPost['content']; 
+		$_SESSION['posts']['topicId'] = $getPost['topic'];
+		$_SESSION['posts']['postId']  = $id;
+	} 
 	
 	$PageClass->addJavascriptSrc("js/jgrowl/jquery.jgrowl.js", 	 PATH_SITE_LIBS);
 	$PageClass->addJavascriptSrc("js/jquery.form.js", 			 PATH_SITE_LIBS);

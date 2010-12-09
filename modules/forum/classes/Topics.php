@@ -98,7 +98,7 @@
 			 		MAX(P.idPosts) as postId 
 			 	FROM {$this->prefix}Topics T 
 				JOIN {$this->prefix}Users U1 ON U1.idUsers = T.idUsers
-				JOIN {$this->prefix}Posts P ON P.idTopics = T.idTopics 
+				JOIN {$this->prefix}Posts P ON P.idTopics = T.idTopics AND P.Published = 1
 				JOIN {$this->prefix}Users U2 ON U2.idUsers = P.idUsers
 				GROUP BY idTopics ASC
 				ORDER BY updated DESC

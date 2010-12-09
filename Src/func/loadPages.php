@@ -5,7 +5,7 @@
     	
 	$data = (isset($_SERVER['PATH_INFO'])) ? explode("/",$_SERVER['PATH_INFO']) : null;
 	$page = isset($data[1]) ? $data[1] : "home";
-			
+		
 	if (isset($data[2])) {
 		
 		if (substr($data[2], 0, 2) == "id") {

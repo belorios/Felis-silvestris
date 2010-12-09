@@ -38,8 +38,15 @@ $(document).ready(function(){
 			;
 		} 
 		else if ($(event.target).is('#button_discard')) {
-			//alert('discard');
-			history.back();
+			$.post(appUrl + 'handlePosts/discard', { flush: 1, ajax: true }, function(data) {
+				$.jGrowl("You are being redirected");
+				setTimeout(function() {
+					history.back();
+				}, 1000);
+			});
+			event.preventDefault();
+			
+			
 		}
 		
 		handleForm(flush);

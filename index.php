@@ -44,7 +44,7 @@
 		$PageClass->addStyleSheet($key, null, false, $style);
 	}
 	
-	echo $PageClass->defineHeaders(); 
+	echo $PageClass->defineHeaders($page); 
 	echo $PageClass->definePageBody($body, $sideBox, $sideBoxFloat);
 	echo $PageClass->definePageFooter(); 
 		

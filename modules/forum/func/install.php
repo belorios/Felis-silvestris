@@ -6,61 +6,183 @@
 	 */
 
 	//Tablenames
-	$tableTopics = DB_PREFIX . "Topics";
-	$tablePosts  = DB_PREFIX . "Posts";
+	$tables = array(
+		"drafts" => DB_PREFIX . "PostsDraft",
+		"posts"  => DB_PREFIX . "Posts",
+		"topics" => DB_PREFIX . "Topics",
+	);
+	
+	$procedures = array(
+		"handleDraftPost" => DB_PREFIX . "handleDraftPost",
+		"publishPost"	  => DB_PREFIX . "publishPost",
+		"getPostOrDraft"  => DB_PREFIX . "getPostOrDraft",
+		"discardPost"	  => DB_PREFIX . "discardPost",
+	); 
 	
 	$dbc->setAttribute( PDO::ATTR_ERRMODE, PDO::ERRMODE_SILENT );
 	
-	if ($clearOld == true) {
-		$stmt = $dbc->query("DROP TABLE IF EXISTS $tablePosts");		$body .= ctlPrint($tablePosts,  "Removing the");
-		$stmt = $dbc->query("DROP TABLE IF EXISTS $tableTopics");		$body .= ctlPrint($tableTopics, "Removing the");
-		$body .= "<tr><td>&nbsp;</td></tr>";
-	}
+	$sqlTableCreate = array();
 	
-	//Creating the usertable
-	$stmt = $dbc->query("
-		CREATE TABLE IF NOT EXISTS $tableTopics (
+	//Creating table handling topics
+	$sqlTableCreate['topics'] = "
+		CREATE TABLE IF NOT EXISTS $tables[topics] (
+			-- Primary key(s)
+		  	idTopics BIGINT AUTO_INCREMENT NULL PRIMARY KEY,
 		
-		  -- Primary key(s)
-		  idTopics BIGINT AUTO_INCREMENT NULL PRIMARY KEY,
-		
-		  -- Attributes
-		  title    VARCHAR(255) NOT NULL,
-		  created  BIGINT(40)   NOT NULL,
-		  idUsers   BIGINT		NOT NULL
+		  	-- Attributes
+		  	title    VARCHAR(255) NOT NULL,
+		  	created  BIGINT(40)   NOT NULL,
+		  	idUsers   BIGINT		NOT NULL
 		  
 		) ENGINE=InnoDB CHARSET=utf8 COLLATE utf8_swedish_ci
-	");
-	$body .= ctlPrint($tableTopics, "Creating the");
+	";
 	
-	//Creating the usertable
-	$stmt = $dbc->query("
-		CREATE TABLE IF NOT EXISTS $tablePosts (
-		
-		  -- Primary key(s)
-		  idPosts BIGINT AUTO_INCREMENT NULL PRIMARY KEY,
+	//Creating table handling posts
+	$sqlTableCreate['posts'] = "
+		CREATE TABLE IF NOT EXISTS $tables[posts] (
+	
+	  		-- Primary key(s)
+	  		idPosts BIGINT AUTO_INCREMENT NULL PRIMARY KEY,
+	  
+	  		-- Foreign key(s)
+	  		idTopics BIGINT NULL,
+	  
+	 		-- Attributes
+	  		title    	VARCHAR(255) NOT NULL,
+	  		post		LONGTEXT	 NOT NULL,
+	  		created 	BIGINT(40)   NOT NULL,
+	  		updated 	BIGINT(40)   NOT NULL,
+	  		idUsers  	BIGINT		 NOT NULL,
+	  		Published   BOOL		 NOT NULL,
+	  
+	  		FOREIGN KEY (idTopics)
+				REFERENCES $tables[topics](idTopics)
+				ON UPDATE CASCADE ON DELETE CASCADE
+	  
+		) ENGINE=InnoDB CHARSET=utf8 COLLATE utf8_swedish_ci
+	";
+	
+	//Creating table handling drafts for posts
+	$sqlTableCreate['drafts'] = "
+		CREATE TABLE IF NOT EXISTS $tables[drafts] (
+	
+			-- Primary key(s)
+		  	idDrafts BIGINT AUTO_INCREMENT NULL PRIMARY KEY,
 		  
-		  -- Foreign key(s)
-		  idTopics BIGINT NULL,
 		  
-		  -- Attributes
-		  title    	VARCHAR(255) NOT NULL,
-		  post		LONGTEXT	 NOT NULL,
-		  created 	BIGINT(40)   NOT NULL,
-		  updated 	BIGINT(40)   NOT NULL,
-		  idUsers  	BIGINT		 NOT NULL,
+		  	-- Foreign key(s)
+		  	idPosts BIGINT NULL ,
 		  
-		  FOREIGN KEY (idUsers)
-				REFERENCES $tableTopics(idTopics)
+		  	-- Attributes
+		  	title    	VARCHAR(255) NOT NULL,
+		  	post		LONGTEXT	 NOT NULL,
+		  	updated		BIGINT(40)   NOT NULL,
+		  	idUsers 	BIGINT 		 NOT NULL,
+		  	idTopics	BIGINT		 NOT NULL,
+		  	
+		 	FOREIGN KEY (idPosts)
+				REFERENCES $tables[posts](idPosts)
 				ON UPDATE CASCADE ON DELETE CASCADE
 		  
 		) ENGINE=InnoDB CHARSET=utf8 COLLATE utf8_swedish_ci
-	");
-	$body .= ctlPrint($tablePosts, "Creating the");
+	";
 	
-	foreach($fail as $fel) {
-		if ($fel != "0") {
-			$_SESSION['errorMessage'][] = $fel;
-			$fault = true;
-		}
-	}
+	/*
+	 * Creates the proceduers used by this module
+	 */ 
+	$sqlProcsCreate = array();
+	
+	//Procedure for handling draft posts
+	$sqlProcsCreate['handleDraftPost'] = "
+		CREATE PROCEDURE $procedures[handleDraftPost] (IN vidPosts BIGINT, IN vTitle VARCHAR(255), IN vContent TEXT, IN vUpdated BIGINT(50), IN vIdUsers BIGINT, IN vIdTopics BIGINT, OUT vUsedPost BIGINT)
+	    BEGIN
+	     DECLARE existing INT;
+	        IF (vidPosts = 0)  then
+	            INSERT INTO $tables[posts](title, post, created, updated, idUsers, idTopics) 
+	            VALUES (vTitle, vContent, vUpdated, vUpdated, vIdUsers, vIdTopics);
+	            SELECT LAST_INSERT_ID() INTO vidPosts;
+	            INSERT INTO $tables[drafts] (idPosts, idTopics, idUsers, title, post, updated) 
+	            VALUES (vidPosts, vIdTopics, vIdUsers, vTitle, vContent, vUpdated);
+	        ELSE
+	            SELECT count(idDrafts) INTO existing FROM $tables[drafts] WHERE idPosts = vidPosts AND idUsers = vIdUsers;
+	            IF (existing = 1) then
+	                UPDATE $tables[drafts] SET title = vTitle, post = vContent, idTopics = vIdTopics,updated = vUpdated WHERE idPosts = vidPosts AND idUsers = vIdUsers;
+	            ELSE
+	                INSERT INTO $tables[drafts] (idPosts, idTopics, idUsers, title, post, updated) VALUES (vidPosts, vIdTopics, vIdUsers, vTitle, vContent, vUpdated);
+	            END IF;
+	        END IF;
+			
+			SET vUsedPost = vidPosts; 
+	    END
+	";
+	
+	//Procedure for publishing posts
+	$sqlProcsCreate['publishPost'] = "
+		CREATE PROCEDURE $procedures[publishPost](IN vidPosts BIGINT) 
+	    BEGIN
+	    	UPDATE $tables[posts] p
+			INNER JOIN $tables[drafts] d
+			ON p.idPosts = d.idPosts
+			SET p.title = d.title, p.post = d.post, p.updated = d.updated, Published = 1
+			WHERE p.idPosts = vidPosts;
+	       
+	        DELETE FROM $tables[drafts] WHERE idPosts = vidPosts;
+	    END
+	";
+	//Procedure for getting posts at pages using the editor
+	$sqlProcsCreate['getPostOrDraft'] = "
+		CREATE PROCEDURE $procedures[getPostOrDraft](IN vIdPosts BIGINT)
+		BEGIN
+		    DECLARE draftNewer BIGINT(40);
+		          
+		    SELECT count(p.idPosts) INTO draftNewer FROM $tables[posts] p
+		    LEFT JOIN $tables[drafts] d ON d.idPosts = p.idPosts
+		    WHERE p.idPosts = vIdPosts AND d.updated > p.updated;
+		    
+		    IF (draftNewer = 0) then
+		        SELECT * FROM $tables[posts] WHERE idPosts = vIdPosts;
+		    ELSE
+		        SELECT * FROM $tables[drafts] WHERE idPosts = vIdPosts;
+		    END IF;
+		END
+	";
+	
+	//FAIL!
+	$sqlProcsCreate['discardPost'] = "
+		CREATE PROCEDURE $procedures[discardPost](IN vIdPosts BIGINT) 
+		BEGIN
+		   	DECLARE vPublish BOOL;
+		   	DECLARE vTopicPosts INT;
+		   	DECLARE vTopicId INT;
+			
+			SELECT 
+		   		Published,
+		   		idTopics
+		   	INTO 
+          		vPublish, 
+		   		vTopicId
+		   	FROM $tables[posts]
+			WHERE idPosts = vIdPosts;
+			
+		   	SELECT 
+		   		COUNT(idPosts) INTO vTopicPosts
+		    FROM forum_posts 
+			WHERE idTopics = vTopicId AND Published = 1;
+		   			   
+		    IF (vPublish = 0) then
+		        DELETE FROM $tables[posts] WHERE idPosts = vIdPosts;
+			ELSE
+				DELETE FROM $tables[drafts] WHERE idPosts = vIdPosts
+		    END IF;
+			
+			IF (vTopicPosts = 0) then
+				DELETE FROM $tables[topics] WHERE idTopics = vTopicId;
+			END IF;
+		END
+	";
+	/*
+	 * call forum_handleDraftPost(0, "testar", "testar en massa", "123123123123123", 1, 1, @outId);
+		call forum_publishPost(@outId, "testar", "testar en massa mer", "123123123123", 1);
+	 * 
+	 * 
+	 */
