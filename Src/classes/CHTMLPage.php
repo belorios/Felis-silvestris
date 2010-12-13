@@ -74,10 +74,14 @@
 			$this->Heading['Header']      = $header;
 			$this->Heading['Description'] = $description;
 			
+			//REDO! Totally crappy solution right now!
 			$menuItems = null;
-			
+			$_SESSION['topPage'] = isset($_SESSION['topPage']) ? $_SESSION['topPage'] : null;
 			foreach ($this->menuArr as $link => $name) {
-				$current = ($link == $page) ? true : false;
+				$_SESSION['topPage'] = ($_SESSION['currentPage'] == $link) ? $_SESSION['currentPage'] : $_SESSION['topPage'];
+			}
+			foreach ($this->menuArr as $link => $name) {
+				$current = ($link == $_SESSION['topPage']) ? true : false;
 				$menuItems .= html_Menu_Items($link, $name, $current);
 			}
 			$this->Menu = html_Menu($menuItems);
@@ -152,7 +156,12 @@
 			$Users = new Users();
 			$menu = array();
 			
-			$menu['createArticle'] = array("url" => "createArticle", "desc" => "Write new article");
+			$userMenu = unserialize(APP_USERMENU);
+			foreach ($userMenu as $key => $item) {
+				if (!array_key_exists($key, $menu)) {
+					$menu[$key] = $item;
+				}	
+			}
 			
 			//Checks if the modulemenu exists and then adds all record that is not doublets 
 			if (defined('MODULE_USERMENU')) {

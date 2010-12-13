@@ -172,7 +172,7 @@
 		    IF (vPublish = 0) then
 		        DELETE FROM $tables[posts] WHERE idPosts = vIdPosts;
 			ELSE
-				DELETE FROM $tables[drafts] WHERE idPosts = vIdPosts
+				DELETE FROM $tables[drafts] WHERE idPosts = vIdPosts;
 		    END IF;
 			
 			IF (vTopicPosts = 0) then

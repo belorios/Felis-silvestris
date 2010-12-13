@@ -52,16 +52,26 @@
 	 */
 	 
 	require_once(PATH_MODULES . "config.php");
-	$classes = array($default_classes_path);
-	$css	 = array();
+	$classes  = array($default_classes_path);
+	$css	  = array();
+	$userMenu = array();
 	foreach ($modules as $module) {
 		$modulepath = PATH_MODULES . $module['folder'];
+		//Adds an entry to the top menu if the module has one defined
 		if ($module['menuEntry'] != null) {
 			$menuArr[$module['folder']] = $module['menuEntry'];
 		}
+		
+		if (isset($module['userMenu'])) {
+			foreach($module['userMenu'] as $key => $item) {
+				$userMenu[$key] = $item;
+			}
+		}
+		
+		//Adds the moudles classes to the path
 		$classes[] .= "$modulepath/classes/";
 		
-		//Gets 
+		//Gets  the layout related to modules
 		if (is_dir("$modulepath/layout/")) {
 			$laydir = opendir("$modulepath/layout/");
 			while (false !== ($file = readdir($laydir))) {
@@ -83,4 +93,5 @@
 	$menuArr["changestyle/purple"] = "Change Stylesheet";
 	//Menu array
 	
-	define("APP_MENU", serialize($menuArr));
+	define("APP_MENU", 	   serialize($menuArr));
+	define("APP_USERMENU", serialize($userMenu));

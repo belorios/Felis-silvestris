@@ -112,6 +112,22 @@
 			
 		}
 		
+		public function checkUserRights($id, $grp=false) {
+			$return = false;	
+			if (isset($_SESSION['userId'])) {
+				if ($_SESSION['userId'] == $id)	{
+					$return = true;
+				}
+				if ($this->ctlGroup($grp) || $this->ctlGroup('adm')) {
+					$return = true;
+				}
+				elseif ($grp == false) {
+					$return = true;
+				}
+			}
+			return $return;
+		}
+		
 		//Kontrollerar ens rättigheter
 		public function stdGroupsCtl($id) {
 			$return = false;

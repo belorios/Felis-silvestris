@@ -18,7 +18,7 @@
 	}
 	
 	/**
-	 * USE ONLY IF THE SERVER DOES SUPPORT MOD_REWRITE
+	 * USE ONLY IF THE SERVER SUPPORT MOD_REWRITE
 	 */	
 	 /*
 	$page   = isset($_GET['p']) ? $_GET['p'] : 'hem';

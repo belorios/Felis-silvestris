@@ -2,6 +2,7 @@
 	
 	$Topics = new Topics();
 	$Posts  = new Posts();
+	$Users  = new Users();
 	
 	try {
 		$getTopic = $Topics->getTopic($id);
@@ -15,7 +16,11 @@
 	require_once(PATH_MODULES . "forum/layout/html_elements.php");
 	$allPosts = null;
 	foreach($getPosts as $posts) {
-		$edit = "<a href='".PATH_SITE."/editPost/id-$posts[id]'>Edit</a>";
+		$edit = null;	
+		
+		if ($Users->checkUserRights($posts['authorId']) == true) {
+			$edit = "<a href='".PATH_SITE."/editPost/id-$posts[id]'>Edit</a>";
+		}
 		$allPosts .= forum_postsLayout($posts['id'], $posts['author'], $posts['title'], $posts['content'], $posts['date'], $posts['time'], $edit);
 	}
 	
