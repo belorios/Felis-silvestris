@@ -38,7 +38,8 @@
 			$this->addJavascriptSrc("std.js");
 			
 			//Sets default edtior
-			$this->setHtmlEditor("markitup");
+			#$this->setHtmlEditor("markitup");
+			$this->setHtmlEditor("tinymce");
 			
 			//Creates the menu
 			$this->menuArr = ($menuArr != false) ? $menuArr : unserialize(APP_MENU);

@@ -180,9 +180,3 @@
 			END IF;
 		END
 	";
-	/*
-	 * call forum_handleDraftPost(0, "testar", "testar en massa", "123123123123123", 1, 1, @outId);
-		call forum_publishPost(@outId, "testar", "testar en massa mer", "123123123123", 1);
-	 * 
-	 * 
-	 */
