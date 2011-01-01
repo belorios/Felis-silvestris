@@ -36,7 +36,31 @@
 		),	
 	 ); 
 	 
+	$modules['blogg'] = array(
+		"menuEntry"  	=> "Blogg",
+	 	"Description"	=> "Basic blogg",
+	 	"folder"    	=> "blogg",
+	 	"userMenu"		=> array(
+	 		"newBlogPost" => 	array(
+				"url"  => "newBlogPost",
+				"desc" => "Create new blogpost",
+			),
+		),	
+	 );
+	/********************
+	* Unactivated modules
+	*/
+	$modules_dead = array();
 	 
-	 
-	 
+	$modules_dead['blogg'] = array(
+		"menuEntry"  	=> "Blogg",
+	 	"Description"	=> "Basic blogg",
+	 	"folder"    	=> "blogg",
+	 	"userMenu"		=> array(
+	 		"newBlogPost" => 	array(
+				"url"  => "newBlogPost",
+				"desc" => "Create new blogpost",
+			),
+		),	
+	 );
 	

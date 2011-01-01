@@ -18,4 +18,11 @@
 			
 		}
 	}
+	//$(document).ready(function() {
+		function hideShowBox(boxId) {
+		
+			$(boxId).slideToggle('400');
+		
+		}
+	//});
 	

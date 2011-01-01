@@ -1,9 +1,9 @@
 <?php
 
 	//Tablenames
-	$tableGroupUsers = DB_PREFIX . "GroupUsers";
 	$tableUsers 	 = DB_PREFIX . "Users";
 	$tableGroups	 = DB_PREFIX . "Groups";
+	$tableGroupUsers = DB_PREFIX . "GroupUsers";
 	$tableArticles   = DB_PREFIX . "Articles"; 
 	$tableStatistics = DB_PREFIX . "Statistics";
 	
@@ -28,11 +28,11 @@
 	);
 	
 	$tables = array(
+		"Groups" 	 => DB_PREFIX . "Groups",
+		"Users" 	 => DB_PREFIX . "Users",
+		"GroupUsers" => DB_PREFIX . "GroupUsers",
 		"Statistics" => DB_PREFIX . "Statistics",
 		"Articles"   => DB_PREFIX . "Articles",
-		"GroupUsers" => DB_PREFIX . "GroupUsers",
-		"Users" 	 => DB_PREFIX . "Users",
-		"Groups" 	 => DB_PREFIX . "Groups",
 	);
 	
 	//Klasser
@@ -40,12 +40,10 @@
 	$dbc   = $pdo->getConnection(false);
 	$Users = new Users();
 	
-	$sqlCreate  = array();
-	
-	
+	$sqlTableCreate  = array();
 	
 	//Creating the usertable
-	$sqlCreate['Users'] = "
+	$sqlTableCreate['Users'] = "
 		CREATE TABLE IF NOT EXISTS $tables[Users] (
 		
 		  -- Primary key(s)
@@ -60,7 +58,7 @@
 	";
 	
 	//Creating the groupstable
-	$sqlCreate['Groups'] = "
+	$sqlTableCreate['Groups'] = "
 		CREATE TABLE IF NOT EXISTS $tables[Groups] (
 		
 		-- Primary key(s)
@@ -73,7 +71,7 @@
 	";
 	
 	//Creating the table that links users to groups
-	$sqlCreate['GroupUsers'] = "
+	$sqlTableCreate['GroupUsers'] = "
 		CREATE TABLE IF NOT EXISTS $tables[GroupUsers] (
 		
 			-- Foreign keys
@@ -92,7 +90,7 @@
 	";
 	
 	//Creates the table holding statistic
-	$sqlCreate['Statistics'] = "
+	$sqlTableCreate['Statistics'] = "
 			CREATE TABLE IF NOT EXISTS $tables[Statistics] (
 		
 			-- Primary key(s)
@@ -109,7 +107,7 @@
 	";
 	
 	//Creates table holding articles
-	$sqlCreate['Articles'] = "
+	$sqlTableCreate['Articles'] = "
 		CREATE TABLE IF NOT EXISTS $tables[Articles] (
 		
 		  -- Primary key(s)
@@ -136,7 +134,7 @@
 	
 	//UDF than controls userrights related to an article
 	$sqlUdfsCreate['ArticleRights'] = "
-		CREATE FUNCTION $udfs[ArticleRights](vArticleId INT, vUserId INT)
+		CREATE FUNCTION $udfs[ArticleRights](IN vArticleId INT, IN vUserId INT)
 			RETURNS BOOL
 			BEGIN
 				DECLARE articleUserID INT;

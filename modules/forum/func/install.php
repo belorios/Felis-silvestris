@@ -7,9 +7,9 @@
 
 	//Tablenames
 	$tables = array(
-		"drafts" => DB_PREFIX . "PostsDraft",
-		"posts"  => DB_PREFIX . "Posts",
 		"topics" => DB_PREFIX . "Topics",
+		"posts"  => DB_PREFIX . "Posts",
+		"drafts" => DB_PREFIX . "PostsDraft",
 	);
 	
 	$procedures = array(
