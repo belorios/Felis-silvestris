@@ -1,4 +1,6 @@
 <?php
+	
+	ini_set('display_errors', '1');
 
 	function ctlPrint($table, $type, $type2='table') {
 		$GLOBALS['fail'][$table] = $GLOBALS['pdo']->getFault($GLOBALS['dbc']);
@@ -32,6 +34,9 @@
 		";
 	}
 	
+	$pdo   = new pdoConnection();
+	$dbc   = $pdo->getConnection(false);
+	
 	$body   = null;
 	$fail  = array();
 	$fault = false;	
@@ -49,19 +54,30 @@
 	$moduleArray = array();
 	
 	foreach ($modules as  $key => $module) {
+		$sqlUdfsCreate 		= array();
+		$sqlTableCreate 	= array();
+		$sqlTriggerCreate 	= array();
+		$sqlCreateData 		= array();
+		$sqlProcsCreate 	= array();
+		
+		$udfs 		= array();
+		$triggers 	= array();
+		$procedures = array();
+		$tables 	= array();
+		
 		require_once(PATH_MODULES . $module['folder'] . "/func/install.php");
-	
-		$moduleArray[$module['folder']] = array(
-			"tables" 	 => (isset($tables)) 	 ? $tables 		: array(),
-			"triggers" 	 => (isset($triggers)) 	 ? $triggers 	: array(),
-			"procedures" => (isset($procedures)) ? $procedures 	: array(),
-			"udfs" 	 	 => (isset($udfs)) 		 ? $udfs 		: array(),
 			
-			"createTable" => (isset($sqlTableCreate)) 	? $sqlTableCreate 	: array(),
-			"createTrigg" => (isset($sqlTriggerCreate)) ? $sqlTriggerCreate : array(),
-			"createProcs" => (isset($sqlProcsCreate)) 	? $sqlProcsCreate 	: array(),
-			"createUdfs"  => (isset($sqlUdfsCreate)) 	? $sqlUdfsCreate 	: array(),
-			"createData"  => (isset($sqlCreateData)) 	? $sqlCreateData 	: array(),
+		$moduleArray[$module['folder']] = array(
+			"tables" 	 => $tables,
+			"triggers" 	 => $triggers,
+			"procedures" => $procedures,
+			"udfs" 	 	 => $udfs,
+			
+			"createTable" => $sqlTableCreate,
+			"createTrigg" => $sqlTriggerCreate,
+			"createProcs" => $sqlProcsCreate,
+			"createUdfs"  => $sqlUdfsCreate,
+			"createData"  => $sqlCreateData,
 			
 		);
 			
@@ -81,33 +97,45 @@
 			$Alltriggers  	= $module['triggers'];
 			$Allprocs	  	= $module['procedures'];
 			$Alludfs 	  	= $module['udfs'];
+			
+			
 		
 			$RMTables = array_reverse($Alltables);
+			
 			//Removes old udfs if they exists
-			foreach ($Alludfs as $udf) {
-				$stmt = $dbc->query("DROP FUNCTION IF EXISTS $udf;");	
-				$moduleBody .= ctlPrint($udf, "Removing the", "udf");
+			if (count($Alludfs) > 0) {
+				foreach ($Alludfs as $udf) {
+					$stmt = $dbc->query("DROP FUNCTION IF EXISTS $udf;");	
+					$moduleBody .= ctlPrint($udf, "Removing the", "udf");
+				}
+				$moduleBody .= "<tr><td>&nbsp;</td></tr>";	
 			}
-			$moduleBody .= "<tr><td>&nbsp;</td></tr>";	
+			
 			
 			//Removes old triggers if they exists in db
-			foreach ($Alltriggers as $trigger) {
-				$stmt = $dbc->query("DROP TRIGGER IF EXISTS $trigger;");	
-				$moduleBody .= ctlPrint($trigger, "Removing the", "trigger");
+			if (count($Alltriggers) > 0) {
+				foreach ($Alltriggers as $trigger) {
+					$stmt = $dbc->query("DROP TRIGGER IF EXISTS $trigger;");	
+					$moduleBody .= ctlPrint($trigger, "Removing the", "trigger");
+				}
+				$moduleBody .= "<tr><td>&nbsp;</td></tr>";	
 			}
-			$moduleBody .= "<tr><td>&nbsp;</td></tr>";	
 			
 			//Removes old proceduers if they exists
-			foreach ($Allprocs as $procedure) {
-				$stmt = $dbc->query("DROP PROCEDURE IF EXISTS $procedure;");	
-				$moduleBody .= ctlPrint($procedure, "Removing the", "procedure");
+			if (count($Allprocs) > 0) {
+				foreach ($Allprocs as $procedure) {
+					$stmt = $dbc->query("DROP PROCEDURE IF EXISTS $procedure;");	
+					$moduleBody .= ctlPrint($procedure, "Removing the", "procedure");
+				}
+				$moduleBody .= "<tr><td>&nbsp;</td></tr>";	
 			}
-			$moduleBody .= "<tr><td>&nbsp;</td></tr>";	
-				
-				
-			foreach ($RMTables as $key => $table) {
-				$stmt = $dbc->query("DROP TABLE IF EXISTS $table");		
-				$moduleBody .= ctlPrint($table,  "Removing the");
+			
+			//Removes old tables if they exists	
+			if (count($RMTables) > 0) {	
+				foreach ($RMTables as $key => $table) {
+					$stmt = $dbc->query("DROP TABLE IF EXISTS $table");		
+					$moduleBody .= ctlPrint($table,  "Removing the");
+				}
 			}
 			
 			foreach($fail as $fel) {
@@ -124,6 +152,8 @@
 	}
 	
 	if ($fault == false) {
+		
+		$body .= "<tr><td><b>Installing modules</b></td></tr>";
 		
 		foreach ($moduleArray as  $name => $module) {
 			
@@ -156,11 +186,12 @@
 			
 			if ($fault == false) {
 				
-				foreach ($Alludfs as $key => $udf) {
+				$dbc->setAttribute( PDO::ATTR_ERRMODE, PDO::ERRMODE_SILENT );
+				
+				foreach ($UdfsCreate as $key => $udf) {
 					$stmt = $dbc->query($udf);
 					$moduleBody .= ctlPrint($Alludfs[$key], "Creating the", "udf");
 				}
-					
 				foreach ($TriggerCreate as $key => $trigger) {
 					$stmt = $dbc->query($trigger);
 					$moduleBody .= ctlPrint($Alltriggers[$key], "Creating the", "trigger");
@@ -172,46 +203,48 @@
 				}	
 				
 				
+				if ($_POST['dummyData'] == 1) {
 				
-				foreach ($CreateData as $key => $table) {
-					
-					if (is_array($table)) {
+					foreach ($CreateData as $key => $table) {
 						
-						$success = null;
-						$dbc->setAttribute( PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION );
-						
-						try {
-							foreach ($table as $shunk) {
-								if (!is_array($shunk)) {
-									$stmt = $dbc->prepare($shunk);
+						if (is_array($table)) {
+							
+							$success = null;
+							$dbc->setAttribute( PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION );
+							
+							try {
+								foreach ($table as $shunk) {
+									if (!is_array($shunk)) {
+										$stmt = $dbc->prepare($shunk);
+									}
+									else {
+										$stmt->execute($shunk);
+										
+									}
 								}
-								else {
-									$stmt->execute($shunk);
-									
-								}
+								$success .= "<td style='color: #469E34;'>Succeded</td>";
 							}
-							$success .= "<td style='color: #469E34;'>Succeded</td>";
-						}
-						catch ( exception $e )
-						{
-							$fail[] = $e->getMessage();
-							$success .= "<td style='color: #CC0000;'>Failed</td>"; 
-						}
-						$moduleBody .= "
-							<tr>
-								<td>Creating data in the table {$Alltables[$key]}... &nbsp; &nbsp; &nbsp; </td>
-								$success
-							</tr>
-						";
-				
-					}
-					else {
-						$stmt = $dbc->query($table);
-						$moduleBody .= ctlPrint($Alltables[$key], "Creating ", "data in the table");
-					} 
+							catch ( exception $e )
+							{
+								$fail[] = $e->getMessage();
+								$success .= "<td style='color: #CC0000;'>Failed</td>"; 
+							}
+							$moduleBody .= "
+								<tr>
+									<td>Creating data in the table {$Alltables[$key]}... &nbsp; &nbsp; &nbsp; </td>
+									$success
+								</tr>
+							";
 					
+						}
+						else {
+							$stmt = $dbc->query($table);
+							$moduleBody .= ctlPrint($Alltables[$key], "Creating ", "data in the table");
+						} 
+					
+					}
 				}
-				
+
 				foreach($fail as $fel) {
 					if ($fel != "0") {
 						$_SESSION['errorMessage'][] = $fel;
@@ -220,15 +253,13 @@
 					}
 				}
 				
-				$body .= "<tr><td><b>Installing modules</b></td></tr>";
+				
 				$body .= showBox("create{$name}", $moduleBody, $fault, "Installing the module $name");
 			
 				
 				
 				
 			}
-			
-			
 			
 		}
 	}

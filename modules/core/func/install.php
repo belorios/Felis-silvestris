@@ -36,8 +36,6 @@
 	);
 	
 	//Klasser
-	$pdo   = new pdoConnection();
-	$dbc   = $pdo->getConnection(false);
 	$Users = new Users();
 	
 	$sqlTableCreate  = array();
@@ -134,15 +132,15 @@
 	
 	//UDF than controls userrights related to an article
 	$sqlUdfsCreate['ArticleRights'] = "
-		CREATE FUNCTION $udfs[ArticleRights](IN vArticleId INT, IN vUserId INT)
+		CREATE FUNCTION $udfs[ArticleRights] (vArticleId INT, vUserId INT)
 			RETURNS BOOL
 			BEGIN
 				DECLARE articleUserID INT;
 			  	DECLARE UserGroupID CHAR(3);
 			  
 			  	SELECT userId, idGroups INTO articleUserID, UserGroupID 
-				FROM $tableArticles 
-				LEFT JOIN $tableGroupUsers ON idUsers = vUserId
+				FROM $tables[Articles]
+				LEFT JOIN $tables[GroupUsers] ON idUsers = vUserId
 				WHERE idArticles = vArticleId;
 			
 			 	IF (vUserId = articleUserID OR UserGroupID = 'adm') then
@@ -152,6 +150,8 @@
 				END IF;
 			END
 	"; 
+	
+	
 	
 	//Creates the proceduers used by this application
 	$sqlProcsCreate = array();

@@ -1,0 +1,136 @@
+
+
+
+.mark {
+	color: #2E5480;
+	font-size: 14pt;
+}
+
+.name_color {
+	color: #2E5480;
+}
+
+.Post {
+	margin: -12px 10px 10px 10px;
+	background: #ececec;
+	-moz-border-radius: 10px 10px;
+	border-radius: 10px 10px;
+}
+
+	.Post_header {
+		padding: 18px 0px 0px 28px;
+		margin: 0px 0px 0px 9px;
+		font-weight: normal;
+		font-size: 18pt;
+		float: left;
+		background: url('images/appostrof_small.png') no-repeat left;
+	}
+	
+	.Post_comments {
+		margin: 23px 15px 0px 0px;
+		font-weight: normal;
+		font-size: 13pt;
+		float: right;
+	}
+	
+	.Post_comments .mark {
+		font-size: 13pt;
+	}
+	
+	#pageBody_Content .nuller {
+		margin:  0;
+		padding: 0;
+	}
+	
+	.Post div.date {
+		color: #7a7a7a;
+		margin: -5px 0px 0px 38px;
+	}
+	
+	.Post div.content {
+		margin: 13px 8px 15px 8px;
+		
+	}
+	
+	.Post div.content h1 {
+		font-size: 16pt;
+		padding: 5px 0px 5px 0px;
+		background: none;
+	}
+	
+	.Post div.content h2 {
+		font-size: 14pt;
+		padding: 5px 0px 5px 0px;
+		background: none;
+	}
+	
+	.Post_Footer {
+		font-style: italic;
+		padding: 0px 12px;
+		color: #7a7a7a;
+		background: #dae3ed;
+		border-top: 1px solid #d4d4d4; 
+		-moz-border-radius-bottomleft: 10px 10px;
+		-moz-border-radius-bottomright: 10px 10px;
+		border-bottom-left-radius: 10px 10px;
+		border-bottom-right-radius: 10px 10px;
+	}
+	
+	.Post_Footer a{
+		color: #2E5480;
+	}
+
+#postComments h3{
+	padding: 14px 0px 0px 28px;
+	margin: 0px 0px 0px 9px;
+	font-weight: normal;
+	font-size: 18pt;
+	background: url('../images/appostrof_small.png') no-repeat left;
+}
+	
+.comments {
+	margin: -10px 170px 25px 0px; 
+	font-size: 11pt; 	
+	background: #ececec;
+	-moz-border-radius: 10px 10px;
+	border-radius: 10px 10px;
+}
+
+.comments_header {
+	font-size: 14pt;
+	margin: 0px 0px 0px 15px;
+	float: left;
+}
+
+.comments_date {
+	color: #7a7a7a;
+	margin: 2px 185px 0px 0px;
+	float: right;
+}
+
+.comments_content {
+	padding: 16px 8px 10px 8px;
+}
+
+.comments_footer {
+	color: #6b6b6b;
+	
+	font-style: italic; 
+	padding: 0px 10px;
+	background: #dae3ed;
+	border-top: 1px solid #d4d4d4; 
+	-moz-border-radius-bottomleft: 10px 10px;
+	-moz-border-radius-bottomright: 10px 10px;
+	border-bottom-left-radius: 10px 10px;
+	border-bottom-right-radius: 10px 10px;
+}
+
+.comments_footer a{
+	color: #2E5480;
+}
+
+.code {
+	background: #d6d6d6;
+	width: 700px;
+	overflow: auto;
+}

@@ -5,7 +5,7 @@
 	$sideboxPosts = null;
 	$sideboxUsers = null;
 	
-	$Posts = new Posts();
+	$Posts = new Blog_Posts();
 	$Users = new Users();
 	
 	try {
@@ -29,6 +29,7 @@
 		
 		$i++;	
 	}
+	
 	
 	//Hämtar ut alla författare
 	foreach ($AllUsers as $user) {

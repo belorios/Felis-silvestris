@@ -1,6 +1,6 @@
 <?php
 
-	class Posts {
+	class Blog_Posts {
 		
 		private $db, $prefix, $dateformat;
 		
@@ -60,9 +60,9 @@
 		
 			$get = $this->db->prepare("
 				SELECT P.*, U.realname, COUNT(C.idComments) as Comments 
-				FROM {$this->prefix}Posts P 
+				FROM {$this->prefix}blogPosts P 
 				JOIN {$this->prefix}Users U on idUsers = P.author 
-				LEFT JOIN {$this->prefix}Comments C on P.idPosts = C.idPosts 
+				LEFT JOIN {$this->prefix}blogComments C on P.idPosts = C.idPosts 
 				WHERE P.author = :id 
 				GROUP BY P.idPosts 
 				ORDER BY creationDate DESC
@@ -91,7 +91,7 @@
 		public function getPost($id, $dateformat=false) {
 			$get = $this->db->prepare("
 				SELECT P.*, U.realname 
-				FROM {$this->prefix}Posts P 
+				FROM {$this->prefix}blogPosts P 
 				LEFT JOIN {$this->prefix}Users U on idUsers = author 
 				WHERE idPosts = ?
 			");
@@ -111,8 +111,8 @@
 			
 			$query = "
 				SELECT P.*, U.realname, COUNT(C.idComments) as Comments
-				FROM {$this->prefix}Posts P
-				LEFT JOIN {$this->prefix}Comments C on P.idPosts = C.idPosts 
+				FROM {$this->prefix}blogPosts P
+				LEFT JOIN {$this->prefix}blogComments C on P.idPosts = C.idPosts 
 				LEFT JOIN {$this->prefix}Users U on idUsers = P.author 
 				GROUP BY P.idPosts 
 				ORDER BY creationDate DESC
@@ -133,7 +133,7 @@
 		//Tar bort en post
 		public function delPost($id) {
 			$query = "
-				DELETE FROM {$this->prefix}Posts WHERE idPosts = :id
+				DELETE FROM {$this->prefix}blogPosts WHERE idPosts = :id
 			";
 			
 			$get = $this->db->prepare($query);
@@ -158,7 +158,7 @@
 		public function editPost($id, $header, $content) {
 			
 			$query = "
-				UPDATE {$this->prefix}Posts SET
+				UPDATE {$this->prefix}blogPosts SET
 					header  = :header,
 					content = :content 
 				WHERE idPosts = :id
@@ -191,7 +191,7 @@
 			$date   = time();
 			
 			$query = "
-				INSERT INTO {$this->prefix}Posts (header, content, creationDate, author)
+				INSERT INTO {$this->prefix}blogPosts (header, content, creationDate, author)
 				VALUES (:header,:content,:date,:author)
 			";
 			
@@ -257,7 +257,7 @@
 		public function createRssFeed() {
 			
 			$defaults  = new defaults();
-			$query = "SELECT * FROM {$this->prefix}Posts ORDER BY creationDate DESC";
+			$query = "SELECT * FROM {$this->prefix}blogPosts ORDER BY creationDate DESC";
 			
       //Plockar ut alla rader och börjar skriva in i filen
 			if ($get = $this->db->query($query)) {

@@ -1,6 +1,6 @@
 <?php
 
-	class Comments {
+	class Blog_Comments {
 		
 		private $db, $prefix, $dateformat;
 		

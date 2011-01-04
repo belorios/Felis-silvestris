@@ -42,6 +42,7 @@
 		$module_path =  PATH_MODULES . $module['folder'];
 		if (file_exists("$module_path/func/loadPages.php")) {
 			require_once("$module_path/func/loadPages.php");
+
 			if (array_key_exists($page, $modulePages)) {
 				$selectedPage = "$module_path/pages/" . $modulePages[$page];
 				
@@ -53,6 +54,9 @@
 				
 				//Load forms
 				require_file("$module_path/layout/forms.php");
+				
+				//Load design elements related to the module
+				require_file("$module_path/layout/html_elements.php");
 				
 				if (isset($activated_Sideboxes)) {
 					$sideBox = null;

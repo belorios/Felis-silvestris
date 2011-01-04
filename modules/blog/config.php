@@ -9,4 +9,4 @@
 	 
 	 define('MODULE_USERMENU', serialize($userMenu));
 	 
-	 define('THIS_PATH', PATH_MODULES . "forum/");
+	 define('THIS_PATH', PATH_MODULES . "blogg/");

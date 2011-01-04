@@ -1,5 +1,7 @@
 <?php
 	
+	ini_set('display_errors', '1');
+	
 	//Script webpath
 	$webPath = $_SERVER['SERVER_NAME'] . str_ireplace("/index.php", "", $_SERVER['SCRIPT_NAME']);
 	

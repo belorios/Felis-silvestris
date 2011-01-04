@@ -65,9 +65,9 @@
 			ENGINE=InnoDB CHARSET=utf8 COLLATE utf8_swedish_ci
 		";
 		
-		$createData = array();
+		$sqlCreateData = array();
 		
-		$createData['ZPosts'] = "
+		$sqlCreateData['Posts'] = "
 			INSERT INTO $tables[Posts] (header, content, creationDate, author) VALUES 
 				('Lorem ipsum dolor sit amet', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum volutpat felis non dolor tincidunt gravida. Sed feugiat eleifend nibh eu porta. Donec vitae est a ligula consectetur pellentesque. Curabitur rhoncus lobortis quam, in cursus ipsum volutpat condimentum. In eu erat ac leo tristique volutpat at in sapien. Curabitur in est nisl, ut blandit nisi. Proin bibendum, magna et fringilla suscipit, libero tellus pulvinar sem, vitae rutrum urna mauris eget lorem. Proin convallis, justo vehicula porttitor elementum, arcu est adipiscing sapien, a congue nulla arcu at lorem. Aliquam sem elit, laoreet in laoreet sed, malesuada eu dui. Aenean ut mi dui, sed viverra dui.', ".time().", 1), 
 				('Duis feugiat semper justo', 'Duis feugiat semper justo, at viverra libero porttitor at. Praesent at ligula nisl. Nullam dignissim, arcu ut ultricies aliquet, odio arcu condimentum odio, aliquet ultricies lacus mi eget ante. Morbi elit elit, egestas at iaculis a, tempor ut lorem. Suspendisse mattis turpis non orci bibendum molestie. Morbi rhoncus libero vitae velit mollis non vehicula elit faucibus. Nulla sit amet leo ut ipsum venenatis dignissim. Cras in diam nisi, id viverra quam. Ut tempor imperdiet vehicula. Aliquam suscipit varius laoreet. Vivamus sodales consectetur felis sit amet accumsan. Ut ante risus, laoreet vel imperdiet ac, tempor nec neque. Vivamus nibh turpis, rutrum non dignissim ut, posuere eget elit. Nullam mauris risus, fringilla id luctus ac, malesuada nec massa. Vivamus nunc augue, vestibulum ac viverra a, venenatis sed tellus. Vivamus gravida bibendum consequat. ', ".time().", 1),
@@ -82,7 +82,7 @@
 					
 		";
 		
-		$createData['ZComments'] = "
+		$sqlCreateData['Comments'] = "
 			INSERT INTO $tables[Comments] (idPosts, header, content, creationDate, author, authorEmail, authorSite) VALUES 
 				(5, 'Testkommentar', 'Lite test innehåll', ".time().", 'Testarn', 'test@example.com', 'www.example.com'), 
 				(2, 'Testkommentar och sånt', 'Lite mer testande av kommentarerna', ".time().", 'Testarn', 'test@example.com', 'www.example.com'),

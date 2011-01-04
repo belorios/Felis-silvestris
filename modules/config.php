@@ -37,9 +37,9 @@
 	 ); 
 	 
 	$modules['blogg'] = array(
-		"menuEntry"  	=> "Blogg",
-	 	"Description"	=> "Basic blogg",
-	 	"folder"    	=> "blogg",
+		"menuEntry"  	=> "Blog",
+	 	"Description"	=> "Basic blog",
+	 	"folder"    	=> "blog",
 	 	"userMenu"		=> array(
 	 		"newBlogPost" => 	array(
 				"url"  => "newBlogPost",
