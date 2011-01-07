@@ -55,6 +55,54 @@ h1 {
 	float: right; 
 }
 
+.clear_button { /* generic container (i.e. div) for floating buttons */
+    overflow: hidden;
+    width: 100%;
+}
+
+a.button {
+    background: transparent url('../images/buttons/bg_button_a.png') no-repeat scroll top right;
+    color: #444;
+    display: block;
+    float: left;
+    font: normal 12px arial, sans-serif;
+    height: 24px;
+    margin-right: 6px;
+    padding-right: 18px; /* sliding doors padding */
+    text-decoration: none;
+}
+
+a.button span {
+    background: transparent url('../images/buttons/bg_button_span.png') no-repeat;
+    display: block;
+    line-height: 14px;
+    padding: 5px 0 5px 18px;
+    
+}
+
+	a.button:active {
+	    background-position: bottom right;
+	    color: #000;
+	    outline: none; /* hide dotted outline in Firefox */
+	}
+
+	a.button:active span {
+	    background-position: bottom left;
+	    padding: 6px 0 4px 18px; /* push text down 1px */
+	}  
+	
+.cssTextbox {
+	border: 1px solid #9a9a9a;
+	color: #333333;
+	-moz-border-radius:  7px;
+	-webkit-border-radius: 7px;
+	border-radius:  7px;
+	padding: 3px;
+	-moz-box-shadow: 0 0 1px 1px #d2d2d2;
+	-webkit-box-shadow: 0 0 1px 1px #d2d2d2;
+	box-shadow: 0 0 1px 1px #d2d2d2;
+}
+
 #Container {
 	width: auto;
 	height: auto;
@@ -178,20 +226,3 @@ h1 {
 		float: right;
 	}
 	
-#loginBox {
-	color: #e1e7ef;
-	float:right; 
-	margin: 0px 10px 0px 0px; 
-}
-	#loginBox a{
-		color: #e1e7ef;
-	}	
-
-.login {
-	padding: 0;
-	margin: -2px 0px -2px 0px;
-}
-	
-	.login a {
-		font-size: 10pt;
-	}

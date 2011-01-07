@@ -19,6 +19,7 @@
 	//Startar klasser
 	$defaults  = new defaults();
 	$PageClass = new CHTMLPage();
+	$LangClass = new Language("en");
 	
 	//Startar kontrollv�rde s� att man kan anv�nda pagecontrollers
 	$indexIsVisited  = true;

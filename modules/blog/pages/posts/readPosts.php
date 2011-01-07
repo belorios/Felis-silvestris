@@ -3,10 +3,11 @@
 	require_once(PATH_FUNC . "forms.php");
 	
 	//Hämtar in klasser
-	$Posts 	  = new Posts();
+	
 	$Users 	  = new Users();
-	$Comments = new Comments();
-	$defaults = new defaults();
+	#$defaults = new defaults();
+	$Posts 	  = new Blog_Posts();
+	$Comments = new Blog_Comments();	
 	
 	//Default variabler
 	$comments   = null;
@@ -17,6 +18,7 @@
 	try {
 		$getPost = $Posts->getPost($id);
 		$getComm = $Comments->getComments($id);
+		$getTags = $Posts->getTagsByPosts($id, false);
 	}
 	catch ( Exception $e) {
 		$body = "
@@ -45,6 +47,16 @@
 		;
 	}
 	
+	//Hämtar ut alla taggar
+	if (count($getTags) > 0) {
+		$tags = null;
+		foreach ($getTags as $tag) {
+			$tags .= tagLayout($tag['id'], $tag['tagname'], $tag['antal'], "<br />");
+		}
+		
+		$sideBox .= sideboxLayout("Tagged with", "$tags"); 
+	}
+	
 	
 	//Skriver ut kommentarerna om det finns några
 	$comAmount = count($getComm);
@@ -55,7 +67,7 @@
 			$name = ($comment['email'] != "") ? "<a href='mailto:$comment[email]'>$comment[name]</a>" : "<span class='name_color'>{$comment['name']}</a>";
 			$site = ($comment['site'] != "") ? " @ " . $defaults->correctUrl($comment['site']) : null;
 			
-			$removeButton = ($Users->stdGroupsCtl($getPost['authorId'])) ? "<div style='float: right;'><a href='".PATH_SITE."/hanteraInlagg/raderaKommentar/id-$comment[id]'>Ta bort</a></div>" : null;
+			$removeButton = ($Users->stdGroupsCtl($getPost['authorId'])) ? "<div style='float: right;'><a href='".PATH_SITE."/handleBlogPosts/deleteComment/id-$comment[id]'>$lang[DEL]</a></div>" : null;
 			
 			//Skriver ut själva kommentaren
 			$comments .= "
@@ -81,7 +93,7 @@
 	
 	$comHeader  = isset($_SESSION['comment']['header'])  ? $_SESSION['comment']['header']  : null;
 	$comContent = isset($_SESSION['comment']['content']) ? $_SESSION['comment']['content'] : null;
-	$comName		= isset($_SESSION['comment']['name'])    ? $_SESSION['comment']['name']    : null;
+	$comName	= isset($_SESSION['comment']['name'])? $_SESSION['comment']['name']    : null;
 	$comEmail	= isset($_SESSION['comment']['email'])   ? $_SESSION['comment']['email']   : null;
 	$comSite    = isset($_SESSION['comment']['site'])    ? $_SESSION['comment']['site']    : null;
 	
@@ -94,12 +106,16 @@
 	";
 	
 	$comments .= commentsForm($id, $comHeader, $comContent, $comName, $comEmail, $comSite) . "<p></p>"; 
-	$body 	   = post_Layout($id, $getPost['header'], $getPost['content'], $getPost['date'], $getPost['author'], $getPost['authorId'], $comAmount, $comments);
+	$body 	   = "
+		<div style='float:left'> 
+			" . post_Layout($id, $getPost['header'], $getPost['content'], $getPost['date'], $getPost['author'], $getPost['authorId'], $comAmount, $comments) . "
+		</div>
+	";
 	
 	//Visar en ruta för inloggad anvädare för att hantera egna inlägg (alla för admins)
 	if ($Users->stdGroupsCtl($getPost['authorId'])) {
 		$sideBox = sideboxLayout("Hantera inlägg", "
-			<a href='".PATH_SITE."/redigeraInlagg/id-$id'>Redigera</a>  <br />
-			<a href='".PATH_SITE."/raderaInlagg/id-$id'>Ta bort</a>
+			<a href='".PATH_SITE."/editBlogPost/id-$id'>$lang[EDIT]</a>  <br />
+			<a href='".PATH_SITE."/delBlogPost/id-$id'>$lang[DEL]</a>
 		" ) . $sideBox;
 	}

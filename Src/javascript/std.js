@@ -18,11 +18,24 @@
 			
 		}
 	}
-	//$(document).ready(function() {
-		function hideShowBox(boxId) {
-		
-			$(boxId).slideToggle('400');
-		
-		}
-	//});
 	
+	function hideShowBox(boxId) {
+		$(boxId).slideToggle('400');
+	}
+	
+	
+	
+$(document).ready(function() {
+		$(":submit").each(function(){
+        	$(this).replaceWith("<a class='button submitbutton' href='' ><span>" + $(this).val() + "</span></a>");
+        });
+        $(":reset").each(function(){
+        	$(this).replaceWith("<a class='button submitbutton' href='' ><span>" + $(this).val() + "</span></a>");
+        });
+
+		$(".submitbutton").click(function (event) {
+	    	event.preventDefault();
+	    	$("form").submit();
+	    });
+		
+	});

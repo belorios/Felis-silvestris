@@ -4,42 +4,31 @@
 	 * Class som hanterar allt kring användare
 	 */
 	
-	class Users {
+	class Users extends Database {
 		
-		private $db, $pdo, $prefix;
+		private $prefix;
 		
 		public function __construct($db = false) {
-			$this->db     = ($db != false) ? $db : null; 
-			$this->prefix = DB_PREFIX;
-		}
-		
-		public function destruct() {
+			parent::__construct($db);
 			
 		}
 		
-		//Ansluter till databasen om db inte är ett objekt
-		public function dbConnect() {
-			
-			if (!is_object($this->db)) {
-				$this->pdo = new pdoConnection();
-				$this->db = $this->pdo->getConnection();
-			}
-			
+		public function __destruct() {
+			;	
 		}
 		
 		//Utför inloggning
 		public function processLogin($user, $pass) {
 			
 			$this->processLogout();
-			$this->dbConnect();
 			
 			//Hashar lösenordet 
 			$password = $this->passwdHash($pass);
 			
 			$query = "
 				SELECT username, realname, U.idUsers, idGroups
-				FROM {$this->prefix}Users U 
-				LEFT JOIN {$this->prefix}GroupUsers GU ON GU.idUsers = U.idUsers
+				FROM {$this->tableUsers} U 
+				LEFT JOIN {$this->tableGroupUsers} GU ON GU.idUsers = U.idUsers
 				WHERE
 				    username = ? AND passwd = ?
 				;
@@ -154,17 +143,15 @@
 		//Hämtar ut all info om en användare och retunerar resultatet
 		public function getUserData($id) {
 			
-			$this->dbConnect();
-			
 			if (!is_numeric($id) && $id != null) {
 				$_SESSION['errorMessage'] = "Kan inte läsa användaren";
 				return;
 			}
 			
 			$query = "
-				SELECT U.*, G.* FROM {$this->prefix}Users U
-				JOIN {$this->prefix}GroupUsers GU ON GU.idUsers = U.idUsers
-				JOIN {$this->prefix}Groups G ON G.idGroups = GU.idGroups
+				SELECT U.*, G.* FROM {$this->tableUsers} U
+				JOIN {$this->tableGroupUsers} GU ON GU.idUsers = U.idUsers
+				JOIN {$this->tableGroups} G ON G.idGroups = GU.idGroups
 				WHERE U.idUsers = :id
 			";
 			$get = $this->db->prepare($query);
@@ -185,12 +172,10 @@
 		//Hämtar ut alla användare och retunerar resultatet
 		public function getAllUsers() {
 			
-			$this->dbConnect();
-			
 			$query = "
-				SELECT U.*, G.* FROM {$this->prefix}Users U
-				JOIN {$this->prefix}GroupUsers GU ON GU.idUsers = U.idUsers
-				JOIN {$this->prefix}Groups G ON G.idGroups = GU.idGroups
+				SELECT U.*, G.* FROM {$this->tableUsers} U
+				JOIN {$this->tableGroupUsers} GU ON GU.idUsers = U.idUsers
+				JOIN {$this->tableGroups} G ON G.idGroups = GU.idGroups
 				ORDER BY U.idUsers
 			";
 			

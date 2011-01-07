@@ -30,7 +30,8 @@
 	$_SESSION['currentPage'] = $page;
 	$currentPage = "?p=$page";
 	
-	$selectedPage = null;
+	$selectedPage   = null;
+	$moduleLangPath = false;
 	
 	function require_file($path) {
 		if (file_exists($path)) {
@@ -58,6 +59,9 @@
 				//Load design elements related to the module
 				require_file("$module_path/layout/html_elements.php");
 				
+				//Gets the language file for the module 
+				$moduleLangPath = "$module_path/lang/";
+				
 				if (isset($activated_Sideboxes)) {
 					$sideBox = null;
 					foreach($activated_Sideboxes as $box) {
@@ -82,4 +86,8 @@
 		$selectedPage = PATH_MODULES . $modules['core']['folder'] . "/pages/nofind.php";
 	}
 	
+	//Gets language
+	$LangClass->getLangFiles($moduleLangPath);
+	
+	//Gets the loaded page
 	require_once($selectedPage);

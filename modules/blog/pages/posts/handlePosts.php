@@ -4,92 +4,81 @@
 	
 	$body = null;
 	
-	//Lägger till en post
-	if ($action == "skapa") {
-		
+	if ($action == "Create" || $action == "Edit" ) {
 		$Users = new Users();
 		$Users->checkPrivilegies();
-		$Posts = new Posts();
-		
+		$Posts = new Blog_Posts();
+	
 		$header   = $_POST['heading'];
 		$content  = $_POST['content'];
+		$tags     = $_POST['tags'];
 		
-		//Validerar inmatade värden
-		if ($Posts->validatePost($header, $content)) {
-			
-			//Skapar posten
-			try {
-				$Posts->addPost($header, $content);
-				$body .= $defaults->redirect(PATH_SITE . "/hem", "2", "Inlägget har nu blivit sparat");
-			}
-			catch ( exception $e ) {
-				$_SESSION['errorMessage'][] = $e->getMessage();
-				header("Location: " . PATH_SITE . "/skapaInlagg");
-				exit;
-			}
-		}
-		else {
-			header("Location: " . PATH_SITE . "/skapaInlagg");
+		$ErrUrl  = PATH_SITE;
+		$ErrUrl .= ($action == "Edit") ?  "/editBlogPost/id-$id" : "/newBlogPost";
+		
+		if (!$Posts->validatePost($header, $content, $tags)) {
+			header("Location: $ErrUrl");
 			exit;
 		}
 		
 		
+	}
+	
+	//Lägger till en post
+	if ($action == "Create") {
+		
+		//Skapar posten
+		try {
+			$Posts->addPost($header, $content, $tags);
+			$id = $Posts->getLastId();
+			$body .= $defaults->redirect(PATH_SITE . "/readBlogPost/id-$id", "2", "Inlägget har nu blivit sparat");
+		}
+		catch ( exception $e ) {
+			$_SESSION['errorMessage'][] = $e->getMessage();
+			header("Location: $ErrUrl");
+			exit;
+		}
 		
 	}
 	
 	//Redigerar en tidigare post
-	if ($action == "redigera") {
+	if ($action == "Edit") {
 		
-		$Users = new Users();
-		$Users->checkPrivilegies();
-		$Posts = new Posts();
-		
-		$header  = $_POST['heading'];
-		$content = $_POST['content'];
-		
-		//Validerar inmatad data
-		if ($Posts->validatePost($header, $content)) {
-			
-			//Matar in datan i db
-			try {
-				$Posts->editPost($id, $header, $content);
-				$body .= $defaults->redirect(PATH_SITE . "/lasInlagg/id-$id", "3", "Inlägget har nu blivit sparat");
-			}
-			catch ( exception $e ) {
-				$_SESSION['errorMessage'][] = $e->getMessage();
-				header("Location: " . PATH_SITE . "/redigeraInlagg/id-$id");
-				exit;
-			}
+		//Matar in datan i db
+		try {
+			$Posts->editPost($id, $header, $content, $tags);
+			$body .= $defaults->redirect(PATH_SITE . "/readBlogPost/id-$id", "3", "Inlägget har nu blivit sparat");
 		}
-		else {
-			header("Location: " . PATH_SITE . "/redigeraInlagg/id-$id");
+		catch ( exception $e ) {
+			$_SESSION['errorMessage'][] = $e->getMessage();
+			header("Location: $ErrUrl");
 			exit;
 		}
 	}
 	
 	//Raderar en tidigare post
-	if ($action == "radera") {
+	if ($action == "delete") {
 		
 		$Users = new Users();
 		$Users->checkPrivilegies();
-		$Posts = new Posts();
+		$Posts = new Blog_Posts();
 		
 		//Raderar posten
 		try {
 			$Posts->delPost($id);
-			$body .= $defaults->redirect(PATH_SITE . "/hem", "3", "Inlägget har nu blivit borttaget");
+			$body .= $defaults->redirect(THIS_SITE_PATH, "3", "Inlägget har nu blivit borttaget");
 		}
 		catch ( exception $e ) {
 			$_SESSION['errorMessage'][] = $e->getMessage();
-			header("Location: " . PATH_SITE . "/raderaInlagg/id-$id");
+			header("Location: " . PATH_SITE . "/delBlogPost/id-$id");
 			exit;
 		}
 	}
 	
 	//Skapar en kommentar
-	if ($action == "skapaKommentar") {
+	if ($action == "createComment") {
 		
-		$Comments = new Comments();
+		$Comments = new Blog_Comments();
 		
 		//Hämtar ut all data
 		$header  	 = $_POST['heading'];
@@ -97,7 +86,7 @@
 		$auhtorName  = $_POST['author'];
 		$authorEmail = $_POST['email'];
 		$authorSite  = $_POST['site'];
-		$redirect    = PATH_SITE . "/lasInlagg/id-$id";
+		$redirect    = PATH_SITE . "/readBlogPost/id-$id";
 		
 		//Validerar datan
 		if ($Comments->validateComment($header, $content, $auhtorName, $authorEmail, $authorSite)) {
@@ -120,11 +109,11 @@
 	}
 	
 	//Tar bort en kommentar
-	if ($action == "raderaKommentar") {
+	if ($action == "deleteComment") {
 		
 		$Users = new Users();
 		$Users->checkPrivilegies();
-		$Comments = new Comments();
+		$Comments = new Blog_Comments();
 		
 		$redirect = $_SERVER['HTTP_REFERER'];;
 		

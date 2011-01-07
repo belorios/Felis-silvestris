@@ -3,36 +3,69 @@
 
 							<channel>
 
-									<title>Rss feed for "Felis silvestris" </title>
+									<title>Rss feed för bloggen "Felis silvestris" </title>
 
-									<description>This rss feed holds parts off all the articles</description>
+									<description>Denna är rss feed innehåller utsnitt från alla inlägg som görs i bloggen</description>
 
 									<link>http://127.0.0.1/Felis-silvestris/index.php</link>
 
-									<lastBuildDate>Thu, 02 Dec 2010 14:11:15 +0100</lastBuildDate>
+									<lastBuildDate>Thu, 06 Jan 2011 09:53:59 +0100</lastBuildDate>
 
-									<pubDate>Thu, 02 Dec 2010 14:11:15 +0100</pubDate>
+									<pubDate>Thu, 06 Jan 2011 09:53:59 +0100</pubDate>
 
 							
 								<item>
-										<title>Dens tredje test artikeln</title> 
+										<title>Morbi nec ornare purus</title> 
 
-										<link>http://127.0.0.1/Felis-silvestris/index.php/article/id-3</link> 
+										<link>http://127.0.0.1/Felis-silvestris/index.php/lasInlagg/id-6</link> 
 
-										<description>Här testar vi må en massa!...</description> 
+										<description>Morbi nec ornare purus. Integer tempus, nibh at accumsan consectetur, erat ante sagittis magna, ut dapibus urna elit vitae nisl. Aliquam tortor metus, condimentum ut pulvinar ut, luctus a nisl....</description> 
 
-										<pubDate>Thu, 02 Dec 2010 14:11:15 +0100</pubDate> 
+										<pubDate>Wed, 05 Jan 2011 20:48:28 +0100</pubDate> 
 
 								</item>
 					
 								<item>
-										<title>Den första test artikel</title> 
+										<title>Nullam dictum leo</title> 
 
-										<link>http://127.0.0.1/Felis-silvestris/index.php/article/id-1</link> 
+										<link>http://127.0.0.1/Felis-silvestris/index.php/lasInlagg/id-7</link> 
 
-										<description>Här testar vi må en massa!...</description> 
+										<description>Nullam dictum leo vitae purus varius blandit. Suspendisse ipsum libero, molestie in convallis sed, vulputate ac ante. Suspendisse ut placerat augue. Nunc adipiscing dapibus sem, nec lobortis tortor mattis vitae....</description> 
 
-										<pubDate>Thu, 18 Nov 2010 17:10:35 +0100</pubDate> 
+										<pubDate>Wed, 05 Jan 2011 20:48:28 +0100</pubDate> 
+
+								</item>
+					
+								<item>
+										<title>Sed placerat</title> 
+
+										<link>http://127.0.0.1/Felis-silvestris/index.php/lasInlagg/id-8</link> 
+
+										<description>Sed placerat, massa a posuere luctus, nisi mi sollicitudin mi, vitae consequat neque ante in massa. Suspendisse consectetur laoreet lectus non iaculis. Aliquam interdum pellentesque pretium. Sed sit amet sapien non leo bibendum porttitor a id quam....</description> 
+
+										<pubDate>Wed, 05 Jan 2011 20:48:28 +0100</pubDate> 
+
+								</item>
+					
+								<item>
+										<title>In tincidunt nunc</title> 
+
+										<link>http://127.0.0.1/Felis-silvestris/index.php/lasInlagg/id-9</link> 
+
+										<description>In tincidunt nunc ac turpis tincidunt mollis. Donec at odio ut felis fringilla hendrerit. Aliquam tincidunt enim vitae lorem iaculis condimentum....</description> 
+
+										<pubDate>Wed, 05 Jan 2011 20:48:28 +0100</pubDate> 
+
+								</item>
+					
+								<item>
+										<title>Praesent tortor arcu</title> 
+
+										<link>http://127.0.0.1/Felis-silvestris/index.php/lasInlagg/id-10</link> 
+
+										<description>Praesent tortor arcu, molestie ac tempus at, dictum vel enim. Duis lobortis nisi quis est fermentum sit amet commodo sapien consectetur. Nunc a nulla vel libero convallis congue nec in purus. Nulla tincidunt arcu ac tortor varius posuere....</description> 
+
+										<pubDate>Wed, 05 Jan 2011 20:48:28 +0100</pubDate> 
 
 								</item>
 					 

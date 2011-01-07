@@ -17,6 +17,7 @@
 	define("PATH_SOURCE" , dirname(__FILE__) . "/Src/");
 	define("PATH_MODULES", dirname(__FILE__) . "/modules/"); 
 	define("PATH_LAYOUT" , PATH_SOURCE . "layout/");
+	define("PATH_LANG"	 , PATH_SOURCE . "lang/");
 	define("PATH_FUNC"   , PATH_SOURCE . "func/");
 	define("PATH_MOD"    , PATH_SOURCE . "mod/");
 	define("PATH_RSS"	 , PATH_SOURCE . "rss/feed.xml");

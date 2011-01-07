@@ -59,6 +59,7 @@
 					</p>
 					<div class='righty_buttons' >
 						<input type='submit' name='login' value='Login' />
+						<a class='button' href='".PATH_SITE."/register'><span>Register</span></a> 
 					</div>
 					<div class='clear'></div>
 				</form>

@@ -1,0 +1,17 @@
+#loginBox {
+	color: #e1e7ef;
+	float:right; 
+	margin: 0px 10px 0px 0px; 
+}
+	#loginBox a{
+		color: #e1e7ef;
+	}	
+
+.login {
+	padding: 0;
+	margin: -2px 0px -2px 0px;
+}
+	
+	.login a {
+		font-size: 10pt;
+	}

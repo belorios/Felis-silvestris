@@ -2,7 +2,7 @@
 	
 	$Users = new Users();
 	$Users->checkPrivilegies();
-	$Posts = new Posts();
+	$Posts = new Blog_Posts();
 	
 	//Hämstar ut data för posten som ska tas bort
 	try {
@@ -21,7 +21,7 @@
 		<h1>Tar bort inlägg</h1>
 		<p>
 			Vill du verkligen ta bort inlägget \"$header\"?
-			<form method='post' action='".PATH_SITE."/hanteraInlagg/radera/id-$id'>
+			<form method='post' action='".PATH_SITE."/handleBlogPosts/delete/id-$id'>
 				<input type='submit' name='radera' value='Ja' />
 				<input type='submit' name='radera' value='Nej' />
 			</form>

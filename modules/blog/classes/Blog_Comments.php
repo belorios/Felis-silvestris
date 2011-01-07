@@ -1,32 +1,19 @@
 <?php
 
-	class Blog_Comments {
+	class Blog_Comments extends Blog_Database{
 		
-		private $db, $prefix, $dateformat;
+		private $prefix, $dateformat;
 		
 		public function __construct($db=false) {
-			if ($db != false) {
-				$this->db = $db;	
-			}
-			else {
-				$this->getConnection();
-			}
-			
-			$this->prefix = DB_PREFIX;
+			parent::__construct($db);
 			$this->dateformat = "H:m, j M Y";
 		}
 		
-		public function getConnection() {
-			if (!is_object($this->db)) {
-				$pdo = new pdoConnection();
-				$this->db = $pdo->getConnection();
-			}
- 		}
 		
 		//Hämtar ut alla kommentarer för ett inlägg
 		public function getComments($id, $dateformat=false) {
 			
-			$query = "SELECT * FROM {$this->prefix}Comments WHERE idPosts = :id";
+			$query = "SELECT * FROM {$this->tableComments} WHERE idPosts = :id";
 			
 			$get = $this->db->prepare($query);
 			$get->bindParam(':id', $id, PDO::PARAM_INT);
@@ -55,7 +42,7 @@
 			
 			
 			$query = "
-				INSERT INTO {$this->prefix}Comments (idPosts, header, content, creationDate, author, authorEmail, authorSite)
+				INSERT INTO {$this->tableComments} (idPosts, header, content, creationDate, author, authorEmail, authorSite)
 				VALUES (:idPosts, :header,:content,:date,:author, :authorEmail, :authorSite)
 			";
 			
@@ -106,7 +93,7 @@
 		//Tar bort en kommentar från db
 		public function delComment($id) {
 			$query = "
-				DELETE FROM {$this->prefix}Comments WHERE idComments = :id
+				DELETE FROM {$this->tableComments} WHERE idComments = :id
 			";
 			
 			$get = $this->db->prepare($query);

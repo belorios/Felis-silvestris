@@ -7,6 +7,7 @@
 		"login"			=> "login/login.php",
 		"logout"		=> "login/logoutProcess.php",
 		"loginprocess"	=> "login/loginProcess.php",
+	
 		
 		//Default pages
 		"home"			=> "home.php",
@@ -14,4 +15,6 @@
 		"changestyle"	=> "sitestyle.php",
 		"showfiles"		=> "viewfiles/showfiles.php",
 		
+		//Userpages
+		"register"		=> "users/register.php",
 	);

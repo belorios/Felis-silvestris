@@ -5,10 +5,11 @@
 		"blog"			  => "start.php",
 		
 		//Handles the blogposts
-		"createBlogPost"  => "posts/addPosts.php",
+		"newBlogPost"  	  => "posts/addPosts.php",
 		"editBlogPost" 	  => "posts/editPosts.php",
 		"delBlogPost" 	  => "posts/delPosts.php",
 		"readBlogPost" 	  => "posts/readPosts.php",
+		"readBlogPostByTag" => "posts/readPostsByTag.php",
 		"handleBlogPosts" => "posts/handlePosts.php",
 	);
 		
