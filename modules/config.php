@@ -47,6 +47,19 @@
 			),
 		),	
 	 );
+	 
+	 /**************
+	  * Pure manager modules
+	  */
+	
+	$manager_modules = array();
+	
+	$manager_modules['manager'] = array(
+		"menuEntry"	  => null,
+		"Description" => "Manager module",
+		"folder" 	  => "manager",
+	);
+	
 	/********************
 	* Unactivated modules
 	*/

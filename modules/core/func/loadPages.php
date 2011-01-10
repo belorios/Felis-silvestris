@@ -16,5 +16,6 @@
 		"showfiles"		=> "viewfiles/showfiles.php",
 		
 		//Userpages
-		"register"		=> "users/register.php",
+		"register"		 => "users/register.php",
+		"handleUserForm" => "users/handleUserData.php",
 	);

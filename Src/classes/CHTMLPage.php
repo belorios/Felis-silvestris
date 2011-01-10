@@ -11,12 +11,12 @@
 		 			$layoutTypes = array();
 		
 		//Handles the site layout		
-		private $Footer, 
-				$Heading = array(), 
-				$Title,
-				$Menu, 
-				$Body, 
-				$BodyExtra;
+		protected 	$Footer, 
+					$Heading = array(), 
+					$Title,
+					$Menu, 
+					$Body, 
+					$BodyExtra;
 				
 		
 		function __construct($layout = false, $menuArr = false, $stylesheet = false) {
@@ -152,7 +152,7 @@
 		}
 		
 		
-		private function setLoggedInMenu() {
+		protected function setLoggedInMenu() {
 			
 			$Users = new Users();
 			$menu = array();

@@ -6,13 +6,17 @@
 					$tableGroups,
 					$tableGroupUsers,
 					$db,
-					$pdo;
+					$pdo,
+					$lastInsertedId,
+					$lang;
 					 
 		public function __construct($db) {
 			
 			$this->tableUsers = DB_PREFIX . "Users";
 			$this->tableGroups = DB_PREFIX . "Groups";
 			$this->tableGroupUsers = DB_PREFIX . "GroupUsers";
+			
+			$this->lang = $GLOBALS['lang'];
 			
 			if ($db != false) {
 				$this->db = $db;	
@@ -28,4 +32,16 @@
 				$this->db = $this->pdo->getConnection();
 			}
  		}
+		
+		//Checks if it should write out a debugmessage
+		protected function debug($fail, $query) {
+			if ($_SESSION['debug'] == true)
+				$fail .= "<p>$lang[DEBUG_QUERY_FAIL] <br /> <b>$query</b></p>";
+			throw new Exception ($fail);
+		}
+		
+		//Returns the last insertedid
+		public function getLastId() {
+			return $this->lastInsertedId;
+		}
 	}

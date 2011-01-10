@@ -3,10 +3,10 @@
 	ini_set('display_errors', '1');
 	
 	//Script webpath
-	$webPath = $_SERVER['SERVER_NAME'] . preg_replace("/[A-Z]+.php/i", "", $_SERVER['SCRIPT_NAME']);
+	$webPath = $_SERVER['SERVER_NAME'] . preg_replace("/[A-Z]+\/+[A-Z]+.php/i", "", $_SERVER['SCRIPT_NAME']);
 	
 	//Default values - mooove to database!
-	define("APP_HEADER",      "Felis silvestris");
+	define("APP_HEADER",      "Manager");
 	define("APP_DESCRIPTION", "Try to tame me");
 	define("APP_FOOTER",      "Felis silvestris");
 	define("APP_THEME", "default");
@@ -15,13 +15,15 @@
 		<a href=\"http://validator.w3.org/check?uri=referer\">XHTML 5</a> &nbsp; 
 		<a href=\"http://jigsaw.w3.org/css-validator/check/referer?profile=css3\">CSS3</a> &nbsp;
 	");
-	define("APP_STYLE" , "std.css");	
+	define("APP_STYLE" , "manager.css");	
+	
+	$directory = str_replace("manager", "", dirname(__FILE__));
 	
 	//Filepathes
-	define("PATH_PAGES"  , dirname(__FILE__) . "/Pages/");
-	define("PATH_SOURCE" , dirname(__FILE__) . "/Src/");
-	define("PATH_MODULES", dirname(__FILE__) . "/modules/"); 
-	define("PATH_LIB"	 , dirname(__FILE__) . "/libs/");
+	define("PATH_PAGES"  , $directory . "/Pages/");
+	define("PATH_SOURCE" , $directory . "/Src/");
+	define("PATH_MODULES", $directory . "/modules/"); 
+	define("PATH_LIB"	 , $directory . "/libs/");
 	
 	define("PATH_CONFIG" , PATH_SOURCE . "config/");
 	define("PATH_LAYOUT" , PATH_SOURCE . "layout/" . APP_THEME . "/");
@@ -57,7 +59,10 @@
 	
 	);
 	
+	
+	
 	//Get moduleconfiguration
+	$manager = true;
 	require_once(PATH_CONFIG . "module-config.php");
 	
 	define("PATH_CLASSES", serialize($classes));

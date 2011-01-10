@@ -2,18 +2,13 @@
 
 	class Blog_Posts extends Blog_Database{
 		
-		private $prefix, $dateformat, $lastInsertedId;
+		private $prefix, $dateformat;
 		
 		public function __construct($db=false) {
 			parent::__construct($db);
 			
 			$this->dateformat = "H:m, j F Y";
 			
-		}
-		
-		//Returns the last insertedid
-		public function getLastId() {
-			return $this->lastInsertedId;
 		}
 		
 		//Hämtar ut datan från posterna och behandlar den

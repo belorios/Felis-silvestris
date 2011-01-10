@@ -263,7 +263,8 @@
 		INSERT INTO $tables[Groups] (idGroups, shortdesc, groupdesc) VALUES 
 		('adm', 'Administratör', 'Administratörerna for sajten'),
 		('mod', 'Modes skribent', 'Skriver om mode'),
-		('skr', 'Skribent', 'Helt vanlig skribent')
+		('skr', 'Skribent', 'Helt vanlig skribent'),
+		('std', 'Användare', 'Helt vanlig användare')
 	";
 	
 	//Maps users against groups

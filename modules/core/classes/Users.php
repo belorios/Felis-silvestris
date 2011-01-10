@@ -10,7 +10,6 @@
 		
 		public function __construct($db = false) {
 			parent::__construct($db);
-			
 		}
 		
 		public function __destruct() {
@@ -191,6 +190,97 @@
 				throw new Exception ($fail);
 				return false;
 			}	
+		}
+		
+		public function registerUser($username, $fname, $lname, $email, $password, $group=False) {
+			$_SESSION['debug'] = true;
+			$name = "$fname $lname"; 
+			$query = "INSERT INTO {$this->tableUsers} (username, realname, email, passwd) VALUES (:user,:real,:mail,:pass)";
 			
+			$set = $this->db->prepare($query);
+			$set->bindParam("user", strip_tags($username), 	PDO::PARAM_STR);
+			$set->bindParam("real", strip_tags($name), 		PDO::PARAM_STR);
+			$set->bindParam("mail", strip_tags($email), 	PDO::PARAM_STR);
+			$set->bindParam("pass", $this->passwdHash($password), PDO::PARAM_STR);
+			
+			if ($set->execute()) {
+					
+				$gid = ($group != false) ? $group : "std";					
+				$uid = $this->db->lastInsertId();
+				
+				$gQuery = "INSERT INTO {$this->tableGroupUsers} VALUES (:uid, :gid)";
+				$gSet = $this->db->prepare($gQuery);
+				$gSet->bindParam("uid", $uid, PDO::PARAM_INT);
+				$gSet->bindParam("gid", $gid, PDO::PARAM_STR);
+				
+				if ($gSet->execute()) {
+					return true;
+				}
+				else {
+					$this->debug("", $gQuery);
+				return false;
+				}
+			}
+			else {
+				$this->debug("", $query);
+				return false;
+			}	
+			
+		}
+		
+		public function validateUserInput($username, $fname, $lname, $email, $password, $passConf, $emailConf) {
+			$this->saveUserTempData($username, $fname, $lname, $email, $emailConf);
+			
+			$Validation = new Validation();
+			
+			$fail = array();
+			if (!$Validation->checkValues("User", $username, 3)) {
+				$fail[] = $this->lang['USERFAIL'];
+			}
+			if (!$Validation->checkValues("Mail", $email, 5)) {
+				$fail[] = $this->lang['EMAILFAIL'];
+			}
+			if (!$Validation->checkValues("Pass", $password, 6)) {
+				$fail[] = $this->lang['PASSFAIL'];
+			}
+			
+			if (!$Validation->checkValues("Name", $fname, 2)) {
+				$fail[] = $this->lang['FNAME_FAIL'];
+			}
+			if (!$Validation->checkValues("Name", $lname, 2)) {
+				$fail[] = $this->lang['LNAME_FAIL'];
+			}
+			
+			//Controlls if password and email is the same as the confirm options
+			if (!$Validation->CheckSameness($email, $emailConf)) {
+				$fail[] = $this->lang['EMAILFAILCONF'];
+			}
+			
+			if (!$Validation->CheckSameness($password, $passConf)) {
+				$fail[] = $this->lang['PASSFAILCONF'];
+			}
+			/*
+			require_once(PATH_LIB . "recaptcha/recaptchalib.php");
+			$resp = recaptcha_check_answer ("", $_SERVER["REMOTE_ADDR"], $_POST["recaptcha_challenge_field"], $_POST["recaptcha_response_field"]);
+			
+			if (!$resp->is_valid) {
+				$fail[] = $this->lang['RECAPTCHA_FAIL'];
+			}
+			*/
+			if (count($fail) > 0) {
+				$_SESSION['errorMessage'] = $fail;
+				return false;
+			}
+			else {
+				return true;
+			}
+		}
+		
+		public function saveUserTempData($username, $fname, $lname, $email, $emailConf) {
+			$_SESSION['regEdit']['username']  = $username;
+			$_SESSION['regEdit']['email'] 	  = $email;
+			$_SESSION['regEdit']['fname'] 	  = $fname;
+			$_SESSION['regEdit']['lname'] 	  = $lname;
+			$_SESSION['regEdit']['emailConf'] = $emailConf;
 		}
 	}
