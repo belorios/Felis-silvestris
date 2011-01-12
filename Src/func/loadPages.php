@@ -5,7 +5,7 @@
     	
 	$data = (isset($_SERVER['PATH_INFO'])) ? explode("/",$_SERVER['PATH_INFO']) : null;
 	$page = isset($data[1]) ? $data[1] : "home";
-		
+	
 	if (isset($data[2])) {
 		
 		if (substr($data[2], 0, 2) == "id") {
@@ -30,6 +30,8 @@
 	$_SESSION['currentPage'] = $page;
 	$currentPage = "?p=$page";
 	
+	$manager = isset($manager) ? $manager : false; 
+	
 	$selectedPage   = null;
 	$moduleLangPath = false;
 	
@@ -40,10 +42,17 @@
 	}
 	
 	foreach ($modules as $module) {
+		$managerPages = array();
+		$modulePages  = array();
 		$module_path =  PATH_MODULES . $module['folder'];
 		if (file_exists("$module_path/func/loadPages.php")) {
 			require_once("$module_path/func/loadPages.php");
-
+			
+			
+			if ($manager == true) {
+				$modulePages = $managerPages;
+			}
+			
 			if (array_key_exists($page, $modulePages)) {
 				$selectedPage = "$module_path/pages/" . $modulePages[$page];
 				

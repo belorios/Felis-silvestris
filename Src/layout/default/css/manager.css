@@ -139,6 +139,7 @@ a.button span {
 		height: auto;
 		width: auto;
 		min-height: 500px;
+		padding: 10px;
 		border: solid;
 		border-width: 0px 1px 1px 1px;
 		margin: 0 50px;

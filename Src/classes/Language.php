@@ -36,9 +36,10 @@
 			
 			if ($module != false) {
 				$langTmp = $lang;
-				require_once($module . $this->lang);
-				$lang  = array_merge($langTmp, $lang);
-				
+				if (file_exists($module . $this->lang)) {
+					require_once($module . $this->lang);
+					$lang  = array_merge($langTmp, $lang);
+				}
 			}
 		}
 	}

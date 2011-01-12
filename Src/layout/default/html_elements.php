@@ -50,7 +50,7 @@
 	function sidebox_Login() {
 		return sideboxLayout("Login", "
 			<div id='LoginBox'>
-				<form action='".PATH_SITE."/loginprocess' method='post'>
+				<form id='loginForm' action='".PATH_SITE."/loginprocess' method='post'>
 					<p>
 						<input type='text' name='uname' value='Username' onclick='this.value=\"\"' />
 					</p>
@@ -58,7 +58,7 @@
 						<input type='password' name='passwd' value='11111' onclick='this.value=\"\"'  />
 					</p>
 					<div class='righty_buttons' >
-						<input type='submit' name='login' value='Login' />
+						<input type='submit' name='login' rel='loginForm' value='Login' />
 						<a class='button' href='".PATH_SITE."/register'><span>Register</span></a> 
 					</div>
 					<div class='clear'></div>
