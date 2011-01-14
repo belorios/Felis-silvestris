@@ -5,6 +5,8 @@
 		protected 	$tableUsers, 
 					$tableGroups,
 					$tableGroupUsers,
+					$tableConfig,
+					$tableConfigValues,
 					$db,
 					$pdo,
 					$lastInsertedId,
@@ -12,9 +14,11 @@
 					 
 		public function __construct($db) {
 			
-			$this->tableUsers = DB_PREFIX . "Users";
-			$this->tableGroups = DB_PREFIX . "Groups";
-			$this->tableGroupUsers = DB_PREFIX . "GroupUsers";
+			$this->tableUsers 		 = DB_PREFIX . "Users";
+			$this->tableGroups 		 = DB_PREFIX . "Groups";
+			$this->tableGroupUsers   = DB_PREFIX . "GroupUsers";
+			$this->tableConfig 		 = DB_PREFIX . "config";
+			$this->tableConfigValues = DB_PREFIX . "configValues";
 			
 			$this->lang = $GLOBALS['lang'];
 			

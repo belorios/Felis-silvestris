@@ -37,7 +37,7 @@
 	
 	//Webpathes
 	define("PATH_SITE_LOC" 	  , "http://$webPath");
-	define("PATH_SITE" 		  , PATH_SITE_LOC . "index.php");
+	define("PATH_SITE" 		  , PATH_SITE_LOC . "manager/index.php");
 	define("PATH_SITE_SRC" 	  ,	PATH_SITE_LOC . "Src/");
 	
 	define("PATH_SITE_LAYOUT" , PATH_SITE_SRC . "/layout/" . APP_THEME . "/");

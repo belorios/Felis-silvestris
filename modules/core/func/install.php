@@ -28,11 +28,13 @@
 	);
 	
 	$tables = array(
-		"Groups" 	 => DB_PREFIX . "Groups",
-		"Users" 	 => DB_PREFIX . "Users",
-		"GroupUsers" => DB_PREFIX . "GroupUsers",
-		"Statistics" => DB_PREFIX . "Statistics",
-		"Articles"   => DB_PREFIX . "Articles",
+		"Groups" 	 	=> DB_PREFIX . "Groups",
+		"Users" 	 	=> DB_PREFIX . "Users",
+		"GroupUsers" 	=> DB_PREFIX . "GroupUsers",
+		"Statistics"	=> DB_PREFIX . "Statistics",
+		"Articles"  	=> DB_PREFIX . "Articles",
+		"Config" 	 	=> DB_PREFIX . "Config",
+		"ConfigValues"	=> DB_PREFIX . "ConfigValues",
 	);
 	
 	//Klasser
@@ -124,6 +126,47 @@
 				REFERENCES $tables[Users](idUsers)
 				ON UPDATE CASCADE ON DELETE CASCADE
 		) ENGINE=InnoDB CHARSET=utf8 COLLATE utf8_swedish_ci
+	";
+	
+	$sqlTableCreate['Config'] = "
+		CREATE TABLE IF NOT EXISTS $tables[Config] (
+			-- Primary key
+			idConfig BIGINT AUTO_INCREMENT NOT NULL PRIMARY KEY,
+			
+			-- Attributes
+			type   		VARCHAR(20) NOT NULL,
+			name   		VARCHAR(50) NOT NULL,
+			description TEXT NOT NULL,
+			descname	VARCHAR(50) NOT NULL,
+			module		INT NOT NULL,
+			value  		VARCHAR(255) NOT NULL,
+			active 		ENUM('y','n')
+		)
+		ENGINE=InnoDB CHARSET=utf8 COLLATE utf8_swedish_ci;	
+	";
+	
+	$sqlTableCreate['ConfigValues'] = "
+		CREATE TABLE IF NOT EXISTS $tables[ConfigValues] (
+			-- Primary key
+			idValue BIGINT AUTO_INCREMENT NOT NULL PRIMARY KEY,
+			
+			-- Foreign key
+			idConfig BIGINT NOT NULL,
+			
+			-- Atributes
+			type   		VARCHAR(20) NOT NULL,
+			name   		VARCHAR(50) NOT NULL,
+			description TEXT NOT NULL,
+			descname	VARCHAR(50) NOT NULL,
+			value  		VARCHAR(255) NOT NULL,
+			active 		ENUM('y','n'),
+			
+			FOREIGN KEY (idConfig) 
+				REFERENCES $tables[Config](idConfig)
+				ON UPDATE CASCADE ON DELETE CASCADE
+			
+		)
+		ENGINE=InooDB CHARSET=utf8 COLLATE utf8_swedish_ci;
 	";
 	
 	
@@ -273,6 +316,20 @@
 		('adm', 1), 
 		('mod', 2),
 		('skr', 3)
+	";
+	
+	//Adding data to the configurationdatabase
+	$sqlCreateData['Config'] = "
+		INSERT INTO $tables[Config] (type, name, description, descname, module, value, active) VALUES 
+		('text', 'app_name', 'Sets the name on the application', 'Application name', 1, 'Felis Silvestris', 'y'),
+		('text', 'app_footer', 'Sets the name on the footer for the application', 'Application footer', 1, 'Felis Silvestris', 'y'),
+		('multitext', 'recaptcha', 'Sets the settings to enable recaptcha', 'Recaptcha', 1, '', 'y')
+	";
+	
+	$sqlCreateData['ConfigValues'] = "
+		INSERT INTO $tables[ConfigValues] (idConfig, type, name, description, descname, value, active) VALUES 
+		(3, 'text', 'recap_public', 'Sets the public id for your recaptcha', 'Public ID', '', 'y'),
+		(3, 'text', 'recap_private', 'Sets the private id for your recaptcha', 'Private ID', '', 'y')
 	";
 	
 	if ($_POST['dummyData'] == '1') {	

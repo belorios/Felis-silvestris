@@ -44,6 +44,7 @@
 	$clearOld = TRUE;
 	
 	$classes = array($default_classes_path);
+	$modules = array_merge($manager_modules, $modules);
 	$modules_reverse = array_reverse($modules);
 	
 	/*

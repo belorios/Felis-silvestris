@@ -2,7 +2,7 @@
     
 	$layout = "1col_std";
 	
-	if (isset($_POST['send'])) {
+	if (isset($_POST['dummyData'])) {
 		require_once(PATH_FUNC . "install.php");
 	}
 	else {
@@ -14,12 +14,12 @@
 				<span style='color: #e62011; font-weight: bold;'>Warning</span> this is going to remove existing tables. 
 			</p>
 				
-				<form action='' method='post'> 
+				<form action='' id='installForm' method='post'> 
 				Do you want to fill the tables with dummy data? &nbsp;
 					 <input type='radio' checked='checked' name='dummyData' value='1' /> Yes
 					 <input type='radio' name='dummyData' value='0' /> No 
 					 <p>
-					 	<input type='submit' name='send' value='Install' />
+					 	<input type='submit' name='send' rel='installForm' value='Install' />
 					 </p>
 				</form>
 		";
