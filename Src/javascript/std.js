@@ -27,7 +27,7 @@
 	
 $(document).ready(function() {
 		$(":submit").each(function(){
-        	$(this).replaceWith("<a class='button submitbutton' rel='" + $(this).attr('rel') + "' href='' ><span>" + $(this).val() + "</span></a>");
+        	$(this).replaceWith("<a class='button submitbutton' id='" + $(this).attr('id') + "' rel='" + $(this).attr('rel') + "' href='' ><span>" + $(this).val() + "</span></a>");
         });
         $(":reset").each(function(){
         	$(this).replaceWith("<a class='button submitbutton' href='' ><span>" + $(this).val() + "</span></a>");

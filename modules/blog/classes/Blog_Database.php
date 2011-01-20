@@ -5,8 +5,7 @@
 		protected 	$tablePosts,
 					$tableComments,
 					$tableTags,
-					$tableTagsPosts,
-					$db;
+					$tableTagsPosts;
 					 
 		public function __construct($db) {
 				

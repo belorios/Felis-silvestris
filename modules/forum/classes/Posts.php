@@ -1,38 +1,12 @@
 <?php
 
-	class Posts {
+	class Posts extends Forum_Database {
 		
-		private $db, $prefix, $dateformat, $lastInsertedId;
+		private $dateformat;
 		
 		public function __construct($db=false) {
-			if ($db != false) {
-				$this->db = $db;	
-			}
-			else {
-				$this->getConnection();
-			}
-			
-			$this->prefix = DB_PREFIX;
+			parent::__construct($db);
 			$this->dateformat = "Y-m-d";
-		}
-		
-		public function getConnection() {
-			if (!is_object($this->db)) {
-				$pdo = new pdoConnection();
-				$this->db = $pdo->getConnection(true);
-			}
- 		}
-		
-		//Checks if it should write out a debugmessage
-		private function debug($fail, $query) {
-			if ($_SESSION['debug'] == true)
-				$fail .= "<p>The faulty query: <br /> <b>$query</b></p>";
-			throw new Exception ($fail);
-		}
-		
-		//Returns the last insertedid
-		public function getLastId() {
-			return $this->lastInsertedId;
 		}
 		
 		//Handles the data for an post
@@ -64,8 +38,8 @@
 		public function getPostById($id) {
 			
 			$query = "
-				SELECT P.*, U.username FROM {$this->prefix}Posts P 
-				JOIN {$this->prefix}Users U ON U.idUsers = P.idUsers
+				SELECT P.*, U.username FROM {$this->tablePosts} P 
+				JOIN {$this->tableUsers} U ON U.idUsers = P.idUsers
 				WHERE idPosts = :id LIMIT 1
 			";
 			
@@ -84,7 +58,7 @@
 		
 		public function getPostOrDraftById($id) {
 			
-			$query = "call {$this->prefix}getPostOrDraft(:id)";
+			$query = "call {$this->procGetPost}(:id)";
 			
 			$get = $this->db->prepare($query);
 			$get->bindParam(':id', $id, PDO::PARAM_INT);
@@ -104,8 +78,8 @@
 			$limit = (!is_null($limitStart)) ? "LIMIT {$limitStart},{$limitAmount}" : null;
 			
 			$query = "
-				SELECT P.*, U.username FROM {$this->prefix}Posts P 
-				JOIN {$this->prefix}Users U ON U.idUsers = P.idUsers
+				SELECT P.*, U.username FROM {$this->tablePosts} P 
+				JOIN {$this->tableUsers} U ON U.idUsers = P.idUsers
 				WHERE idTopics = :id AND Published = 1 ORDER BY created $order $limit
 			";
 			
@@ -128,7 +102,7 @@
 		}
 		
 		public function discardPost($idPosts) {
-			$query = "call {$this->prefix}discardPost(:postId)";
+			$query = "call {$this->procDiscardPost}(:postId)";
 			$get = $this->db->prepare($query);
 			$get->bindParam(':postId',   $idPosts, 	PDO::PARAM_INT);
 			if ($get->execute()) {

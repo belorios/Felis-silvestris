@@ -1,3 +1,6 @@
+var flush = 0;
+var redirect = false;
+
 $(document).ready(function(){
 
 	var autosave = {
@@ -25,8 +28,28 @@ $(document).ready(function(){
 	
 	$('#postEditor').live('keyup', autosave.start);
 	$('#button_draft').attr('disabled', 'disabled');
-
-			
+	
+	$('#button_draft').click(function(event) {
+		$('#postEditor').submit();
+	});
+	$('#button_publish').click(function(event) {
+		
+		flush 	 = 1;
+		redirect = true;
+		
+		$('#postEditor').submit();
+	});
+	$('#button_discard').click(function(event) {
+		$.post(appUrl + 'handlePosts/discard', { flush: 1, ajax: true }, function(data) {
+			$.jGrowl("You are being redirected");
+			setTimeout(function() {
+				history.back();
+			}, 1000);
+		});
+	});
+	
+	handleForm(flush);	
+	/*
 	$('#postEditor').click(function(event) {
 		var flush = 0;	
 		var redirect = false;
@@ -51,9 +74,9 @@ $(document).ready(function(){
 		
 		handleForm(flush);
 	});		
-	
+	*/
 	function handleForm(flush) {
-		
+		$.jGrowl(flush);
 		$('#postEditor').ajaxForm({
 			dataType:  'json', 
 			data: { ajax: true, flush: flush },

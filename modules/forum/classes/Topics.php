@@ -1,38 +1,12 @@
 <?php
 
-	class Topics {
+	class Topics extends Forum_Database {
 		
-		private $db, $prefix, $dateformat, $lastInsertedId;
+		private $dateformat;
 		
 		public function __construct($db=false) {
-			if ($db != false) {
-				$this->db = $db;	
-			}
-			else {
-				$this->getConnection();
-			}
-			
-			$this->prefix = DB_PREFIX;
+			parent::__construct($db);
 			$this->dateformat = "H:m, j F Y";
-		}
-		
-		public function getConnection() {
-			if (!is_object($this->db)) {
-				$pdo = new pdoConnection();
-				$this->db = $pdo->getConnection();
-			}
- 		}
-		
-		//Checks if it should write out a debugmessage
-		private function debug($fail, $query) {
-			if ($_SESSION['debug'] == true)
-				$fail .= "<p>The faulty query: <br /> <b>$query</b></p>";
-			throw new Exception ($fail);
-		}
-		
-		//Returns the last insertedid
-		public function getLastId() {
-			return $this->lastInsertedId;
 		}
 		
 		//Handles the data returned from a topic
@@ -65,8 +39,8 @@
 		public function getTopic($id) {
 			
 			$query = "
-				SELECT T.*, U.username FROM {$this->prefix}Topics T 
-				JOIN {$this->prefix}Users U ON U.idUsers = T.idUsers
+				SELECT T.*, U.username FROM {$this->tableTopics} T 
+				JOIN {$this->tableUsers} U ON U.idUsers = T.idUsers
 				WHERE idTopics = :id LIMIT 1
 			";
 			
@@ -96,10 +70,10 @@
 			 		COUNT(P.idPosts) as rows, 
 			 		MAX(P.created) as updated,
 			 		MAX(P.idPosts) as postId 
-			 	FROM {$this->prefix}Topics T 
-				JOIN {$this->prefix}Users U1 ON U1.idUsers = T.idUsers
-				JOIN {$this->prefix}Posts P ON P.idTopics = T.idTopics AND P.Published = 1
-				JOIN {$this->prefix}Users U2 ON U2.idUsers = P.idUsers
+			 	FROM {$this->tableTopics} T 
+				JOIN {$this->tableUsers} U1 ON U1.idUsers = T.idUsers
+				JOIN {$this->tablePosts} P ON P.idTopics = T.idTopics AND P.Published = 1
+				JOIN {$this->tableUsers} U2 ON U2.idUsers = P.idUsers
 				GROUP BY idTopics ASC
 				ORDER BY updated DESC
 				$limit			
@@ -130,7 +104,7 @@
 			$date   = time();
 			
 			$query = "
-				INSERT INTO {$this->prefix}Topics (title, created, idUsers)
+				INSERT INTO {$this->tableTopics} (title, created, idUsers)
 				VALUES (:title, :created, :id)
 			";
 			
@@ -153,7 +127,7 @@
 		public function updateTopic($id, $title) {
 			
 			$query = "
-				UPDATE {$this->prefix}Topics SET title = :title WHERE idTopics = :id
+				UPDATE {$this->tableTopics} SET title = :title WHERE idTopics = :id
 			";
 			
 			$get = $this->db->prepare($query);
