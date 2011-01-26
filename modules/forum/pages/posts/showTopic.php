@@ -21,7 +21,7 @@
 		if ($Users->checkUserRights($posts['authorId']) == true) {
 			$edit = "<a href='".PATH_SITE."/editPost/id-$posts[id]'>Edit</a>";
 		}
-		$allPosts .= forum_postsLayout($posts['id'], $posts['author'], $posts['title'], $posts['content'], $posts['date'], $posts['time'], $edit);
+		$allPosts .= forum_postsLayout($posts['id'], $posts['author'], $posts['title'], $posts['content'], $posts['date'], $posts['time'], $Users->getGravatar($posts['gravatar']), $edit);
 	}
 	
 	$body = "

@@ -14,8 +14,15 @@
 
 	$topics = null;
 	foreach ($getTopic as $topic) {
+		try {
+			$PostUser = $Topics->getPostUserName($topic['postId']);
+		}
+		catch ( Exception $e) {
+			$_SESSION['errorMessage'][] = $e->getMessage();
+			return;
+		}
 		$topics .= forum_topicTableItems($topic['id'], $topic['postId'], $topic['time'], $topic['Updtime'], 
-										 $topic['date'], $topic['date'], $topic['author'], $topic['postUser'], 
+										 $topic['date'], $topic['date'], $topic['author'], $PostUser['username'], 
 										 $topic['title'], $topic['answers']
 		);
 	}

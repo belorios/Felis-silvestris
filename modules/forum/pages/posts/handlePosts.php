@@ -1,4 +1,8 @@
 <?php
+
+	$Users = new Users();
+	$Users->checkPrivilegies();
+
 	$save = isset($_POST['save']) ? $_POST['save'] : null;
 	
 	if ($save == "discard") {

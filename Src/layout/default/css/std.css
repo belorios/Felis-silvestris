@@ -12,7 +12,7 @@ img {
 }
 
 label {
-	display: inline-block;
+	display: block;
 	font-size: 10pt;
 	font-weight: bold;
 	margin: 6px 0px 0px 3px;
@@ -91,7 +91,7 @@ a.button span {
 	    padding: 6px 0 4px 18px; /* push text down 1px */
 	}  
 	
-.cssTextbox {
+input {
 	border: 1px solid #9a9a9a;
 	color: #333333;
 	-moz-border-radius:  7px;
@@ -226,3 +226,49 @@ a.button span {
 		float: right;
 	}
 	
+button {
+	color: #000;
+	background: #fff;
+	background: -moz-linear-gradient(100% 100% 90deg, #dadada, #fff);
+ 	background: -webkit-gradient(linear, 0% 20%, 0% 100%, from(#fff), to(#dadada));
+ 	
+ 	border: 1px solid #757575;
+	-moz-border-radius: 18px 18px;
+	-webkit-border-radius: 18px 18px;
+	border-radius: 18px 18px;
+	padding: 2px 12px;
+	-moz-box-shadow: 0 0 1px 1px #d7d7d7;
+	-webkit-box-shadow: 0 0 1px 1px #d7d7d7;
+	box-shadow: 0 0 1px 1px #d7d7d7;
+}
+
+	button:active {
+		background: #dadada;
+		background: -moz-linear-gradient(100% 100% 90deg, #fff, #dadada);
+	 	background: -webkit-gradient(linear, 0% 100%, 0% 100%, from(#dadada), to(#fff));
+	}
+
+.submitbutton {
+	color: #000;
+	background: #fff;
+	background: -moz-linear-gradient(100% 100% 90deg, #dadada, #fff);
+ 	background: -webkit-gradient(linear, 0% 20%, 0% 100%, from(#fff), to(#dadada));
+ 	
+ 	border: 1px solid #757575;
+	-moz-border-radius: 18px 18px;
+	-webkit-border-radius: 18px 18px;
+	border-radius: 18px 18px;
+	padding: 2px 12px;
+	-moz-box-shadow: 0 0 1px 1px #d7d7d7;
+	-webkit-box-shadow: 0 0 1px 1px #d7d7d7;
+	box-shadow: 0 0 1px 1px #d7d7d7;
+}
+	
+	.submitbutton:active {
+		background: -moz-linear-gradient(100% 100% 90deg, #fff, #dadada);
+ 		background: -webkit-gradient(linear, 0% 100%, 0% 100%, from(#dadada), to(#fff));
+	}
+	
+.markeddot {
+	color: #ae0000;
+}

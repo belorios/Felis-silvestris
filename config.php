@@ -6,10 +6,10 @@
 	$webPath = $_SERVER['SERVER_NAME'] . preg_replace("/[A-Z]+.php/i", "", $_SERVER['SCRIPT_NAME']);
 	
 	//Default values - mooove to database!
-	define("APP_HEADER",      "Felis silvestris");
-	define("APP_DESCRIPTION", "Try to tame me");
-	define("APP_FOOTER",      "Felis silvestris");
-	define("APP_THEME", "default");
+	#define("APP_HEADER",      "Felis silvestris");
+	#define("APP_DESCRIPTION", "Try to tame me");
+	#define("APP_FOOTER",      "Felis silvestris");
+	#define("APP_THEME", "default");
 	define("APP_VALIDATION", "
 		Validates &nbsp;
 		<a href=\"http://validator.w3.org/check?uri=referer\">XHTML 5</a> &nbsp; 
@@ -24,7 +24,6 @@
 	define("PATH_LIB"	 , dirname(__FILE__) . "/libs/");
 	
 	define("PATH_CONFIG" , PATH_SOURCE . "config/");
-	define("PATH_LAYOUT" , PATH_SOURCE . "layout/" . APP_THEME . "/");
 	define("PATH_LANG"	 , PATH_SOURCE . "lang/");
 	define("PATH_FUNC"   , PATH_SOURCE . "func/");
 	define("PATH_MOD"    , PATH_SOURCE . "mod/");
@@ -38,8 +37,6 @@
 	define("PATH_SITE" 		  , PATH_SITE_LOC . "index.php");
 	define("PATH_SITE_SRC" 	  ,	PATH_SITE_LOC . "Src/");
 	
-	define("PATH_SITE_LAYOUT" , PATH_SITE_SRC . "/layout/" . APP_THEME . "/");
-	define("PATH_CSS" 		  , PATH_SITE_LAYOUT . "css/");	
 	define("PATH_SITE_RSS"	  , PATH_SITE_SRC . "rss/feed.xml");
 	define("PATH_JS" 	 	  , PATH_SITE_SRC . "javascript/");
 	define("PATH_SITE_LIBS"	  , PATH_SITE_LOC . "/libs/");
@@ -49,12 +46,8 @@
 	//Settings for the database connection	
 	require_once(PATH_CONFIG . "sql-config.php");
 	
-	
-	
 	$menuArr = array(
 		"home" 		=> "Home",
-		"install" 	=> "Install",
-	
 	);
 	
 	//Get moduleconfiguration
@@ -64,7 +57,7 @@
 	define("PATH_MODCSS",  serialize($css));
 	
 	$menuArr["showfiles"] = "Show files";
-	$menuArr["changestyle/purple"] = "Change Stylesheet";
+	#$menuArr["changestyle/purple"] = "Change Stylesheet";
 	//Menu array
 	
 	define("APP_MENU", 	   serialize($menuArr));

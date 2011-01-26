@@ -18,6 +18,7 @@
 						<button type='submit' class='nocssbutt wymupdate' id='button_publish' rel='forum_post' name='save' value='publish' 	>Publish</button>
 					</div>
 					<div class='clear'></div>
+					<input type='hidden' id='flush' name='flush' value='0' />
 				</form>
 			</div>
 		";

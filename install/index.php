@@ -1,8 +1,7 @@
 <?php
-	#session_save_path('/home/saxon/students/20101/krlb10/sessions');
-	
+    
 	session_start();
-	
+	$manager = true;
 	//Configfile holding most configvalue
 	require_once("config.php");
 		 
@@ -10,37 +9,62 @@
 	require_once(PATH_FUNC . "autoloader.php");
 	spl_autoload_register('autoLoader');
 	
-	//Starts some classes for the engine
 	$defaults  = new defaults();
 	$LangClass = new Language("en");
+	$page = "step1.php";
 	
-	//Gets the userspace config
-	require_once(PATH_CONFIG . "get-app-config.php");
+	$LangClass->getLangFiles(dirname(__FILE__) . "/lang/");
 	
 	//Imports the htmlpurifier lib
 	require_once(PATH_LIB . "htmlpurifier/library/HTMLPurifier.auto.php");
 	
 	//Files holding the default layout
-	require_once(PATH_LAYOUT . "html_layout.php");
+	#require_once(PATH_LAYOUT . "html_layout.php");
+	require_once(PATH_LAYOUT . "manager_layout.php");
 	require_once(PATH_LAYOUT . "html_elements.php");
 	
-	//Starts the pageclass handling the design 
-	$PageClass = new CHTMLPage();
-	
-	//Sets som controle values
-	$indexIsVisited  = true;
-	$updateCssValues = false;
-	$styleVar = null;
+	//Starts some classes from the engine
+	$PageClass = new manager_design(false,false,"manager.css");
+	/*
+	if (isset($_POST['dummyData'])) {
+		require_once(PATH_FUNC . "install.php");
+	}
+	else {
+		$prefixText = (DB_PREFIX != "") ? ", all tables is going to be installed with the prefix ".DB_PREFIX : null;
+		$body = "
+			<h1>Installation</h1>
+			<p>
+				This is going to install the database for the application{$prefixText}. <br />
+				<span style='color: #e62011; font-weight: bold;'>Warning</span> this is going to remove existing tables. 
+			</p>
+				
+				<form action='' id='installForm' method='post'> 
+					Do you want to fill the tables with dummy data? &nbsp;
+					 <input type='radio' checked='checked' name='dummyData' value='1' /> Yes
+					 <input type='radio' name='dummyData' value='0' /> No 
+					 <p>
+					 	<input type='submit' name='send' rel='installForm' value='Install' />
+					 </p>
+				</form>
+		";
+	}		
+		*/
 		
-	//Gets the sites
-	require_once(PATH_FUNC . "loadPages.php");
+	if (isset($_GET['step'])) {
+		if ($_GET['step'] == 2) {
+			require_once("step2.php");
+		}
+	}	
+	else {
+		require_once("step1.php");
+	}
 		
 	//Checks thrue all design values that the pages can set and sets them to some default values if they isnt set
 	$body  	      = (isset($body)) ? $body : null;
 	$sideBox 	  = (isset($sideBox)) ? $sideBox : false;
 	$layout       = (isset($layout)) ? $layout : false;
 	$sideBoxFloat = (isset($sideBoxFloat)) ? $sideBoxFloat : 'right';
-	$layout 	  = (isset($_SESSION['Layout'])) ? $_SESSION['Layout'] : $layout;
+	$layout 	  = "1col_std";
 	
 	//Controls the layout and sets it
 	if ($layout != false) {

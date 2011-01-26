@@ -7,7 +7,9 @@
 					$tableTopics,
 					
 					$procGetPost,
-					$procDiscardPost;
+					$procDiscardPost,
+					$procHandleDraftPost,
+					$procPublishPost;
 					 
 		public function __construct($db) {
 				
@@ -19,6 +21,9 @@
 			
 			$this->procGetPost 		= DB_PREFIX . "getPostOrDraft";
 			$this->procDiscardPost 	= DB_PREFIX . "discardPost";
+			$this->procHandleDraftPost = DB_PREFIX . "handleDraftPost";
+			$this->procPublishPost = DB_PREFIX . "publishPost";
+			
 			
 		}
 	}

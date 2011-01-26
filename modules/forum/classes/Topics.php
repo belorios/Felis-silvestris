@@ -28,7 +28,6 @@
 			if (isset($row['updated'])) {
 				$result['updated']  = $defaults->sweDate($dateformat, $row['updated']);
 				$result['Updtime']  = date("H:i", $row['updated']);
-				$result['postUser'] = $row['postUser'];
 				$result['postId']   = $row['postId'];
 				$result['answers']  = $row['rows'];
 			}
@@ -66,22 +65,20 @@
 			 	SELECT 
 			 		T.*, 
 			 		U1.username, 
-			 		U2.username as postUser, 
 			 		COUNT(P.idPosts) as rows, 
 			 		MAX(P.created) as updated,
 			 		MAX(P.idPosts) as postId 
 			 	FROM {$this->tableTopics} T 
 				JOIN {$this->tableUsers} U1 ON U1.idUsers = T.idUsers
 				JOIN {$this->tablePosts} P ON P.idTopics = T.idTopics AND P.Published = 1
-				JOIN {$this->tableUsers} U2 ON U2.idUsers = P.idUsers
 				GROUP BY idTopics ASC
 				ORDER BY updated DESC
 				$limit			
 			";
 			
-			$get = $this->db->prepare($query);
+			#echo $query;
 			
-			$get->bindParam(':id', $id, PDO::PARAM_INT);
+			$get = $this->db->prepare($query);
 			
       		//Checks if the transaction to the database succeded
 			if ($get->execute()) {
@@ -96,6 +93,29 @@
 				return false;
 			}
 			
+		}
+		
+		public function getPostUserName($idPosts) {
+			
+			$query = "
+				SELECT username FROM {$this->tableUsers} U 
+				JOIN {$this->tablePosts} P ON P.idUsers = U.idUsers
+				WHERE idPosts = :id
+			
+			";
+			
+			$get = $this->db->prepare($query);
+			
+			$get->bindParam(':id', $idPosts, PDO::PARAM_INT);
+			
+			//Checks if the transaction to the database succeded
+			if ($get->execute()) {
+				return $get->fetch();
+			}
+			else {
+				$this->debug("Couldnt get the username", $query);
+				return false;
+			}
 		}
 			
 		public function createTopic($title) {

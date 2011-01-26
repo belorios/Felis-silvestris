@@ -143,7 +143,7 @@
 		public function getUserData($id) {
 			
 			if (!is_numeric($id) && $id != null) {
-				$_SESSION['errorMessage'] = "Kan inte läsa användaren";
+				$_SESSION['errorMessage'] = $this->lang['FAULT_READING_USER'];
 				return;
 			}
 			
@@ -160,10 +160,42 @@
 				return $get->fetch();
 			}
 			else {
-				$fail = "Kunde inte spara inlägget";
-				if ($_SESSION['debug'] == true)
-					$fail .= "<p>Den felande queryn: <br /> <b>$query</b></p>";
-				throw new Exception ($fail);
+				$this->debug($this->lang['FAULT_READING_USER'], $query);
+				return false;
+			}		
+		}
+		
+		public function getGravatar($gravatar) {
+			
+			include_once(PATH_LIB . 'gravatar/TalkPHP_Gravatar.php');
+			include_once(PATH_LIB . 'gravatar/TalkPHP_Gravatar_Cache.php');
+			
+			$pAvatar = new TalkPHP_Gravatar();
+		
+			return $pAvatar	->	setEmail($gravatar)
+							->	setSize(80)
+							->	setRating('GRAVATAR_RATING_PG')
+							->	getAvatar();
+			
+		}
+		
+		//Gets all info about a user from the username
+		public function getUserDataByUsername($username) {
+			
+			$query = "
+				SELECT U.*, G.* FROM {$this->tableUsers} U
+				JOIN {$this->tableGroupUsers} GU ON GU.idUsers = U.idUsers
+				JOIN {$this->tableGroups} G ON G.idGroups = GU.idGroups
+				WHERE U.username = :user
+			";
+			$get = $this->db->prepare($query);
+			$get->bindParam(":user", $username, PDO::PARAM_STR);
+			
+			if ($get->execute()) {
+				return $get->fetch();
+			}
+			else {
+				$this->debug($this->lang['FAULT_READING_USER'], $query);
 				return false;
 			}		
 		}
@@ -192,16 +224,17 @@
 			}	
 		}
 		
-		public function registerUser($username, $fname, $lname, $email, $password, $group=False) {
+		public function registerUser($username, $fname, $lname, $email, $password, $gravatar, $group=False) {
 			$_SESSION['debug'] = true;
 			$name = "$fname $lname"; 
-			$query = "INSERT INTO {$this->tableUsers} (username, realname, email, passwd) VALUES (:user,:real,:mail,:pass)";
+			$query = "INSERT INTO {$this->tableUsers} (username, realname, email, passwd, gravatar) VALUES (:user,:real,:mail,:pass,:grav)";
 			
 			$set = $this->db->prepare($query);
 			$set->bindParam("user", strip_tags($username), 	PDO::PARAM_STR);
 			$set->bindParam("real", strip_tags($name), 		PDO::PARAM_STR);
 			$set->bindParam("mail", strip_tags($email), 	PDO::PARAM_STR);
 			$set->bindParam("pass", $this->passwdHash($password), PDO::PARAM_STR);
+			$set->bindParam("grav", $gravatar, PDO::PARAM_STR);
 			
 			if ($set->execute()) {
 					
@@ -218,7 +251,7 @@
 				}
 				else {
 					$this->debug("", $gQuery);
-				return false;
+					return false;
 				}
 			}
 			else {
@@ -228,8 +261,8 @@
 			
 		}
 		
-		public function validateUserInput($username, $fname, $lname, $email, $password, $passConf, $emailConf) {
-			$this->saveUserTempData($username, $fname, $lname, $email, $emailConf);
+		public function validateUserInput($username, $fname, $lname, $email, $password, $passConf, $emailConf, $gravatar) {
+			$this->saveUserTempData($username, $fname, $lname, $email, $emailConf, $gravatar);
 			
 			$Validation = new Validation();
 			
@@ -276,11 +309,12 @@
 			}
 		}
 		
-		public function saveUserTempData($username, $fname, $lname, $email, $emailConf) {
+		public function saveUserTempData($username, $fname, $lname, $email, $emailConf, $gravatar) {
 			$_SESSION['regEdit']['username']  = $username;
 			$_SESSION['regEdit']['email'] 	  = $email;
 			$_SESSION['regEdit']['fname'] 	  = $fname;
 			$_SESSION['regEdit']['lname'] 	  = $lname;
 			$_SESSION['regEdit']['emailConf'] = $emailConf;
+			$_SESSION['regEdit']['gravatar']  = $gravatar;
 		}
 	}

@@ -30,6 +30,7 @@
 				"content"  => $row['post'],
 				"title"    => $row['title'],
 				"topic"	   => $row['idTopics'],
+				"gravatar" => @$row['gravatar'],
 			);
 			
 			return $result;
@@ -120,7 +121,7 @@
 			$user = $_SESSION['userId'];
 			$date   = time();
 				
-			$query = "call {$this->prefix}handleDraftPost(:postId, :title, :content, :created, :userId, :topicId, @outId)";
+			$query = "call {$this->procHandleDraftPost}(:postId, :title, :content, :created, :userId, :topicId, @outId)";
 			
 			$get = $this->db->prepare($query);
 			$get->bindParam(':title',   $title, 	PDO::PARAM_STR);
@@ -133,7 +134,7 @@
       		//Kontrollerar så att databastransaktionen lyckades
 			if ($get->execute()) {
 				if ($flush == true) {
-					$query = "call {$this->prefix}publishPost(:postId);";
+					$query = "call {$this->procPublishPost}(:postId);";
 					$get = $this->db->prepare($query);
 					$get->bindParam(':postId', $idPosts, PDO::PARAM_INT);
 					if (!$get->execute()) {
@@ -166,10 +167,10 @@
 			
 			$fail = array();
 			if (!$Validation->checkValues("Heading", $header, 3)) {
-				$fail[] = "Rubriken har inte blivit korrekt inmatad (minst 3 tecken) ";
+				$fail[] = $this->lang['VALIDATION_TITLE'];
 			}
 			if (!$Validation->checkValues("Length", $content, 20)) {
-				$fail[] = "Innehållet har inte blivit korrekt inmatat (minst 20 tecken) ";
+				$fail[] = $this->lang['VALIDATION_CONTENT'];
 			}
 			
 			return $fail;

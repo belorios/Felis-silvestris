@@ -1,4 +1,6 @@
 <?php
+
+	$Users = new Users();
 	
 	function handleError($path, $ajax=false, $error=false) {
 		if ($ajax == false) {
@@ -43,13 +45,12 @@
 		case "register" :
 			
 			$page = PATH_SITE . "/register";
-			$Users = new Users();
 			
-			if ($Users->validateUserInput($_POST['username'], $_POST['fname'], $_POST['lname'], $_POST['email'], $_POST['password'], $_POST['password_conf'], $_POST['email_conf'])) {
+			if ($Users->validateUserInput($_POST['username'], $_POST['fname'], $_POST['lname'], $_POST['email'], $_POST['password'], $_POST['password_conf'], $_POST['email_conf'], $_POST['gravatar'])) {
 				
 			
 				try {
-					$Users->registerUser($_POST['username'], $_POST['fname'], $_POST['lname'], $_POST['email'], $_POST['password']);
+					$Users->registerUser($_POST['username'], $_POST['fname'], $_POST['lname'], $_POST['email'], $_POST['password'], $_POST['gravatar']);
 					$body = success($lang['SUCCESS_REGISTER'], false, false);
 				}
 				catch ( Exception $e) {
@@ -64,5 +65,8 @@
 			header("Location: $page");
 			exit;
 		}
+			break;
+		case "edit" :
+			$Users->checkPrivilegies(); 
 			break;
 	}

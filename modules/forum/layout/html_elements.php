@@ -1,10 +1,11 @@
 <?php
 
-	function forum_postsLayout($id, $author, $title, $content, $date, $time, $edit=null) {
+	function forum_postsLayout($id, $author, $title, $content, $date, $time, $avatar, $edit=null) {
 		return "
 			<div class='forumpost' id='$id'>
 				<div class='post_header'>$title <div class='post_handle'>$edit</div></div>
 				<div class='post_uInfo'>
+					<img src='$avatar' alt='' />
 					$author
 					$date
 					$time

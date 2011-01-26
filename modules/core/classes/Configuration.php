@@ -1,6 +1,6 @@
 <?php
-	
-	class Configuration_Manager extends Manager_Database {
+
+	class Configuration extends Database {
 		
 		public function __construct($db=false) {
 			parent::__construct($db);
@@ -25,9 +25,11 @@
 			}
 		}
 		
-		public function getAllConfigItems() {
+		public function getAllConfigItems($global=false) {
 			
-			$sql = "SELECT * FROM {$this->tableConfig} c WHERE active = 'y'";
+			$globalSQL = ($global == true) ? " AND global = 1 " : null;
+			
+			$sql = "SELECT * FROM {$this->tableConfig} c WHERE active = 'y' $globalSQL";
 			$get = $this->db->prepare($sql);	
 			
 			if ($get->execute()) {
@@ -74,7 +76,4 @@
 				return false;
 			}
 		}
-		
-		
-		
 	}

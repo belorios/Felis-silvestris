@@ -27,15 +27,16 @@
 	
 $(document).ready(function() {
 		$(":submit").each(function(){
-        	$(this).replaceWith("<a class='button submitbutton' id='" + $(this).attr('id') + "' rel='" + $(this).attr('rel') + "' href='' ><span>" + $(this).val() + "</span></a>");
+        	//$(this).replaceWith("<a class='button submitbutton' id='" + $(this).attr('id') + "' rel='" + $(this).attr('rel') + "' href='' ><span>" + $(this).val() + "</span></a>");
         });
         $(":reset").each(function(){
-        	$(this).replaceWith("<a class='button submitbutton' href='' ><span>" + $(this).val() + "</span></a>");
+        	//$(this).replaceWith("<a class='button submitbutton' href='' ><span>" + $(this).val() + "</span></a>");
         });
-
+/*
 		$(".submitbutton").click(function (event) {
 	    	event.preventDefault();
-	    	$('#' + $(this).attr('rel')).submit();
+	    	alert($(this).attr('rel'));
+	    	//$('#' + $(this).attr('rel')).submit();
 	    });
-		
+*/		
 	});

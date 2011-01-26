@@ -6,13 +6,14 @@
 	
 	$lang = array(
 		
-		"USERNAME" => "Username",
-		"PASSWORD" => "Password",
-		"EMAIL" => "Email",
-		"CONFIRM" => "Confirm",
-		"REGISTER" => "Register",
-		"FNAME" => "Firstname",
-		"LNAME" => "Lastname",
+		"USERNAME" 	=> "Username",
+		"PASSWORD" 	=> "Password",
+		"EMAIL" 	=> "Email",
+		"CONFIRM" 	=> "Confirm",
+		"REGISTER" 	=> "Register",
+		"FNAME" 	=> "Firstname",
+		"LNAME" 	=> "Lastname",
+		"GRAVATAR" 	=> "Gravatar",
 		
 		"FNAME_FAIL" => "You have to type your firstname correctly",
 		"LNAME_FAIL" => "You have to type your lastname correctly",
@@ -25,6 +26,9 @@
 		
 		"DEBUG_QUERY_FAIL" => "The db query that failed to run: ",
 		"SUCCESS_REGISTER" => "Successfully saved your userdata",
+		
+		"FAULT_READING_USER" => "Cannot read the userdata",
+		"EDIT" => "Edit",
 		
 	);
 	

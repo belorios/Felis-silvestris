@@ -1,8 +1,7 @@
-var flush = 0;
-var redirect = false;
-
 $(document).ready(function(){
-
+	
+	var flush 	 = 0;
+	
 	var autosave = {
 		interval: 5000,
 		
@@ -35,8 +34,9 @@ $(document).ready(function(){
 	$('#button_publish').click(function(event) {
 		
 		flush 	 = 1;
-		redirect = true;
 		
+		//Changes the hidden flush value to 1
+		$('#flush').attr('value', '1');
 		$('#postEditor').submit();
 	});
 	$('#button_discard').click(function(event) {
@@ -48,7 +48,31 @@ $(document).ready(function(){
 		});
 	});
 	
-	handleForm(flush);	
+	//handleForm(muff);	
+	
+	
+	$('#postEditor').ajaxForm({
+			dataType:  'json', 
+			data: { ajax: true },
+			success: function(data) {
+				autosave.stop();
+				$('div.jGrowl').find('div.jGrowl-notification').children().parent().remove();		//Removes previous notifications
+				if (data.error !== undefined) {
+					$.jGrowl(data.error, { header: data.header, sticky: true });
+				}
+				else {
+					$.jGrowl(data.message);
+					if (flush == 1) {
+						$.jGrowl("You are being redirected");
+						setTimeout(function() {
+							window.location=data.path;
+						}, 2000);
+					}
+				}
+					
+			}
+		}); 	
+	
 	/*
 	$('#postEditor').click(function(event) {
 		var flush = 0;	
@@ -75,29 +99,6 @@ $(document).ready(function(){
 		handleForm(flush);
 	});		
 	*/
-	function handleForm(flush) {
-		$.jGrowl(flush);
-		$('#postEditor').ajaxForm({
-			dataType:  'json', 
-			data: { ajax: true, flush: flush },
-			success: function(data) {
-				autosave.stop();
-				$('div.jGrowl').find('div.jGrowl-notification').children().parent().remove();		//Removes previous notifications
-				if (data.error !== undefined) {
-					$.jGrowl(data.error, { header: data.header, sticky: true });
-				}
-				else {
-					$.jGrowl(data.message);
-					if (flush == true) {
-						$.jGrowl("You are being redirected");
-						setTimeout(function() {
-							window.location=data.path;
-						}, 2000);
-					}
-				}
-					
-			}
-		}); 	
-	}
+	
 		
 });

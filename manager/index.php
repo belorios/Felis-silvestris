@@ -50,3 +50,5 @@
 	echo $PageClass->definePageFooter(); 
 		
 	echo $PageClass->printPage();	
+	
+	echo APP_STYLE;

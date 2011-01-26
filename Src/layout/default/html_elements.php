@@ -58,8 +58,8 @@
 						<input type='password' name='passwd' value='11111' onclick='this.value=\"\"'  />
 					</p>
 					<div class='righty_buttons' >
-						<input type='submit' name='login' rel='loginForm' value='Login' />
-						<a class='button' href='".PATH_SITE."/register'><span>Register</span></a> 
+						<input class='submitbutton' type='submit' name='login' value='Login' />
+						<a class='submitbutton' href='".PATH_SITE."/register'><span>Register</span></a> 
 					</div>
 					<div class='clear'></div>
 				</form>
@@ -72,9 +72,9 @@
 		foreach ($menu as $item) {
 			$menuItems .= "<li><a href='".PATH_SITE."/$item[url]'>$item[desc]</a></li>";
 		}
-		
+		$urlUserName = urlencode($username);
 		return sideboxLayout("Logged in as", "
-			<span class='mark'>$realname</span><br />
+			<span class='mark'><a href='".PATH_SITE."/showUser/$urlUserName'>$realname</a></span><br />
 			<ul id='loginMenu'>
 				$menuItems
 			</ul>

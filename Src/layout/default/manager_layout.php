@@ -21,7 +21,7 @@
 					<div id='container'>
 						<div id='top_ribbon'>
 							<div id='top_ribbon_text'>
-								<h1>$Heading[Header]</h1>
+								<a href='".PATH_SITE."'><h1>$Heading[Header]</h1></a>
 								<nav id='menu' >$Menu</nav>
 							</div>
 						</div>

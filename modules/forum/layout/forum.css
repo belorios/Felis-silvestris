@@ -39,7 +39,7 @@
 		
 	.post_cont {
 		border-left: 1px solid grey;
-		min-height: 100px;
+		min-height: 140px;
 		padding: 5px;
 	}
 
@@ -57,6 +57,7 @@
 	#postsTable #header td{
 		color: #fff;
 		padding: 2px;
+		background: #2E5480;
 		background: -moz-linear-gradient(100% 70% 90deg, #2E5480, #5487c0);
  		background: -webkit-gradient(linear, 0% 20%, 0% 100%, from(#5487c0), to(#2E5480));
 	}

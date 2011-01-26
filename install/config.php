@@ -6,7 +6,7 @@
 	$webPath = $_SERVER['SERVER_NAME'] . preg_replace("/[A-Z]+\/+[A-Z]+.php/i", "", $_SERVER['SCRIPT_NAME']);
 	
 	//Default values - mooove to database!
-	define("APP_HEADER",      "Manager");
+	define("APP_HEADER",      "Installer for Felis Silvestris");
 	define("APP_DESCRIPTION", "Try to tame me");
 	define("APP_FOOTER",      "Felis silvestris");
 	define("APP_THEME", "default");
@@ -17,7 +17,7 @@
 	");
 	define("APP_STYLE" , "manager.css");	
 	
-	$directory = str_replace("manager", "", dirname(__FILE__));
+	$directory = str_replace("install", "", dirname(__FILE__));
 	
 	//Filepathes
 	define("PATH_PAGES"  , $directory . "/Pages/");
@@ -47,7 +47,10 @@
 	
 	
 	//Settings for the database connection	
-	require_once(PATH_CONFIG . "sql-config.php");
+	if (file_exists(PATH_CONFIG . "sql-config.php")) {
+		require_once(PATH_CONFIG . "sql-config.php");
+	}
+	
 	
 	$menuArr = array();
 	

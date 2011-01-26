@@ -53,6 +53,7 @@
 		  username VARCHAR(40)  NOT NULL UNIQUE,
 		  realname VARCHAR(60)  NOT NULL,
 		  email    VARCHAR(100) NOT NULL,
+		  gravatar VARCHAR(100) NOT NULL,
 		  passwd   VARCHAR(64)  NOT NULL
 		) ENGINE=InnoDB CHARSET=utf8 COLLATE utf8_swedish_ci
 	";
@@ -140,6 +141,7 @@
 			descname	VARCHAR(50) NOT NULL,
 			module		INT NOT NULL,
 			value  		VARCHAR(255) NOT NULL,
+			global 		TINYINT(1) NOT NULL,
 			active 		ENUM('y','n')
 		)
 		ENGINE=InnoDB CHARSET=utf8 COLLATE utf8_swedish_ci;	
@@ -320,16 +322,17 @@
 	
 	//Adding data to the configurationdatabase
 	$sqlCreateData['Config'] = "
-		INSERT INTO $tables[Config] (type, name, description, descname, module, value, active) VALUES 
-		('text', 'app_name', 'Sets the name on the application', 'Application name', 1, 'Felis Silvestris', 'y'),
-		('text', 'app_footer', 'Sets the name on the footer for the application', 'Application footer', 1, 'Felis Silvestris', 'y'),
-		('multitext', 'recaptcha', 'Sets the settings to enable recaptcha', 'Recaptcha', 1, '', 'y')
+		INSERT INTO $tables[Config] (type, name, description, descname, module, value, global, active) VALUES 
+		('text', 'app_name', 'Sets the name on the application', 'Application name', 1, '{$_SESSION['formdata']['app_name']}', 1, 'y'),
+		('text', 'app_footer', 'Sets the name on the footer for the application', 'Application footer', 1, '{$_SESSION['formdata']['app_footer']}', 1, 'y'),
+		('text', 'app_payoff', 'Sets the name on the payoff for the application', 'Application Pay off', 1, '{$_SESSION['formdata']['app_payoff']}', 1, 'y'),
+		('multitext', 'recaptcha', 'Sets the settings to enable recaptcha', 'Recaptcha', 1, '1', 0, 'y')
 	";
 	
 	$sqlCreateData['ConfigValues'] = "
 		INSERT INTO $tables[ConfigValues] (idConfig, type, name, description, descname, value, active) VALUES 
-		(3, 'text', 'recap_public', 'Sets the public id for your recaptcha', 'Public ID', '', 'y'),
-		(3, 'text', 'recap_private', 'Sets the private id for your recaptcha', 'Private ID', '', 'y')
+		(4, 'text', 'recap_public', 'Sets the public id for your recaptcha', 'Public ID', '', 'y'),
+		(4, 'text', 'recap_private', 'Sets the private id for your recaptcha', 'Private ID', '', 'y')
 	";
 	
 	if ($_POST['dummyData'] == '1') {	

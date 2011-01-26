@@ -19,10 +19,10 @@
 					$BodyExtra;
 				
 		
-		function __construct($layout = false, $menuArr = false, $stylesheet = false) {
+		function __construct($layout = false, $menuArr = false, $stylesheet = APP_STYLE) {
 			
 			//Handles stylesheet
-			$this->addStyleSheet(APP_STYLE, PATH_CSS);
+			$this->addStyleSheet($stylesheet, PATH_CSS);
 			$this->stylesheet = array_merge($this->stylesheet, unserialize(PATH_MODCSS));
 			
 			$this->charset = "UTF-8";
