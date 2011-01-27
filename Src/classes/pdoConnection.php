@@ -9,7 +9,7 @@
 			#Defines the connection variables from the configfile
 			$this->host =    	"mysql" .
 			':host=' . 	DB_HOST   .
-			';dbname=' .DB_SCHEMA;
+			';dbname=' .DB_SCHEMA . ";charset=UTF-8";
 			$this->username = DB_USER;
 			$this->password = DB_PASS;
 			

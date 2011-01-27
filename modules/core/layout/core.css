@@ -17,3 +17,20 @@
 	}
 	
 
+
+#profile {
+	margin: 10px 0px;
+}
+
+	#profile_pic {
+		float:left;
+	}
+	
+	#profile table {
+		border-spacing: 0;
+	}
+	
+	#profile .first_element {
+		font-weight: bold;
+		padding: 2px 5px 0px 0px;
+	}

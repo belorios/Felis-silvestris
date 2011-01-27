@@ -19,17 +19,30 @@
 		$_SESSION['errorMessage'][] = $e->getMessage();
 		return;
 	}
-#substr($userData['username'], -1)	
+
 	$h1Username = (preg_match("/[sxz]/i", substr($userData['username'], -1))) ? $userData['username'] : "{$userData['username']}s" ;
 	
-	
+	$gravatar = $Users->getGravatar($userData['gravatar']);
 	
 	$body = "
 		
-		<div style='float: right'><a href='" . PATH_SITE . "/editProfile/id-$id' />$lang[EDIT]</a></div>
+		<div style='float: right; margin: 5px;'><a class='submitbutton' href='" . PATH_SITE . "/editProfile/id-$id' />$lang[EDIT]</a></div>
 		
 		<h1>Looking at $h1Username profile</h1>
 		
-		
+		<div id='profile'>
+			<img id='profile_pic' src='$gravatar' alt='' />
+			<table style='float:left; margin: 3px 10px'>
+				<tr>
+					<td class='first_element'>$lang[NAME]:</td>
+					<td>{$userData['realname']}</td>
+				</tr>
+				<tr>
+					<td class='first_element'>$lang[EMAIL]:</td>
+					<td><a href='mailto:{$userData['email']}'>{$userData['email']}</a> </td>
+				</tr>
+			</table>
+			<div style='clear:both;'></div>
+		</div>
 		
 	";

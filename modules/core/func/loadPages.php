@@ -19,4 +19,5 @@
 		"register"		 => "users/register.php",
 		"handleUserForm" => "users/handleUserData.php",
 		"showUser"		 => "users/showProfile.php",
+		"editProfile"	 => "users/editProfile.php",
 	);

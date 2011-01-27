@@ -7,12 +7,17 @@
 					$tableGroupUsers,
 					$tableConfig,
 					$tableConfigValues,
+					$tablesUsers,
 					$db,
 					$pdo,
 					$lastInsertedId,
 					$lang;
 					 
 		public function __construct($db) {
+			
+			$this->tablesUsers = array("
+				
+			");
 			
 			$this->tableUsers 		 = DB_PREFIX . "Users";
 			$this->tableGroups 		 = DB_PREFIX . "Groups";
