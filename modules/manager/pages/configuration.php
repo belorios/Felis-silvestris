@@ -177,7 +177,7 @@
 				$config
 			</table>
 			<input type='hidden' name='send' value='1' />
-			<input type='submit' rel='configForm' value='Spara' />
+			<input type='submit' rel='configForm' value='$lang[SAVE]' />
 		</form>		
 	";
 

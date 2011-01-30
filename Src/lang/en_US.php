@@ -11,6 +11,11 @@
 		"RETURN" 	=> "Return to last page",
 		"SEND" 	 	=> "Send",
 		"RESET"    	=> "Reset",
+		"SAVE"	 	=> "Save",
+		"REMOVE" 	=> "Remove",
+		"DELETE" 	=> "Delete",
+		"EDIT"		=> "Edit",
+		"GO_BACK" 	=> "Go back",
 		
 		"JANUARY" 	=> "January",
 		"FEBRUARY" 	=> "February",
@@ -54,7 +59,8 @@
 		"SAT" => "Sat", 
 		"SUN" => "Sun",
 		
-		
+		"HAVE_TO_BE_LOGGEDIN" 	 => "You have to be logged in to be use this page",
+		"WRONG_PERMISSIONS_FAIL" => "You doesnt have enough privilegies to visit this page",
 	);
 	
 	$links = array(

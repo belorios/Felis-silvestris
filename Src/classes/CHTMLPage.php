@@ -205,7 +205,7 @@
 			 }
 			 else {
 			 	$menu = "
-					<a href='".PATH_SITE."/login'>Logga in</a>
+					<a href='".PATH_SITE."/login'>Log in</a>
 				";
 			 }
 			

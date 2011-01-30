@@ -24,9 +24,12 @@
 	
 	$gravatar = $Users->getGravatar($userData['gravatar']);
 	
+	//Checks if it should show an edit button
+	$editButton = ($Users->checkUserRights($id, "adm")) ? "<div style='float: right; margin: 5px;'><a class='submitbutton' href='" . PATH_SITE . "/editProfile/id-$id' />$lang[EDIT]</a></div>" : null;
+		
 	$body = "
 		
-		<div style='float: right; margin: 5px;'><a class='submitbutton' href='" . PATH_SITE . "/editProfile/id-$id' />$lang[EDIT]</a></div>
+		$editButton
 		
 		<h1>Looking at $h1Username profile</h1>
 		

@@ -120,7 +120,7 @@ a.button span {
 		height: 40px;
 		width: 100%;
 		background: #aeaeae;
-		background: -webkit-gradient(linear, left top, left bottom, from(#959595), to(#aeaeae));
+		background: -webkit-gradient(linear, left top, left bottom, from(#eee), to(#ccc));
 		background: -moz-linear-gradient(top, #eee, #ccc);
 		box-shadow: 0 0 5px 2px #d2d2d2;
 		-moz-box-shadow: 0 0 5px 2px #d2d2d2;
@@ -152,7 +152,7 @@ a.button span {
 		border: solid;
 		border-width: 0px 1px 1px 1px;
 		margin: 0 50px;
-		background: white;
+		background: #F3F3F3;
 		box-shadow: 0 0 5px 2px #d2d2d2;
 		-moz-box-shadow: 0 0 5px 2px #d2d2d2;
 		-webkit-box-shadow: 0 0 5px 2px #d2d2d2;
@@ -308,7 +308,7 @@ textarea {
 	height: 33px;
 	margin: 0px 0px 0px 0px;
 	background: #aeaeae;
-	background: -webkit-gradient(linear, left top, left bottom, from(#959595), to(#aeaeae));
+	background: -webkit-gradient(linear, left top, left bottom, from(#eee), to(#ccc));
 	background: -moz-linear-gradient(top, #eee, #ccc);
 	box-shadow: 0 0 5px 2px #d2d2d2;
 	-moz-box-shadow: 0 0 5px 2px #d2d2d2;

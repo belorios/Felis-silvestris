@@ -336,7 +336,7 @@
 		(4, 'text', 'recap_private', 'Sets the private id for your recaptcha', 'Private ID', '', 'y'),
 		(5, 'select', 'nicedit', 'Sets nicEdit as the applications editor', 'nicEdit', 0, 'y'),
 		(5, 'select', 'markitup', 'Sets markitup as the applications editor', 'markitup', 0, 'y'),
-		(5, 'select', 'tinymce', 'Sets tinymce as the applications editor', 'tinymce', 0, 'y'),
+		(5, 'select', 'tinymce', 'Sets tinymce as the applications editor', 'tinymce', 1, 'y'),
 		(5, 'select', 'plain', 'Sets a plain editor as the applications editor', 'plain', 0, 'y'),
 		(5, 'select', 'wymeditor', 'Sets wymEditor as the applications editor', 'wymEditor', 0, 'y')
 	";

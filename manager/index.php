@@ -22,7 +22,6 @@
 	$LangClass->getLangFiles();
 	$PageClass = new manager_design();
 	
-	
 	//Startar kontrollv�rde s� att man kan anv�nda pagecontrollers
 	$indexIsVisited  = true;
 	$updateCssValues = false;
@@ -45,6 +44,14 @@
 	$_SESSION['stylesheet'] = isset($_SESSION['stylesheet']) ? $_SESSION['stylesheet'] : array();
 	foreach ($_SESSION['stylesheet'] as $key => $style) {
 		$PageClass->addStyleSheet($key, null, false, $style);
+	}
+	
+	$Users = new Users();
+	if ($Users->checkPrivilegies("adm", PARENT_SITE) == false) {
+		echo $_SESSION['errorMessage'];
+		echo "<br /><a href='".PARENT_SITE."'>$lang[GO_BACK]</a>";
+		$_SESSION['errorMessage'] = null;
+		return;
 	}
 	
 	echo $PageClass->defineHeaders($page); 

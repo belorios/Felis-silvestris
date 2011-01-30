@@ -40,7 +40,6 @@
 		
 		"FAIL_CUR_TYPE_PASS" => "You didnt type your current password correctly",
 		
-		
 	);
 	
 	$links = array(

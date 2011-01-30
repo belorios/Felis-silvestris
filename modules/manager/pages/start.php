@@ -1,4 +1,4 @@
 <?php
 
-	$body = "Vat wills do doo!";
+	$body = $lang['START_PAGE_TEXT'];
 

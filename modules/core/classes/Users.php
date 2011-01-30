@@ -77,8 +77,7 @@
 		}
 		
 		//Kontrollerar om användaren är inloggad och den inloggades rättigheter
-		public function checkPrivilegies($grp=false) {
-			
+		public function checkPrivilegies($grp=false, $sitePath=PATH_SITE) {
 			$return = false;
 			if (isset($_SESSION['userId'])) {
 				if ($this->ctlGroup($grp)) {
@@ -88,13 +87,13 @@
 					$return = true;
 				}
 				else {
-					$_SESSION['errorMessage'] = "Du har inte rätt behörigheter för att kolla på sidan";
+					$_SESSION['errorMessage'] = $this->lang['WRONG_PERMISSIONS_FAIL'];
 				}
 			}
 			else {
-				$_SESSION['errorMessage'] = "Du måste vara inloggad för att komma åt sidan";
+				$_SESSION['errorMessage'] = $this->lang['HAVE_TO_BE_LOGGEDIN'];
 				$_SESSION['errorMessagePage'] = (isset($_GET['p'])) ? $_GET['p'] : "?";
-				header("Location: ".PATH_SITE."/login");
+				header("Location: {$sitePath}/login");
 				exit;
 			}
 
@@ -102,7 +101,7 @@
 			
 		}
 		
-		public function checkUserRights($id, $grp=false) {
+		public function checkUserRights($id, $grp=false, $msg=false) {
 			$return = false;	
 			if (isset($_SESSION['userId'])) {
 				if ($_SESSION['userId'] == $id)	{
@@ -114,6 +113,9 @@
 				elseif ($grp == false) {
 					$return = true;
 				}
+			}
+			if ($return == false && $msg == true) {
+				$_SESSION['errorMessage'] = $this->lang['WRONG_PERMISSIONS_FAIL'];
 			}
 			return $return;
 		}

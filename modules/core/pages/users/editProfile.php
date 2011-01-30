@@ -1,8 +1,13 @@
 <?php
-
-	$Users = new Users();
-	$Users->checkPrivilegies();
 	
+	//Checks users rights to edit this
+	$Users = new Users();
+	
+	if ($Users->checkUserRights($id, "adm", true) == false) {
+		return;
+	}
+	
+	//Picks the userdata from the database
 	try {
 		if (!isset($action)) {
 			$userData = $Users->getUserData($id);

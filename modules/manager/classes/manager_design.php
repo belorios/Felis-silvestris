@@ -12,7 +12,7 @@
 		public function buildManagerTopMenu() {
 				
 			if(isset($_SESSION['userId'])) {
-				$menu = "Logged in as $_SESSION[username], <a href=''>Logout</a>";
+				$menu = "Logged in as $_SESSION[username], <a href='".PARENT_SITE."/logout'>Logout</a>";
 			}
 			else {
 				$menu = "";
