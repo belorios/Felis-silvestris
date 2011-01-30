@@ -47,17 +47,6 @@
 		;
 	}
 	
-	//Hämtar ut alla taggar
-	if (count($getTags) > 0) {
-		$tags = null;
-		foreach ($getTags as $tag) {
-			$tags .= tagLayout($tag['id'], $tag['tagname'], $tag['antal'], "<br />");
-		}
-		
-		$sideBox .= sideboxLayout("Tagged with", "$tags"); 
-	}
-	
-	
 	//Skriver ut kommentarerna om det finns några
 	$comAmount = count($getComm);
 	if ($comAmount > 0) {
@@ -132,4 +121,14 @@
 			<a href='".PATH_SITE."/editBlogPost/id-$id'>$lang[EDIT]</a>  <br />
 			<a href='".PATH_SITE."/delBlogPost/id-$id'>$lang[DEL]</a>
 		" ) . $sideBox;
+	}
+	
+	//Hämtar ut alla taggar
+	if (count($getTags) > 0) {
+		$tags = null;
+		foreach ($getTags as $tag) {
+			$tags .= tagLayout($tag['id'], $tag['tagname'], $tag['antal'], "<br />");
+		}
+		
+		$sideBox .= sideboxLayout($lang['TAGGED_WITH'], "$tags"); 
 	}

@@ -1,7 +1,6 @@
 <?php
 	
 	$Users = new Users();
-	$Users->checkPrivilegies();
 	$Posts = new Blog_Posts();
 	
 	//Hämstar ut data för posten som ska tas bort
@@ -12,6 +11,9 @@
 		$body = "
 			<p class='warning'>{$e->getMessage()}</p>
 		";
+		return;
+	}
+	if ($Users->checkUserRights($getPost['authorId'], "adm", true) == false) {
 		return;
 	}
 	

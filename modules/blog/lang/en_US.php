@@ -38,6 +38,8 @@
 		"LAST_TEN_DAYS" => "The last ten days",
 		"LAST_MONTH" => "The last month",
 		"LAST_YEAR" => "The last year",
+		"POSTS_TAGGED_BY" => "Posts tagged by",
+		"TAGGED_WITH" =>"Tagged with",
 		
 		"VALIDATION_CONTENT" => "The content has not been correctly given (at least 20 characters)",
 		"VALIDATION_TITLE"   => "The title has not been correctly given (at least 3 characters)",
@@ -68,6 +70,8 @@
 		"POST_SAVED"   => "The blog post has now been saved successfully",
 		"COMMENT_REMOVED" => "The comment has now been removed successfully",
 		"COMMENT_SAVED"   => "The comment has now been saved successfully",
+		
+		
 		
 	);
 	

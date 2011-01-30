@@ -1,12 +1,5 @@
 <?php
 
-	//Tablenames
-	$tableUsers 	 = DB_PREFIX . "Users";
-	$tableGroups	 = DB_PREFIX . "Groups";
-	$tableGroupUsers = DB_PREFIX . "GroupUsers";
-	$tableArticles   = DB_PREFIX . "Articles"; 
-	$tableStatistics = DB_PREFIX . "Statistics";
-	
 	//Procedures
 	$procedures = array(
 		"CreateArticle"  => "PCreateNewArticle",
@@ -306,10 +299,10 @@
 	//Creating some Groups
 	$sqlCreateData['Groups'] = "
 		INSERT INTO $tables[Groups] (idGroups, shortdesc, groupdesc) VALUES 
-		('adm', 'Administratör', 'Administratörerna for sajten'),
-		('mod', 'Modes skribent', 'Skriver om mode'),
-		('skr', 'Skribent', 'Helt vanlig skribent'),
-		('std', 'Användare', 'Helt vanlig användare')
+		('adm', 'Administrator', 'Administrators of the site'),
+		('mod', 'Fashion writer', 'Writes about fashion'),
+		('skr', 'Writer', 'Regular blog writer'),
+		('std', 'User', 'Regular user')
 	";
 	
 	//Maps users against groups
