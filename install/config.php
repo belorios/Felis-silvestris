@@ -35,6 +35,7 @@
 	
 	//Webpathes
 	define("PATH_SITE_LOC" 	  , "http://$webPath");
+	define("PARENT_SITE" 	  , PATH_SITE_LOC . "index.php");
 	define("PATH_SITE" 		  , PATH_SITE_LOC . "manager/index.php");
 	define("PATH_SITE_SRC" 	  ,	PATH_SITE_LOC . "Src/");
 	

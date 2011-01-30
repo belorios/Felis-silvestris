@@ -5,6 +5,12 @@
 		"HEAD_INSTALL" => "Installer",
 		"INSTALL_TEXT_P1_1" => "Set the desired name, footer and payoff for your installation of this app.",
 		"INSTALL_TEXT_P1_DB" => "Type the settings used to connect to your database.",
+		"INSTALL_TEXT_P1_USER" => "Choose a username and password for your administrator",
+		
+		"USER_HEAD" => "Administrator",
+		
+		
+		
 		
 		"INSTALL_TEXT_P2_APP" => "This is going to install the database for the application",
 		"INSTALL_TEXT_P2_PREFIX" => "all tables is going to be installed with the prefix ",
@@ -16,9 +22,16 @@
 		"FORM_FOOTER" => "Footer text",
 		"FORM_PAY_OFF" => "Pay off",
 		
-		"DB_HEAD" => "Database configuration",
-		"FORM_DB_USER" => "Username",
-		"FORM_DB_PASS" 	 => "Password",
+		"FORM_USER" 	=> "Username",
+		"FORM_PASS" 	=> "Password",
+		"FORM_CONFIRM"  => "Confirm",
+		"FORM_EMAIL" 	=> "Email",
+		
+		"FORM_USERNAME_FAIL" => "The username for the administrator is not correctly given",
+		"FORM_USERMAIL_FAIL" => "The mail for the administrator is not correctly given",
+		"FORM_USERPASS_FAIL" => "The password for the administrator is not correctly given",
+		
+		"DB_HEAD" 		 => "Database configuration",
 		"FORM_DB_TABLE"  => "Table",
 		"FORM_DB_HOST"   => "Host",
 		"FORM_DB_PREFIX" => "Prefix",
@@ -46,7 +59,7 @@
 		"REMOVING_TRIGGER" => "Removing the trigger",
 		"CREATING_DATA" => "Creating data in the table",
 		
-		"INSTALLATION_SUCCESS" => "The installation succeded!",
+		"INSTALLATION_SUCCESS" => "The installation succeded! <br /> Please check so that the permission for the config catalog is as restrictive as possible and remove the \"install\" catalog.",
 		"INSTALLATION_FAILED"  => "
 			<b>The installation failed</b> <br /> 
 			Try to fix the faults and then try again <br />

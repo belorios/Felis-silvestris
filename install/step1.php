@@ -28,6 +28,22 @@
 			$fail[] = $lang['FORM_PAY_OFF_FAIL'];
 		}
 		
+		if (!$validation->checkValues("User", $_SESSION['formdata']['user_name'], 2)) {
+			$fail[] = $lang['FORM_USERNAME_FAIL'];
+		}
+		
+		if (!$validation->checkValues("Mail", $_SESSION['formdata']['user_mail'], 2)) {
+			$fail[] = $lang['FORM_USERMAIL_FAIL'];
+		}
+		
+		if (!$validation->checkValues("Pass", $_SESSION['formdata']['user_pass'], 2)) {
+			$fail[] = $lang['FORM_USERPASS_FAIL'];
+		}
+		
+		if (!$validation->CheckSameness($_SESSION['formdata']['user_pass'], $_SESSION['formdata']['user_pass_conf'])) {
+			$fail[] = $lang['FORM_USERPASS_FAIL'];
+		}
+		
 		
 		if (count($fail) > 0) {
 			foreach($fail as $fault) {
@@ -49,6 +65,8 @@
 		$_SESSION['formdata']['app_payoff'] = null;
 		$_SESSION['formdata']['app_footer'] = null;
 		$_SESSION['formdata']['app_name'] = null;
+		$_SESSION['formdata']['user_name'] = "admin";
+		$_SESSION['formdata']['user_mail'] = null;
 	}
 
 
@@ -99,10 +117,10 @@
 			<div id='box'>
 				<h2>{$lang['DB_HEAD']}</h2>
 				
-				<label rel='db_user'>{$lang['FORM_DB_USER']}</label>
+				<label rel='db_user'>{$lang['FORM_USER']}</label>
 				<input type='text' name='db_user' id='db_user' value='{$_SESSION['formdata']['db_user']}' />
 				
-				<label rel='db_pass'>{$lang['FORM_DB_PASS']}</label>
+				<label rel='db_pass'>{$lang['FORM_PASS']}</label>
 				<input type='text' name='db_pass' id='db_pass' value='{$_SESSION['formdata']['db_pass']}' />
 				
 				<label rel='db_host'>{$lang['FORM_DB_HOST']}</label>
@@ -113,6 +131,25 @@
 				
 				<label rel='db_prefix'>{$lang['FORM_DB_PREFIX']}</label>
 				<input type='text' name='db_prefix' id='db_prefix' value='{$_SESSION['formdata']['db_prefix']}' />
+				
+			</div>
+			<p>
+				{$lang['INSTALL_TEXT_P1_USER']} 
+			</p>
+			<div id='box'>
+				<h2>{$lang['USER_HEAD']}</h2>
+				
+				<label>{$lang['FORM_USER']}</label>
+				<input type='text' name='user_name' id='user_name' value='{$_SESSION['formdata']['user_name']}' />
+				
+				<label>{$lang['FORM_PASS']}</label>
+				<input type='password' name='user_pass' id='user_pass' value='' />
+				
+				<label>{$lang['FORM_CONFIRM']} {$lang['FORM_PASS']}</label>
+				<input type='password' name='user_pass_conf' id='user_pass_conf' value='' />
+				
+				<label>{$lang['FORM_EMAIL']}</label>
+				<input type='email' name='user_mail' id='user_mail' value='{$_SESSION['formdata']['user_mail']}' />
 				
 			</div>
 			<div class='righty_buttons'>

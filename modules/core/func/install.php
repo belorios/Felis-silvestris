@@ -198,7 +198,7 @@
 	$sqlProcsCreate['CreateArticle'] = "
 		CREATE PROCEDURE $procedures[CreateArticle] (IN vCreated BIGINT(50), IN vTitle VARCHAR(255), IN vContent TEXT, IN vUserId BIGINT)
 		BEGIN
-			INSERT INTO $tableArticles(title, content, created, updated, userId) VALUES (vTitle, vContent, vCreated, vCreated, vUserId);
+			INSERT INTO $tables[Articles](title, content, created, updated, userId) VALUES (vTitle, vContent, vCreated, vCreated, vUserId);
 		END
 	";
 	
@@ -211,7 +211,7 @@
 				SELECT FCheckUserIsOwnerOrAdmin(vIdArticles, vIdUsers) INTO rights;
 				
 				IF (rights = 1) then
-					UPDATE $tableArticles SET 
+					UPDATE $tables[Articles] SET 
 						title = vTitle,
 						content = vContent,
 						updated = vUpdated
@@ -228,8 +228,8 @@
 		CREATE PROCEDURE $procedures[DisplayArticle](IN vIdArticles BIGINT, IN vCurUser BIGINT)
 			BEGIN
 				SELECT A.*, U.realname, FCheckUserIsOwnerOrAdmin(vIdArticles, vCurUser) as rights 
-				FROM $tableArticles A 
-				LEFT JOIN $tableUsers U on U.idUsers = A.userId 
+				FROM $tables[Articles] A 
+				LEFT JOIN $tables[Users] U on U.idUsers = A.userId 
 				WHERE A.idArticles = vIdArticles;
 			END
 	";
@@ -239,8 +239,8 @@
 			BEGIN
 				PREPARE STMT FROM \"
 					SELECT A.*, U.realname
-					FROM $tableArticles A
-					JOIN $tableUsers U on idUsers = A.userId 
+					FROM $tables[Articles] A
+					JOIN $tables[Users] U on idUsers = A.userId 
 					ORDER BY updated DESC
 					LIMIT ? 
 				\";
@@ -255,30 +255,30 @@
 	//Trigger adding users to statistics
 	$sqlTriggerCreate['AddStatUser'] = "
 		CREATE TRIGGER $triggers[AddStatUser]
-		AFTER INSERT ON $tableUsers
+		AFTER INSERT ON $tables[Users]
 		FOR EACH ROW
 		BEGIN
-	  		INSERT INTO $tableStatistics (userId) VALUES (NEW.idUsers);
+	  		INSERT INTO $tables[Statistics] (userId) VALUES (NEW.idUsers);
 		END 
 	";
 	
 	//Trigger adding article for user in statistics
 	$sqlTriggerCreate['AddStatArt'] = "
 		CREATE TRIGGER $triggers[AddStatArt]
-		AFTER INSERT ON $tableArticles
+		AFTER INSERT ON $tables[Articles]
 		FOR EACH ROW
 		BEGIN
-		  UPDATE $tableStatistics SET noOfArticles = noOfArticles+1 WHERE userId = NEW.userId;
+		  UPDATE $tables[Statistics] SET noOfArticles = noOfArticles+1 WHERE userId = NEW.userId;
 		END
 	";
 	
 	//Trigger deleting article for user in statistics
 	$sqlTriggerCreate['DelStatArt'] = "
 		CREATE TRIGGER $triggers[DelStatArt]
-		AFTER DELETE ON $tableArticles
+		AFTER DELETE ON $tables[Articles]
 		FOR EACH ROW
 		BEGIN
-		  UPDATE $tableStatistics SET noOfArticles = noOfArticles-1 WHERE userId = OLD.userId;
+		  UPDATE $tables[Statistics] SET noOfArticles = noOfArticles-1 WHERE userId = OLD.userId;
 		END 
 	";
 	
@@ -288,29 +288,23 @@
 	
 	$sqlCreateData = array();
 	
-	//Creating some users
-	$sqlCreateData['Users'] = "
-		INSERT INTO $tables[Users] (username, realname, email, passwd) VALUES 
-		('kalle', 'Kalle Kubik', 'kalle@example.com', '".$Users->passwdHash("kalle")."'),
-		('erik', 'Erik Estrada', 'erik@example.com', '".$Users->passwdHash("erik")."'),
-		('jenna', 'Jenna Jeans', 'jenna@example.com', '".$Users->passwdHash("jenna")."')
-	";
+	//Creating the administrator
+	$sqlCreateData['Users'] = array(
+		"stmt" => "INSERT INTO $tables[Users] (username, realname, email, passwd) VALUES  (?,?,?,?)",
+		array($_SESSION['formdata']['user_name'], $_SESSION['formdata']['user_name'], $_SESSION['formdata']['user_mail'], $Users->passwdHash($_SESSION['formdata']['user_pass'])),
+	);
 	
-	//Creating some Groups
+	//Creates the two standard groups
 	$sqlCreateData['Groups'] = "
 		INSERT INTO $tables[Groups] (idGroups, shortdesc, groupdesc) VALUES 
 		('adm', 'Administrator', 'Administrators of the site'),
-		('mod', 'Fashion writer', 'Writes about fashion'),
-		('skr', 'Writer', 'Regular blog writer'),
 		('std', 'User', 'Regular user')
 	";
 	
 	//Maps users against groups
 	$sqlCreateData['GroupUsers'] = "
 		INSERT INTO $tables[GroupUsers] (idGroups, idUsers) VALUES 
-		('adm', 1), 
-		('mod', 2),
-		('skr', 3)
+		('adm', 1) 
 	";
 	
 	//Adding data to the configurationdatabase
@@ -336,6 +330,28 @@
 	
 	if ($_POST['dummyData'] == '1') {	
 		
+		//Creating some dummy users
+		$sqlCreateData['DummyUsers'] = "
+			INSERT INTO $tables[Users] (username, realname, email, passwd) VALUES 
+			('kalle', 'Kalle Kubik', 'kalle@example.com', '".$Users->passwdHash("kalle")."'),
+			('erik', 'Erik Estrada', 'erik@example.com', '".$Users->passwdHash("erik")."'),
+			('jenna', 'Jenna Jeans', 'jenna@example.com', '".$Users->passwdHash("jenna")."')
+		";
+		
+		//Creating some dummy Groups
+		$sqlCreateData['DummyGroups'] = "
+			INSERT INTO $tables[Groups] (idGroups, shortdesc, groupdesc) VALUES 
+			('mod', 'Fashion writer', 'Writes about fashion'),
+			('skr', 'Writer', 'Regular blog writer')
+		";
+		
+		//Maps the dummy users against groups
+		$sqlCreateData['DummyGroupUsers'] = "
+			INSERT INTO $tables[GroupUsers] (idGroups, idUsers) VALUES 
+			('std', 2), 
+			('mod', 3),
+			('skr', 4)
+		";
 		
 		//Creating the dummy data if this is chosen
 		$sqlCreateData['Articles'] = 

@@ -16,6 +16,8 @@
 		"DELETE" 	=> "Delete",
 		"EDIT"		=> "Edit",
 		"GO_BACK" 	=> "Go back",
+		"SUCCEDED"  => "Succeded",
+		"FAILED"	=> "Failed",
 		
 		"JANUARY" 	=> "January",
 		"FEBRUARY" 	=> "February",

@@ -2,7 +2,7 @@
 
 	class Validation {
 		
-		public function checkEmail($epost) {
+		private function checkEmail($epost) {
 			if (!preg_match("/^[^@]{1,64}@[^@]{1,255}$/", $epost)) {	#Adressen är ogiltig pga fel antal symboler eller @ tecken i en sektion
 			   	return false;
 			}
@@ -128,7 +128,7 @@
 			return $out; 
 		}
 		
-		function CheckSameness($var1, $var2) {
+		public function CheckSameness($var1, $var2) {
 			if ($var1 == $var2)
 				return true;
 			else

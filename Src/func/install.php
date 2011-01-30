@@ -3,21 +3,23 @@
 	ini_set('display_errors', '1');
 
 	function ctlPrint($table, $text) {
+		$lang = $GLOBALS['lang'];
 		$GLOBALS['fail'][$table] = $GLOBALS['pdo']->getFault($GLOBALS['dbc']);
 		$body = "
 			<tr>
 				<td>$text $table... &nbsp; &nbsp; &nbsp; </td>";
 		if ($GLOBALS['fail'][$table] == "0") {
-			$body .= "<td style='color: #469E34;'>Succeded</td>";
+			$body .= "<td style='color: #469E34;'>{$lang['SUCCEDED']}</td>";
 		}
 		else {
-			$body .= "<td style='color: #CC0000;'>Failed</td>"; 
+			$body .= "<td style='color: #CC0000;'>{$lang['FAILED']}</td>"; 
 		}
 		return "$body </tr>";
 	}
 	
 	function showBox($name, $box, $fault, $mess) {
-		$msg = ($fault == true) ? "<td style='color: #CC0000;'>Failed</td>" : "<td style='color: #469E34;'>Succeded</td>";
+		$lang = $GLOBALS['lang'];
+		$msg = ($fault == true) ? "<td style='color: #CC0000;'>{$lang['FAILED']}</td>" : "<td style='color: #469E34;'>{$lang['SUCCEDED']}</td>";
 			
 		return "
 			<tr>
@@ -172,6 +174,7 @@
 			if (count($TableCreate) > 0) {
 				foreach ($TableCreate as $key => $table) {
 					$stmt = $dbc->query($table);
+					
 					$moduleBody .= ctlPrint($Alltables[$key], $lang['CREATING_TABLE']);
 				}
 				
@@ -209,6 +212,7 @@
 			}	
 			if (count($CreateData) > 0) {		
 				foreach ($CreateData as $key => $table) {
+					$tableName = (substr($key, 0,5) == "Dummy") ? $Alltables[substr($key, 5)] : $Alltables[$key];
 					
 					if (is_array($table)) {
 						
@@ -225,16 +229,16 @@
 									
 								}
 							}
-							$success .= "<td style='color: #469E34;'>Succeded</td>";
+							$success .= "<td style='color: #469E34;'>{$lang['SUCCEDED']}</td>";
 						}
 						catch ( exception $e )
 						{
 							$fail[] = $e->getMessage();
-							$success .= "<td style='color: #CC0000;'>Failed</td>"; 
+							$success .= "<td style='color: #CC0000;'>{$lang['FAILED']}</td>"; 
 						}
 						$moduleBody .= "
 							<tr>
-								<td>{$lang['CREATING_DATA']} {$Alltables[$key]}... &nbsp; &nbsp; &nbsp; </td>
+								<td>{$lang['CREATING_DATA']} {$tableName}... &nbsp; &nbsp; &nbsp; </td>
 								$success
 							</tr>
 						";
@@ -242,7 +246,7 @@
 					}
 					else {
 						$stmt = $dbc->query($table);
-						$moduleBody .= ctlPrint($Alltables[$key], $lang['CREATING_DATA']);
+						$moduleBody .= ctlPrint($tableName, $lang['CREATING_DATA']);
 					} 
 						
 				}
