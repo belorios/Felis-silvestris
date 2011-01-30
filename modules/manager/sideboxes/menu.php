@@ -3,7 +3,8 @@
 	/*******************
 	 * 	Sidebox for the managermodule
 	 */
-
+	$lang = $GLOBALS['lang'];
+	###}
 	
 	$menu = new buildManagerMenu();
 	
@@ -21,10 +22,10 @@
 		$return .= "<ul><a href='". PATH_SITE ."/$item[url]'>".$lang[$item['name']]."</a></ul>";
 	}
 	
-	return "
-		
-		Meny!
-		<li>
-			$return
-		</li>
-	";
+	return sideboxLayout("Menu", "
+		<ul id='sidebox-menu'>
+			<li>
+				$return
+			</li>
+		</ul>
+	");

@@ -7,7 +7,13 @@
 		"login"			=> "login/login.php",
 		"logout"		=> "login/logoutProcess.php",
 		"loginprocess"	=> "login/loginProcess.php",
-	
+		
+		//Articles
+		"createArticle" 	=> "articles/createArticle.php",
+		"editArticle" 		=> "articles/editArticle.php",
+		"deleteArticle" 	=> "articles/delArticle.php",
+		"handleArticles" 	=> "articles/handleArticles.php",
+		"article" 			=> "articles/showArticle.php",
 		
 		//Default pages
 		"home"			=> "home.php",

@@ -38,8 +38,8 @@
 			$this->addJavascriptSrc("std.js");
 			
 			//Sets default edtior
-			$this->setHtmlEditor("markitup");
-			#$this->setHtmlEditor("tinymce");
+			$config = new Configuration();
+			$this->setHtmlEditor($config->getSelectedEditor());
 			
 			//Creates the menu
 			$this->menuArr = ($menuArr != false) ? $menuArr : unserialize(APP_MENU);
@@ -175,8 +175,10 @@
 				}
 			}
 			
-			
-			$menu['logout'] 		 = array("url" => "logout", "desc" => "Log out"); 
+			if ($Users->ctlGroup("adm") == true) {
+				$menu['manager'] = array("url" => "/manager", "desc" => "Manage"); 
+			}
+			$menu['logout'] = array("url" => "logout", "desc" => "Log out"); 
 			
 			return $menu;			
 		}
@@ -195,11 +197,11 @@
 		private function getLoginMenu() {
 			
 			 if(isset($_SESSION['userId'])) {
-				$menu = "Inloggad som $_SESSION[username]  ";
+				$menu = "Logged in as $_SESSION[username]  ";
 				foreach ($this->setLoggedInMenu() as $item) {
-					$menu .= " [ <a href='".PATH_SITE."/$item[url]'>$item[desc]</a> ]";
+					$url = (substr($item['url'], 0, 1) == "/") ? PATH_SITE_LOC . substr($item['url'], 1) : PATH_SITE. "/$item[url]";
+					$menu .= " [ <a href='$url'>$item[desc]</a> ]";
 				}
-				
 			 }
 			 else {
 			 	$menu = "
@@ -216,7 +218,7 @@
        		return loginMenu($html);  
 		}
 		
-		private function getErrorMessage() {
+		protected function getErrorMessage() {
 			
 			$return = "";
 			
@@ -287,7 +289,7 @@
 					');
 					
 				break;
-				case "nicEdit":
+				case "nicedit":
 					$this->addJavascriptSrc("nicEdit.js");
 					$this->addJavascriptFunc("bkLib.onDomLoaded(nicEditors.allTextAreas);");
 				break;

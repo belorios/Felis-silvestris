@@ -4,13 +4,6 @@
 	$modulePages = array(
 		"forum"				=> "start.php",
 		
-		//Articles
-		"createArticle" 	=> "articles/createArticle.php",
-		"editArticle" 		=> "articles/editArticle.php",
-		"deleteArticle" 	=> "articles/delArticle.php",
-		"handleArticles" 	=> "articles/handleArticles.php",
-		"article" 			=> "articles/showArticle.php",
-		
 		//Topics
 		"newTopic" 	=> "posts/newTopic.php",
 		"topic" 	=> "posts/showTopic.php",

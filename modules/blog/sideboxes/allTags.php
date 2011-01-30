@@ -14,6 +14,6 @@
 	}
 
 	return sideboxLayout(
-		"Taggar", "
+		$lang['TAGS'], "
 		$tags
 	");

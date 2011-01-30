@@ -10,6 +10,7 @@
 		"delBlogPost" 	  => "posts/delPosts.php",
 		"readBlogPost" 	  => "posts/readPosts.php",
 		"readBlogPostByTag" => "posts/readPostsByTag.php",
+		"readBlogPostByUser" => "posts/showUsers.php",
 		"handleBlogPosts" => "posts/handlePosts.php",
 	);
 		

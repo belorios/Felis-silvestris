@@ -146,8 +146,18 @@
 			return $_SESSION['group'];
 		}
 		
+		//Checks if a user is logged in
+		public function checkLoggedIn() {
+			if (isset($_SESSION['userId'])) {
+				return true;
+			}
+			return false;
+		}
+		
 		//Hämtar ut all info om en användare och retunerar resultatet
-		public function getUserData($id) {
+		public function getUserData($id=false) {
+			
+			$id = ($id == false) ? $_SESSION['userId'] : $id;
 			
 			if (!is_numeric($id) && $id != null) {
 				$_SESSION['errorMessage'] = $this->lang['FAULT_READING_USER'];
@@ -201,25 +211,28 @@
 							$privId = $row['value'];
 						}
 					}		
-						
-					switch ($type) {
+					
+					if ($pubId != null || $privId != null)	{
+						switch ($type) {
 							
-						case "pub" :
-							return $pubId;
-							break;
-						
-						case "priv" : 
-							return $privId;
-							break;
-						
-						case "html" :
-							require_once(PATH_LIB . "recaptcha/recaptchalib.php");
-							return recaptcha_get_html($pubId);
-							break;
-						 
+							case "pub" :
+								return $pubId;
+								break;
+							
+							case "priv" : 
+								return $privId;
+								break;
+							
+							case "html" :
+								require_once(PATH_LIB . "recaptcha/recaptchalib.php");
+								return recaptcha_get_html($pubId);
+								break;
+							 
+						}
 					}
+					
 				}
-				#$get->fetchAll();
+				return null;
 			}
 		}
 		
@@ -366,6 +379,9 @@
 		public function validateRecaptchaInput($inp_challenge, $inp_response) {
 			$id = $this->getRecaptcha("priv");
 			
+			if ($id == null) {
+				return true;
+			}
 			require_once(PATH_LIB . "recaptcha/recaptchalib.php");
 			$resp = recaptcha_check_answer ($id, $_SERVER["REMOTE_ADDR"], $inp_challenge, $inp_response);
 			
@@ -397,7 +413,6 @@
 				}
 			}
 			
-			
 			if (!$Validation->checkValues("Name", $name, 2)) {
 				$fail[] = $this->lang['NAME_FAIL'];
 			}
@@ -414,7 +429,7 @@
 			}
 			
 			if ($type == 'reg') {
-				if (!$this->validateRecaptchaInput($_POST["recaptcha_challenge_field"], $_POST["recaptcha_response_field"])) {
+				if (!$this->validateRecaptchaInput(@$_POST["recaptcha_challenge_field"], @$_POST["recaptcha_response_field"])) {
 					$fail[] = $this->lang['RECAPTCHA_FAIL'];
 				}
 			}

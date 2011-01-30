@@ -29,33 +29,37 @@
 	}
 	
 	function commentsForm($id, $header, $comment, $name, $email, $site) {
+			
+		$lang = $GLOBALS['lang'];	
+					
 		return "
 			
 			<div style='width: 405px; margin: 20px 3px 0px 3px;'>
-				<b>Skriv kommentar</b>
+				<b>{$lang['WRITE_A_COMMENT']}</b>
 				<form method='post' action='".PATH_SITE."/handleBlogPosts/createComment/id-$id'>
 					
 					<div style='float:left; margin: 0px 35px 0px 0px;'>
-					<label>Rubrik (*)</label> <br />
+					<label>{$lang['TITLE']} <span class='markeddot'>(*)</span></label>
 					<input type='text' name='heading' value='$header' /> <br />
 					
-					<label>Namn (*)</label> <br />
+					<label>{$lang['NAME']} <span class='markeddot'>(*)</span></label>
 					<input type='text' name='author' value='$name' /> <br />
 					</div>
 					<div style='float:left;'>
-					<label>Epostadress</label> <br />
-					<input type='text' name='email' value='$email' /> <br />
+					<label>{$lang['EMAIL']}</label> 
+					<input type='email' name='email' value='$email' /> <br />
 					
-					<label>Hemsida</label> <br />
+					<label>{$lang['WEBSITE']}</label>
 					<input type='text' name='site' value='$site' /> <br />
 					</div>
-					<label>Innehåll (*)</label> <br />
+					<div style='clear:both;'></div>
+					
+					<label>{$lang['CONTENT']} <span class='markeddot'>(*)</span></label>
 					<textarea name='content' style='height: 150px;'>$comment</textarea>
 					
-					
 					<div class='righty_buttons'>
-						<input type='reset'  value='Töm' /> &nbsp;
-						<input type='submit' name='addPost' value='Skicka' />
+						<input type='reset'  value='{$lang['RESET']}' /> &nbsp;
+						<input type='submit' name='addPost' value='{$lang['SEND']}' />
 					</div>
 					<div class='clear'></div>
 				</form>

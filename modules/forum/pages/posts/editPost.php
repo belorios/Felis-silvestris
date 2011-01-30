@@ -12,6 +12,12 @@
 		return;
 	}
 	
+	if ($Users->checkUserRights($getPost['authorId'], "adm") == false) {
+		$_SESSION['errorMessage'][] = $lang['USER_POST_MISSING_RIGHTS'];
+		$body = "<a href='javascript:history.go(-1);'>$lang[RETURN]</a>";
+		return;
+	}
+	
 	if (isset($_SESSION['posts']['topicId'])) {
 		if ($_SESSION['posts']['topicId'] != $getPost['topic']) {
 			$_SESSION['posts'] = array();

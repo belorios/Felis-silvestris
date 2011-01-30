@@ -1,22 +1,5 @@
 <?php
    
-   $Articles = new Articles();
-	
-	$ArticleRows = null;
-	try {
-		$getArticles = $Articles->getAllArticles(10);
-		
-		foreach ($getArticles as $article) {
-			$ArticleRows .= "
-				<a href='".PATH_SITE."/article/id-$article[id]'>$article[title]</a> <br />
-			";
-		}
-	}
-	catch ( exception $e ) {
-		$_SESSION['errorMessage'][] = $e->getMessage();
-		return;
-	}
-    
 	$layout='2col_std';
 	$body = "
 		<h1>Lorem ipsum</h1>
@@ -31,11 +14,5 @@
 		</p>
 	";
 	
-	$sideBox = 
-		sideboxLayout("Latest articles", "
-			$ArticleRows
-		") 
-	;
-	$sideBoxFloat = "right";
 	
 	

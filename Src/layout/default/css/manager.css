@@ -1,5 +1,5 @@
 body {
-	background: #fff;
+	background: #dde0e8;
 	margin: 0;
 	padding: 0;
 	font-family: "Arial";
@@ -19,7 +19,15 @@ label {
 }
 
 input {
-	color: #4a4a4a;
+	border: 1px solid #9a9a9a;
+	color: #333333;
+	-moz-border-radius:  7px;
+	-webkit-border-radius: 7px;
+	border-radius:  7px;
+	padding: 3px;
+	-moz-box-shadow: 0 0 1px 1px #d2d2d2;
+	-webkit-box-shadow: 0 0 1px 1px #d2d2d2;
+	box-shadow: 0 0 1px 1px #d2d2d2;
 }
 
 textarea {
@@ -222,6 +230,27 @@ button {
 	 	background: -webkit-gradient(linear, 0% 100%, 0% 100%, from(#dadada), to(#fff));
 	}
 
+input[type=submit] {
+	color: #000;
+	background: #fff;
+	background: -moz-linear-gradient(100% 100% 90deg, #dadada, #fff);
+ 	background: -webkit-gradient(linear, 0% 20%, 0% 100%, from(#fff), to(#dadada));
+ 	
+ 	border: 1px solid #757575;
+	-moz-border-radius: 18px 18px;
+	-webkit-border-radius: 18px 18px;
+	border-radius: 18px 18px;
+	padding: 2px 12px;
+	-moz-box-shadow: 0 0 1px 1px #d7d7d7;
+	-webkit-box-shadow: 0 0 1px 1px #d7d7d7;
+	box-shadow: 0 0 1px 1px #d7d7d7;
+}
+
+	input[type=submit]:active {
+		background: #dadada;
+		background: -moz-linear-gradient(100% 100% 90deg, #fff, #dadada);
+	 	background: -webkit-gradient(linear, 0% 100%, 0% 100%, from(#dadada), to(#fff));
+	}
 .submitbutton {
 	color: #000;
 	background: #fff;
@@ -242,4 +271,53 @@ button {
 		background: -moz-linear-gradient(100% 100% 90deg, #fff, #dadada);
  		background: -webkit-gradient(linear, 0% 100%, 0% 100%, from(#dadada), to(#fff));
 	}	
+
+	.submitbutton:disabled {
+		background: -moz-linear-gradient(100% 100% 90deg, #fff, #dadada);
+		color: grey;
+	}
 	
+.markeddot {
+	color: #ae0000;
+}
+
+textarea {
+	border: 1px solid #9a9a9a;
+	color: #333333;
+	-moz-border-radius:  7px;
+	-webkit-border-radius: 7px;
+	border-radius:  7px;
+	padding: 3px;
+	-moz-box-shadow: 0 0 1px 1px #d2d2d2;
+	-webkit-box-shadow: 0 0 1px 1px #d2d2d2;
+	box-shadow: 0 0 1px 1px #d2d2d2;
+}
+
+	
+#sidebox-menu {
+	list-style: none;
+	padding: 0;
+	margin: 0;	
+}
+
+	#sidebox-menu li {
+		margin-left: -30px;
+	}
+	
+.SideBox_Header {
+	height: 33px;
+	margin: 0px 0px 0px 0px;
+	background: #aeaeae;
+	background: -webkit-gradient(linear, left top, left bottom, from(#959595), to(#aeaeae));
+	background: -moz-linear-gradient(top, #eee, #ccc);
+	box-shadow: 0 0 5px 2px #d2d2d2;
+	-moz-box-shadow: 0 0 5px 2px #d2d2d2;
+	-webkit-box-shadow: 0 0 5px 2px #d2d2d2;
+	-moz-border-radius:  7px 7px;
+	-webkit-border-radius:  7px 7px;
+	border-radius:  7px 7px;
+}
+
+.SideBox_Header h2 {
+	color: #484848;
+}

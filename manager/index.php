@@ -18,14 +18,16 @@
 	
 	//Startar klasser
 	$defaults  = new defaults();
-	$PageClass = new manager_design();
 	$LangClass = new Language("en");
+	$LangClass->getLangFiles();
+	$PageClass = new manager_design();
+	
 	
 	//Startar kontrollv�rde s� att man kan anv�nda pagecontrollers
 	$indexIsVisited  = true;
 	$updateCssValues = false;
 	$styleVar = null;
-		
+	
 	//Hämtar sidor
 	require_once(PATH_FUNC . "loadPages.php");
 		
@@ -35,7 +37,7 @@
 	$layout       = (isset($layout)) ? $layout : false;
 	$sideBoxFloat = (isset($sideBoxFloat)) ? $sideBoxFloat : 'right';
 	#$layout 	  = (isset($_SESSION['Layout'])) ? $_SESSION['Layout'] : $layout;
-	$layout  	  = "1col_std";
+	$layout  	  = "2col_std";
 	if ($layout != false) {
 		$PageClass->setLayout($layout);
 	}
@@ -50,5 +52,3 @@
 	echo $PageClass->definePageFooter(); 
 		
 	echo $PageClass->printPage();	
-	
-	echo APP_STYLE;

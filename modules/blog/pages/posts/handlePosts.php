@@ -31,7 +31,7 @@
 		try {
 			$Posts->addPost($header, $content, $tags);
 			$id = $Posts->getLastId();
-			$body .= $defaults->redirect(PATH_SITE . "/readBlogPost/id-$id", "2", "Inlägget har nu blivit sparat");
+			$body .= $defaults->redirect(PATH_SITE . "/readBlogPost/id-$id", "2", $lang['POST_SAVED']);
 		}
 		catch ( exception $e ) {
 			$_SESSION['errorMessage'][] = $e->getMessage();
@@ -47,7 +47,7 @@
 		//Matar in datan i db
 		try {
 			$Posts->editPost($id, $header, $content, $tags);
-			$body .= $defaults->redirect(PATH_SITE . "/readBlogPost/id-$id", "3", "Inlägget har nu blivit sparat");
+			$body .= $defaults->redirect(PATH_SITE . "/readBlogPost/id-$id", "3", $lang['POST_SAVED']);
 		}
 		catch ( exception $e ) {
 			$_SESSION['errorMessage'][] = $e->getMessage();
@@ -59,20 +59,26 @@
 	//Raderar en tidigare post
 	if ($action == "delete") {
 		
-		$Users = new Users();
-		$Users->checkPrivilegies();
-		$Posts = new Blog_Posts();
+		if ($_POST['delete'] == "yes") {
+			$Users = new Users();
+			$Users->checkPrivilegies();
+			$Posts = new Blog_Posts();
+			
+			//Raderar posten
+			try {
+				$Posts->delPost($id);
+				$body .= $defaults->redirect(THIS_SITE_PATH, "3", $lang['POST_REMOVED']);
+			}
+			catch ( exception $e ) {
+				$_SESSION['errorMessage'][] = $e->getMessage();
+				header("Location: " . PATH_SITE . "/delBlogPost/id-$id");
+				exit;
+			}
+		} 
+		else {
+			header("Location: " . PATH_SITE . "/readBlogPost/id-$id");
+		}
 		
-		//Raderar posten
-		try {
-			$Posts->delPost($id);
-			$body .= $defaults->redirect(THIS_SITE_PATH, "3", "Inlägget har nu blivit borttaget");
-		}
-		catch ( exception $e ) {
-			$_SESSION['errorMessage'][] = $e->getMessage();
-			header("Location: " . PATH_SITE . "/delBlogPost/id-$id");
-			exit;
-		}
 	}
 	
 	//Skapar en kommentar
@@ -94,7 +100,7 @@
 			//Matar in datan i db
 			try {
 				$Comments->addComment($id, $header, $content, $auhtorName, $authorEmail, $authorSite);
-				$body .= $defaults->redirect($redirect, "2", "Kommentaren har nu blivit sparat");
+				$body .= $defaults->redirect($redirect, "2", $lang['COMMENT_SAVED']);
 			}
 			catch ( exception $e ) {
 				$_SESSION['errorMessage'][] = $e->getMessage();
@@ -120,7 +126,7 @@
 		//Raderar den från db
 		try {
 			$Comments->delComment($id);
-			$body .= $defaults->redirect($redirect, "3", "Kommentaren har nu blivit borttaget");
+			$body .= $defaults->redirect($redirect, "3", $lang['COMMENT_REMOVED']);
 		}
 		catch ( exception $e ) {
 			$_SESSION['errorMessage'][] = $e->getMessage();

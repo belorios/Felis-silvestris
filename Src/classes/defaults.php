@@ -18,6 +18,29 @@
 			";
 		}
 		
+		//Handledates translation
+		public function translateDate($dateformat, $date) {
+				
+			$date = date($dateformat, $date);
+			$lang = $GLOBALS['lang'];
+			
+			$engDates = array(
+				"january", "february", "mars", "april", "may", "june", "july", "august", "september", "october", "november", "december", 
+				"jan", "feb", "mar", "apr", "may", "jun", "jul", "aug", "sep", "oct", "nov", "dec",
+				"Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday", 
+				"Mon", "tue", "wed", "thu", "fri", "sat", "sun"
+			);
+			
+			$langDates = array(
+				$lang["JANUARY"], $lang["FEBRUARY"], $lang["MARS"], $lang["APRIL"], $lang["MAY"], $lang["JUNE"], $lang["JULY"], $lang["AUGUST"], $lang["SEPTEMBER"], $lang["OCTOBER"], $lang["NOVEMBER"], $lang["DECEMBER"],
+				$lang["JAN"], $lang["FEB"], $lang["MAR"], $lang["APR"], $lang["MAY"], $lang["JUN"], $lang["JUL"], $lang["AUG"], $lang["SEP"], $lang["OCT"], $lang["NOV"], $lang["DEC"],
+				$lang["MONDAY"], $lang["TUESDAY"], $lang["WEDNESDAY"], $lang["THURSDAY"], $lang["FRIDAY"], $lang["SATURDAY"], $lang["SUNDAY"], 
+				$lang["MON"], $lang["TUE"], $lang["WED"], $lang["THU"], $lang["FRI"], $lang["SAT"], $lang["SUN"],
+			);
+			
+			return str_ireplace($engDates, $langDates, $date);
+		}
+			
 		//Hanterar svenska datum
 		public function sweDate($dateformat, $date) {
 				

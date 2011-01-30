@@ -20,7 +20,7 @@
 			}
 			
 			$dateformat = ($dateformat == false) ? $this->dateformat : $dateformat;
-			$date = $defaults->sweDate($dateformat, $row['created']);
+			$date = $defaults->translateDate($dateformat, $row['created']);
 			$result = array(
 				"id"  	   => $row['idPosts'],
 				"authorId" => $row['idUsers'],
@@ -79,7 +79,7 @@
 			$limit = (!is_null($limitStart)) ? "LIMIT {$limitStart},{$limitAmount}" : null;
 			
 			$query = "
-				SELECT P.*, U.username FROM {$this->tablePosts} P 
+				SELECT P.*, U.username, U.gravatar FROM {$this->tablePosts} P 
 				JOIN {$this->tableUsers} U ON U.idUsers = P.idUsers
 				WHERE idTopics = :id AND Published = 1 ORDER BY created $order $limit
 			";

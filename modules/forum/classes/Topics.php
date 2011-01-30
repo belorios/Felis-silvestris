@@ -15,7 +15,7 @@
 			$defaults  = new defaults();
 			
 			$dateformat = ($dateformat == false) ? $this->dateformat : $dateformat;
-			$date = $defaults->sweDate($dateformat, $row['created']);
+			$date = $defaults->translateDate($dateformat, $row['created']);
 			$result = array(
 				"id"  	   => $row['idTopics'],
 				"authorId" => $row['idUsers'],

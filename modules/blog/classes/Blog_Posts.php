@@ -17,14 +17,14 @@
 			$defaults  = new defaults();
 			
 			if ($small == true) {
-				$content = $defaults->shorten($row['content'], 500, "<p><a href='".PATH_SITE."/lasInlagg/id-$row[idPosts]'>Läs mer</a></p>");
+				$content = $defaults->shorten($row['content'], 500, "<p><a href='".PATH_SITE."/readBlogPost/id-$row[idPosts]'>{$this->lang['READ_MORE']}</a></p>");
 			}
 			else {
 				$content = $row['content'];
 			}
 			
 			$dateformat = ($dateformat == false) ? $this->dateformat : $dateformat;
-			$date = $defaults->sweDate($dateformat, $row['creationDate']);
+			$date = $defaults->translateDate($dateformat, $row['creationDate']);
 			$result = array(
 				"id"  	   	=> $row['idPosts'],
 				"authorId" 	=> $row['author'],
@@ -106,10 +106,7 @@
 				return $result;
 			}
 			else {
-				$fail = "Kunde inte spara inlägget";
-				if ($_SESSION['debug'] == true)
-					$fail .= "<p>Den felande queryn: <br /> <b>$query</b></p>";
-				throw new Exception ($fail);
+				$this->debug($this->lang['FAIL_CANNOT_GET_POSTS'], $query); 
 				return false;
 			}
 		}
@@ -140,10 +137,7 @@
 				return $result;
 			}
 			else {
-				$fail = "Kunde inte spara inlägget";
-				if ($_SESSION['debug'] == true)
-					$fail .= "<p>Den felande queryn: <br /> <b>$query</b></p>";
-				throw new Exception ($fail);
+				$this->debug($this->lang['FAIL_CANNOT_GET_POSTS'], $query); 
 				return false;
 			}
 		}
@@ -162,7 +156,8 @@
 				return $this->returnPost($result, $dateformat);
 			}
 			else {
-				throw new Exception ("Kunde inte hämta inlägget");
+				$this->debug($this->lang['FAIL_CANNOT_GET_POSTS'], $query); 
+				return false;
 			}
 			
 		}
@@ -211,10 +206,7 @@
 				return $result;
 			}
 			else {
-				$fail = "Kunde inte läsa taggarna";
-				if ($_SESSION['debug'] == true)
-					$fail .= "<p>Den felande queryn: <br /> <b>$query</b></p>";
-				throw new Exception ($fail);
+				$this->debug($this->lang['FAIL_CANNOT_GET_TAGS'], $query); 
 				return false;
 			}
 		}
@@ -240,10 +232,7 @@
 				return $result;
 			}
 			else {
-				$fail = "Kunde inte läsa taggarna";
-				if ($_SESSION['debug'] == true)
-					$fail .= "<p>Den felande queryn: <br /> <b>$query</b></p>";
-				throw new Exception ($fail);
+				$this->debug($this->lang['FAIL_CANNOT_GET_TAGS'], $query); 
 				return false;
 			}
 		}
@@ -259,10 +248,7 @@
 				return $get->fetch();
 			}
 			else {
-				$fail = "Kunde inte läsa taggen";
-				if ($_SESSION['debug'] == true)
-					$fail .= "<p>Den felande queryn: <br /> <b>$query</b></p>";
-				throw new Exception ($fail);
+				$this->debug($this->lang['FAIL_CANNOT_GET_TAGS'], $query); 
 				return false;
 			}
 		}
@@ -278,10 +264,7 @@
 			
 			//Kontrollerar så att databastransaktionen lyckades
 			if (!$get->execute()) {
-				$fail = "Kunde inte tabort inlägget";
-				if ($_SESSION['debug'] == true)
-					$fail .= "<p>Den felande queryn: <br /> <b>$query</b></p>";
-				throw new Exception ($fail);
+				$this->debug($this->lang['FAIL_CANNOT_DEL_POST'], $query); 
 				return false;
 			}
 			else {
@@ -308,10 +291,7 @@
 			
 			//Kontrollerar så att databastransaktionen lyckades
 			if (!$get->execute()) {
-				$fail = "Kunde inte spara inlägget";
-				if ($_SESSION['debug'] == true)
-					$fail .= "<p>Den felande queryn: <br /> <b>$query</b></p>";
-				throw new Exception ($fail);
+				$this->debug($this->lang['FAIL_CANNOT_EDIT_POST'], $query); 
 				return false;
 			}
 			else {
@@ -326,7 +306,7 @@
 		
 		public function addPost($header, $content, $tags) {
 			
-			$author = $_SESSION['users']['idUsers'];
+			$author = $_SESSION['userId'];
 			$date   = time();
 			
 			$query = "
@@ -343,14 +323,11 @@
 			
       		//Kontrollerar så att databastransaktionen lyckades
 			if (!$get->execute()) {
-				$fail = "Kunde inte spara inlägget";
-				if ($_SESSION['debug'] == true)
-					$fail .= "<p>Den felande queryn: <br /> <b>$query</b></p>";
-				throw new Exception ($fail);
+				$this->debug($this->lang['FAIL_CANNOT_SAVE_POST'], $query); 
 				return false;
 			}
 			else {
-				$postId = $this->db->lastInsertId();
+				$this->lastInsertedId = $this->db->lastInsertId();
 
 				if (strlen($tags) > 0) {
 					$this->saveTags($tags, $postId);
@@ -407,10 +384,11 @@
 			
 			$fail = array();
 			if (!$Validation->checkValues("Heading", $header, 3)) {
-				$fail[] = "Rubriken har inte blivit korrekt inmatad (minst 3 tecken) ";
+				$fail[] = $this->lang['VALIDATION_TITLE'];
 			}
+			
 			if (!$Validation->checkValues("Length", $content, 20)) {
-				$fail[] = "Innehållet har inte blivit korrekt inmatat (minst 20 tecken) ";
+				$fail[] = $this->lang['VALIDATION_CONTENT'];
 			}
 			
 			if (count($fail) > 0) {

@@ -13,9 +13,11 @@
 		$modules = array_merge($manager_modules, $modules);
 	}
 	
-	$classes  = array($default_classes_path);
-	$css	  = array();
-	$userMenu = array();
+	$classes   = array($default_classes_path);
+	$css	   = array();
+	$userMenu  = array();
+	$sideboxes = array();
+	
 	foreach ($modules as $module) {
 		$modulepath = PATH_MODULES . $module['folder'];
 		//Adds an entry to the top menu if the module has one defined
@@ -45,4 +47,13 @@
 				}	
 			}
 		}
+		
+		//Loads the sideboxes to show on all pages related to this module
+		if (isset($module['sideboxes'])) {
+			foreach($module['sideboxes'] as $box) {
+				$sideboxes[] = "{$modulepath}/sideboxes/{$box}";
+			}
+		}
 	}
+
+	define("SITE_SIDEBOXES", serialize($sideboxes));

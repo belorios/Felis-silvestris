@@ -4,7 +4,7 @@
 		
 		protected $managerTopMenu;
 		
-		public function __construct($layout = false, $menuArr = false, $stylesheet = false) {
+		public function __construct($layout = false, $menuArr = false, $stylesheet = APP_STYLE) {
 			parent::__construct($layout, $menuArr, $stylesheet);
 			$this->buildManagerTopMenu();
 		}
@@ -43,6 +43,43 @@
 			$JavaScript .= "<script type='text/javascript'>{$this->javascriptf}</script>";
 			
 			return html_layout($this->Title, $this->Heading, $this->managerTopMenu, $this->Body, $this->Footer, $Charset='UTF-8', $this->BodyExtra, $stylesheets, $JavaScript, $MetaTags=false);
+		}
+		
+		//Defines the pagebody with content and sideboxes and also writes out errorMsgs
+		function definePageBody($aBody, $sideBox=false, $sideBoxFloat='right') {
+			
+			$errorMsg = $this->getErrorMessage();
+			$pageBodyRight = null;
+			$pageBodyLeft  = null;
+			
+			if (substr(array_search($this->layout, $this->layoutTypes), 0, 4) == "2col") {
+				$this->BodyExtra = null;
+			}
+			else {
+			}
+			
+			if (substr(array_search($this->layout, $this->layoutTypes), 0, 4) == "2col") {
+				
+				$sideboxes = unserialize(SITE_SIDEBOXES);
+				
+				foreach ($sideboxes as $box) {
+					$sideBox .= require_once($box);
+				}
+				
+				if ($sideBox != false) {
+					$sideBox = sideBox($sideBox, $sideBoxFloat);
+				}
+				else {
+					$sideBox = "";
+				}
+			}
+			
+			$aBody = html_Body($errorMsg . $aBody, $sideBoxFloat);
+			
+			$this->Body = "
+				$sideBox
+				$aBody
+			";
 		}
 		
 	}

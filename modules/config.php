@@ -17,6 +17,12 @@
 	 	"menuEntry"  	=> null,
 	 	"Description"	=> "Core modules",
 	 	"folder"    	=> "core",
+	 	"userMenu"		=> array(
+			#"createArticle" => array(
+			#	"url" 	=> "createArticle",
+			#	"desc"	=> "Write new article",
+			#)
+		),	
 	 ); 
 
 	 //Forum
@@ -29,10 +35,6 @@
 				"url"  => "newTopic",
 				"desc" => "Create new topic",
 			),
-			"createArticle" => array(
-				"url" 	=> "createArticle",
-				"desc"	=> "Write new article",
-			)
 		),	
 	 ); 
 	 
@@ -58,6 +60,9 @@
 		"menuEntry"	  => null,
 		"Description" => "Manager module",
 		"folder" 	  => "manager",
+		"sideboxes"   => array(
+			"menu" => "menu.php",
+		)
 	);
 	
 	/********************

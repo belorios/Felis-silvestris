@@ -326,13 +326,19 @@
 		('text', 'app_name', 'Sets the name on the application', 'Application name', 1, '{$_SESSION['formdata']['app_name']}', 1, 'y'),
 		('text', 'app_footer', 'Sets the name on the footer for the application', 'Application footer', 1, '{$_SESSION['formdata']['app_footer']}', 1, 'y'),
 		('text', 'app_payoff', 'Sets the name on the payoff for the application', 'Application Pay off', 1, '{$_SESSION['formdata']['app_payoff']}', 1, 'y'),
-		('multitext', 'recaptcha', 'Sets the settings to enable recaptcha', 'Recaptcha', 1, '1', 0, 'y')
+		('multitext', 'recaptcha', 'Sets the settings to enable recaptcha', 'Recaptcha', 1, '1', 0, 'y'),
+		('multiselect', 'editor', 'Sets which editor the users can use', 'Editor', 1, '1', 0, 'y')
 	";
 	
 	$sqlCreateData['ConfigValues'] = "
 		INSERT INTO $tables[ConfigValues] (idConfig, type, name, description, descname, value, active) VALUES 
 		(4, 'text', 'recap_public', 'Sets the public id for your recaptcha', 'Public ID', '', 'y'),
-		(4, 'text', 'recap_private', 'Sets the private id for your recaptcha', 'Private ID', '', 'y')
+		(4, 'text', 'recap_private', 'Sets the private id for your recaptcha', 'Private ID', '', 'y'),
+		(5, 'select', 'nicedit', 'Sets nicEdit as the applications editor', 'nicEdit', 0, 'y'),
+		(5, 'select', 'markitup', 'Sets markitup as the applications editor', 'markitup', 0, 'y'),
+		(5, 'select', 'tinymce', 'Sets tinymce as the applications editor', 'tinymce', 0, 'y'),
+		(5, 'select', 'plain', 'Sets a plain editor as the applications editor', 'plain', 0, 'y'),
+		(5, 'select', 'wymeditor', 'Sets wymEditor as the applications editor', 'wymEditor', 0, 'y')
 	";
 	
 	if ($_POST['dummyData'] == '1') {	

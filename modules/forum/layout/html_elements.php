@@ -5,13 +5,18 @@
 			<div class='forumpost' id='$id'>
 				<div class='post_header'>$title <div class='post_handle'>$edit</div></div>
 				<div class='post_uInfo'>
-					<img src='$avatar' alt='' />
-					$author
-					$date
-					$time
+					<b>$author</b> <br />
+					<img src='$avatar' class='avatar' alt='' />
+					
 				</div>
 				<div class='post_mess'>
-					<div class='post_cont'>$content</div>
+					<div class='post_cont'>
+						$content
+					</div>
+					
+				</div>
+				<div class='dateInfo'>
+					$date <span class='topicTime'>$time</span>
 				</div>
 			</div>
 		";

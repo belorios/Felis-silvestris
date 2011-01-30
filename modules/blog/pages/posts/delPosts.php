@@ -18,12 +18,12 @@
 	$header = $getPost['header']; 
 
 	$body = "
-		<h1>Tar bort inlägg</h1>
+		<h1>{$lang['REMOVE_POST_HEADER']}</h1>
 		<p>
-			Vill du verkligen ta bort inlägget \"$header\"?
+			{$lang['REMOVE_POST']} \"$header\"?
 			<form method='post' action='".PATH_SITE."/handleBlogPosts/delete/id-$id'>
-				<input type='submit' name='radera' value='Ja' />
-				<input type='submit' name='radera' value='Nej' />
+				<button name='delete' value='yes'>{$lang['YES']}</button>
+				<button name='delete' value='no'>{$lang['NO']}</button>
 			</form>
 		</p>
 	";

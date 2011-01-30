@@ -5,10 +5,10 @@
 		$lang = $GLOBALS['lang'];
 		
 		if ($author != "") {
-			$author = "<a href='".PATH_SITE."/visaAnvandare/id-$authorId'>$author</a>";
+			$author = "<a href='".PATH_SITE."/showUser/id-$authorId'>$author</a>";
 		}
 		else {
-			$author = "okänd författare";
+			$author = $lang['UNKNOWN_AUTHOR'];
 		}
 		
 		$comment = "<span class='mark'>$comments</span> ";
@@ -36,12 +36,12 @@
 	}
 	
 	function sidebox_Author($realname, $email, $group, $groupdesc) {
-		 
-		return sideboxLayout("Författaren", "
+		$lang = $GLOBALS['lang']; 
+		return sideboxLayout($lang['AUTHOR'], "
 			<span class='mark'>$realname</span>
 			<a href='mailto:$email' style='font-style: italic;'>$email</a>
 			<p>
-			Tillhör gruppen <span class='mark'>$group</span>, $groupdesc
+			{$lang['BELONGS_TO_GROUP']} <span class='mark'>$group</span>, $groupdesc
 			</p>
 		");
 	}

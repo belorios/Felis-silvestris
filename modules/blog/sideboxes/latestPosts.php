@@ -5,7 +5,7 @@
 	 */
 
 	return
-		sideboxLayout("Senaste inläggen", "
+		sideboxLayout($lang['LATEST_POSTS'], "
 			$sideboxPosts
 		")
 	;

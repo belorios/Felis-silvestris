@@ -52,10 +52,10 @@
 			<div id='LoginBox'>
 				<form id='loginForm' action='".PATH_SITE."/loginprocess' method='post'>
 					<p>
-						<input type='text' name='uname' value='Username' onclick='this.value=\"\"' />
+						<input type='text' name='uname' value='Username' onfocus=\"if(this.value == 'Username') { this.value='' }\" />
 					</p>
 					<p>
-						<input type='password' name='passwd' value='11111' onclick='this.value=\"\"'  />
+						<input type='password' name='passwd' value='11111' onfocus=\"if(this.value == '11111') { this.value='' }\"  />
 					</p>
 					<div class='righty_buttons' >
 						<input class='submitbutton' type='submit' name='login' value='Login' />
@@ -70,7 +70,8 @@
 		
 		$menuItems = null;
 		foreach ($menu as $item) {
-			$menuItems .= "<li><a href='".PATH_SITE."/$item[url]'>$item[desc]</a></li>";
+			$url = (substr($item['url'], 0, 1) == "/") ? PATH_SITE_LOC . substr($item['url'], 1) : PATH_SITE. "/$item[url]";
+			$menuItems .= "<li><a href='$url'>$item[desc]</a></li>";
 		}
 		$urlUserName = urlencode($username);
 		return sideboxLayout("Logged in as", "

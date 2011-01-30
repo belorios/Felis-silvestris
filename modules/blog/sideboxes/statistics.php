@@ -8,20 +8,19 @@
 		return;
 	}
 	
-	
-	return	sideboxLayout("Statistik", "
-				<b>Antal inlägg gjorda</b> <br />
+	return	sideboxLayout($lang['STATISTICS'], "
+				<b>{$lang['NUMBER_POSTS_DONE']}</b> <br />
 				<table>
 					<tr>
-						<td>Senaste tio dagarna:</td>
+						<td>{$lang['LAST_TEN_DAYS']}:</td>
 						<td>$PostsStat[ten]</td>
 					</tr>
 					<tr> 
-						<td>Senaste månaden:</td>
+						<td>{$lang['LAST_MONTH']}:</td>
 						<td>$PostsStat[month]</td>
 					</tr>
 					<tr>
-						<td>Senaste året:</td>
+						<td>{$lang['LAST_YEAR']}:</td>
 						<td>$PostsStat[year]</td>
 					</tr>
 				</table>

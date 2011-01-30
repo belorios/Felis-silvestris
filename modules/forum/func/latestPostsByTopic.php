@@ -18,7 +18,7 @@
 	//Shows latest post in thread 
 	$allPosts = null;
 	foreach($latestPost as $posts) {
-		$allPosts .= forum_postsLayout($posts['id'], $posts['author'], $posts['title'], $posts['content'], $posts['date'], $posts['time']);
+		$allPosts .= forum_postsLayout($posts['id'], $posts['author'], $posts['title'], $posts['content'], $posts['date'], $posts['time'], $Users->getGravatar($posts['gravatar']));
 	}
 	
 	return "

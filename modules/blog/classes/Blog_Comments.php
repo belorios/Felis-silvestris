@@ -58,10 +58,7 @@
 			
 			//Checks if the transaction succeded
 			if (!$get->execute()) {
-				$fail = "Kunde inte spara kommentaren";
-				if ($_SESSION['debug'] == true)
-					$fail .= "<p>Den felande queryn: <br /> <b>$query</b></p>";
-				throw new Exception ($fail);
+				$this->debug($this->lang['FAIL_CANNOT_SAVE_COMMENT'], $query); 
 				return false;
 			}
 			else {
@@ -76,7 +73,7 @@
 			$defaults  = new defaults();
 			
 			$dateformat = ($dateformat == false) ? $this->dateformat : $dateformat;
-			$date = $defaults->sweDate($dateformat, $row['creationDate']);
+			$date = $defaults->translateDate($dateformat, $row['creationDate']);
 			$result = array(
 				"id"  	  => $row['idComments'],
 				"name"    => $row['author'],
@@ -100,10 +97,7 @@
 			$get->bindParam(':id', $id, PDO::PARAM_INT);
 			
 			if (!$get->execute()) {
-				$fail = "Kunde inte ta bort kommentaren";
-				if ($_SESSION['debug'] == true)
-					$fail .= "<p>Den felande queryn: <br /> <b>$query</b></p>";
-				throw new Exception ($fail);
+				$this->debug($this->lang['FAIL_CANNOT_DEL_COMMENT'], $query); 
 				return false;
 			}
 			else {
@@ -120,25 +114,27 @@
 			$Validation = new Validation();
 			
 			$fail = array();
+			
+			
 			if (!$Validation->checkValues("Heading", $header, 3) || strlen($header) > 33) {
-				$fail[] = "Rubriken har inte blivit korrekt inmatad (minst 3, max 30 tecken) ";
+				$fail[] = $this->lang['VALIDATION_TITLE'];
 			}
 			if (!$Validation->checkValues("Length", $content, 20)) {
-				$fail[] = "Innehållet har inte blivit korrekt inmatat (minst 20 tecken) ";
+				$fail[] = $this->lang['VALIDATION_CONTENT'];
 			}
 			if (!$Validation->checkValues("Name", $auhtorName, 2)) {
-				$fail[] = "Namnet har inte blivit korrekt inmatat (minst 2 tecken) ";
+				$fail[] = $this->lang['VALIDATION_NAME'];
 			}
 			
 			if (strlen($authorSite) > 0) {
 				if (!$Validation->checkValues("Site", $authorSite, 5)) {
-					$fail[] = "Hemsidan har inte blivit korrekt inmatad (minst 5 tecken) ";
+					$fail[] = $this->lang['VALIDATION_SITE'];
 				}
 			}
 			
 			if (strlen($authorEmail) > 0) {
 				if (!$Validation->checkValues("Mail", $authorEmail, 5)) {
-					$fail[] = "Emailen har inte blivit korrekt inmatad (minst 5 tecken) ";
+					$fail[] = $this->lang['VALIDATION_MAIL'];
 				}
 			}
 			

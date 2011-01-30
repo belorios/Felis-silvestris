@@ -26,7 +26,7 @@
 		return;
 	}
 	
-	//Hämtar tio senasate inläggen och information om författaren
+	//Gets the last 10 posts by this posts author
 	if ($getPost['authorId'] != null) {
 		try {
 			$UserData = $Users->getUserData($getPost['authorId']);
@@ -38,12 +38,12 @@
 		}
 		
 		foreach ($latest as $post) {
-			$authorpost .= "<a href='" . PATH_SITE . "/lasInlagg/id-$post[id]'>$post[header]</a> <br />";
+			$authorpost .= "<a href='" . PATH_SITE . "/readBlogPost/id-$post[id]'>$post[header]</a> <br />";
 		}
 		
 		$sideBox .= 
 			sidebox_Author($UserData['realname'], $UserData['email'], $UserData['idGroups'], $UserData['groupdesc']) .
-			sideboxLayout("Författarens inlägg", "$authorpost")
+			sideboxLayout($lang['AUTHORS_POST'], "$authorpost")
 		;
 	}
 	
@@ -79,7 +79,7 @@
 						$comment[content] <br />
 						</div>
 						<div class='comments_footer'>
-						Skrevs av $name $site 
+						$lang[WRITTEN_BY] $name $site 
 						$removeButton
 					</div>
 					</div>
@@ -88,18 +88,32 @@
 		}
 	}
 	else {
-		$comments .= "Inlägget saknar kommentarer, bli den första att kommentera";
+		$comments .= $lang['POST_MISSES_COMMENTS'];
+	}
+	
+	$curUserName = null;
+	$curUserMail = null;
+	if ($Users->checkLoggedIn()) {
+		try {
+			$curUser = $Users->getUserData();
+		}
+		catch ( Exception $e) {
+			$body = "<p class='warning'>{$e->getMessage()}</p>";
+		}
+		
+		$curUserName = $curUser['realname'];
+		$curUserMail = $curUser['email'];
 	}
 	
 	$comHeader  = isset($_SESSION['comment']['header'])  ? $_SESSION['comment']['header']  : null;
 	$comContent = isset($_SESSION['comment']['content']) ? $_SESSION['comment']['content'] : null;
-	$comName	= isset($_SESSION['comment']['name'])? $_SESSION['comment']['name']    : null;
-	$comEmail	= isset($_SESSION['comment']['email'])   ? $_SESSION['comment']['email']   : null;
+	$comName	= isset($_SESSION['comment']['name'])	 ? $_SESSION['comment']['name']    : $curUserName;
+	$comEmail	= isset($_SESSION['comment']['email'])   ? $_SESSION['comment']['email']   : $curUserMail;
 	$comSite    = isset($_SESSION['comment']['site'])    ? $_SESSION['comment']['site']    : null;
 	
 	$comments = "
 		<div id='postComments'>
-			<h3 id='kommentera'>Kommentarer</h3>
+			<h3 id='kommentera'>{$lang['COMMENTS']}</h3>
 			$comments
 		</div>
 		<p></p>
@@ -114,7 +128,7 @@
 	
 	//Visar en ruta för inloggad anvädare för att hantera egna inlägg (alla för admins)
 	if ($Users->stdGroupsCtl($getPost['authorId'])) {
-		$sideBox = sideboxLayout("Hantera inlägg", "
+		$sideBox = sideboxLayout($lang['HANDLE_POSTS'], "
 			<a href='".PATH_SITE."/editBlogPost/id-$id'>$lang[EDIT]</a>  <br />
 			<a href='".PATH_SITE."/delBlogPost/id-$id'>$lang[DEL]</a>
 		" ) . $sideBox;

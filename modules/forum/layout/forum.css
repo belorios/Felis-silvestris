@@ -5,8 +5,15 @@
 	margin: 10px 0px;
 	border: 1px solid grey;
 	-moz-border-radius:  5px 5px;
-	
+	position: relative;
 }
+
+	.forumpost .dateInfo {
+		position: absolute;
+		bottom: 0;
+		font-size: 9pt;
+		margin-left: 5px;
+	}
 
 .post_uInfo {
 	background: #dddddd;
@@ -68,7 +75,7 @@
 		text-align: right;
 	}
 	
-	#postsTable .topicTime {
-		color: #3e71aa;
-	}
+.topicTime {
+	color: #3e71aa;
+}
 	

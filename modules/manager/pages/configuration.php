@@ -22,7 +22,30 @@
 		foreach ($ConfItems as $item) {
 			
 			$type = substr($item['type'], 0, 5);
-			if ($type != "multi") {
+			if ($item['type'] == "multiselect") {
+				try {
+					$ConfValues = $Conf->getConfigValuesForEdit($item['idConfig'], $item['descname']);
+				}
+				catch ( Exception $e ) {
+					$_SESSION['errorMessage'][] = $e->getMessage();
+					return;
+				}
+				foreach ($ConfValues as $value) {
+					$do = 0;
+					if ($_POST[$item['name']] == $value['name']) {
+						$do = 1;
+					}
+					try {
+						$Conf->editConfigVal("value", $value['name'], $value['descname'], $do);
+					}
+					catch ( Exception $e ) {
+						$_SESSION['errorMessage'][] = $e->getMessage();
+						return;
+					}
+					
+				}		
+			}
+			elseif ($type != "multi") {
 				if ($_POST[$item['name']] != $item['value']) {
 					try {
 						$Conf->editConfigVal("conf", $_POST[$item['name']], $item['descname'], $_POST['value']);
@@ -61,74 +84,92 @@
 	$config = null;
 	foreach ($ConfItems as $item) {
 		
+		$selectId = 0;
 		$type = substr($item['type'], 0, 5);
-		switch ($type) {
+		if ($item['type'] == "multiselect") {
 			
-			case "text" :
-				$config .= "
-					<tr>
-						<td>$item[descname]</td>
-						" . createTextBox($item['name'], $item['value']) . "
-					</tr>	
-				";
-				break;
-			
-			case "check" :
-				$checked = ($item['value'] == 1) ? "checked='checked'" : null;
-				echo "
-					<tr>
-						<td>$item[descname]</td>
-						<td><input type='checkbox' name='$item[name]' value='1' /></td>
-					</tr>		
-				";
-				break;
-			
-			case "multi" :
-				$Valtype2 = substr($item['type'], 5);
-				
-				$config .= "<tr><td colspan='2' ><h3>$item[descname]</h3></td></tr>";
-				try {
-					$ConfValues = $Conf->getConfigValuesForEdit($item['idConfig'], $item['descname']);
-				}
-				catch ( Exception $e ) {
-					$_SESSION['errorMessage'][] = $e->getMessage();
-					return;
-				}
-				foreach ($ConfValues as $value) {
-					switch ($Valtype2) {
-						
-						case "text" : 
-							$config .= "
-								<tr>
-									<td>$value[descname]</td>
-									" . createTextBox($value['name'], $value['value']) . "
-								</tr>
-							";
-							break;
-						case "radio" : 
-							$config .= "
-								<tr>
-									<td>$value[descname]</td>
-									<td><input type='radio' name='$value[name]' value='1' /></td>
-								</tr>
-							";
-							break;
-						case "check" :
-							$config .= "
-								<tr>
-									<td>$value[descname]</td>
-									<td><input type='checkbox' name='$value[name]' value='1' /></td>
-								</tr>
-							";
-							break;
-						case "select" :
-							break;
-						
-					}
-				}
-				break;
+			$config .= "<tr><td>$item[descname]</td>";
+			$config .= "<td><select name='$item[name]'>";
+			try {
+				$ConfValues = $Conf->getConfigValuesForEdit($item['idConfig'], $item['descname']);
+			}
+			catch ( Exception $e ) {
+				$_SESSION['errorMessage'][] = $e->getMessage();
+				return;
+			}
+			foreach ($ConfValues as $value) {
+				$selected = ($value['value'] == '1') ? "selected='selected'" : null;	
+				$config .= "<option  $selected value='$value[name]'>$value[descname]</option>";
+			}
+			$config .= "</select></td></tr>";
 		}
-	}
+		else {
+		
+			switch ($type) {
+				
+				case "text" :
+					$config .= "
+						<tr>
+							<td>$item[descname]</td>
+							" . createTextBox($item['name'], $item['value']) . "
+						</tr>	
+					";
+					break;
+				
+				case "check" :
+					$checked = ($item['value'] == 1) ? "checked='checked'" : null;
+					echo "
+						<tr>
+							<td>$item[descname]</td>
+							<td><input type='checkbox' name='$item[name]' value='1' /></td>
+						</tr>		
+					";
+					break;
+				
+				case "multi" :
+					$Valtype2 = substr($item['type'], 5);
+					
+					$config .= "<tr><td colspan='2' ><h3>$item[descname]</h3></td></tr>";
+					try {
+						$ConfValues = $Conf->getConfigValuesForEdit($item['idConfig'], $item['descname']);
+					}
+					catch ( Exception $e ) {
+						$_SESSION['errorMessage'][] = $e->getMessage();
+						return;
+					}
+					foreach ($ConfValues as $value) {
+						switch ($Valtype2) {
+							
+							case "text" : 
+								$config .= "
+									<tr>
+										<td>$value[descname]</td>
+										" . createTextBox($value['name'], $value['value']) . "
+									</tr>
+								";
+								break;
+							case "radio" : 
+								$config .= "
+									<tr>
+										<td>$value[descname]</td>
+										<td><input type='radio' name='$value[name]' value='1' /></td>
+									</tr>
+								";
+								break;
+							case "check" :
+								$config .= "
+									<tr>
+										<td>$value[descname]</td>
+										<td><input type='checkbox' name='$value[name]' value='1' /></td>
+									</tr>
+								";
+								break;
+						}
+					}
+					break;
+				}
+			}
+		}
 
 	$body .= "
 		<form name='configForm' id='configForm' method='post' action=''>
