@@ -161,7 +161,7 @@
 				ON UPDATE CASCADE ON DELETE CASCADE
 			
 		)
-		ENGINE=InooDB CHARSET=utf8 COLLATE utf8_swedish_ci;
+		ENGINE=InnoDB CHARSET=utf8 COLLATE utf8_swedish_ci;
 	";
 	
 	

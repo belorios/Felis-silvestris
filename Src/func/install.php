@@ -170,6 +170,7 @@
 			$CreateData	   	= $module['createData'];
 			
 			$moduleBody = null;
+			$dbc->setAttribute( PDO::ATTR_ERRMODE, PDO::ERRMODE_SILENT );
 			
 			if (count($TableCreate) > 0) {
 				foreach ($TableCreate as $key => $table) {
@@ -187,7 +188,6 @@
 				}
 				$moduleBody .= "<tr><td></td></tr>";	
 			}
-			$dbc->setAttribute( PDO::ATTR_ERRMODE, PDO::ERRMODE_SILENT );
 			
 			if (count($UdfsCreate) > 0) {	
 				foreach ($UdfsCreate as $key => $udf) {
@@ -213,6 +213,7 @@
 			if (count($CreateData) > 0) {		
 				foreach ($CreateData as $key => $table) {
 					$tableName = (substr($key, 0,5) == "Dummy") ? $Alltables[substr($key, 5)] : $Alltables[$key];
+					$dbc->setAttribute( PDO::ATTR_ERRMODE, PDO::ERRMODE_SILENT );
 					
 					if (is_array($table)) {
 						

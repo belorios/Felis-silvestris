@@ -180,6 +180,12 @@ input {
 			#MenuHolder ul li a:hover {
 				color: #d4d4d4;
 			}
+			
+	#loginMenu {
+		list-style: none;
+		padding: 0;
+		margin: 5px 15px;
+	}
 
 #pageBody {
 	margin: 5px 0px 0px 0px;

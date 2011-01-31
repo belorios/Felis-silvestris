@@ -9,6 +9,8 @@
 **********************************************
 
 Unpack and upload the files to the place you want to run the application from.
+When all files are uploaded check so that the application has write permissions on /Src/config
+and och /src/rss
 
 Navigate with your favorite browser to the path where you placed your installation and 
 add /install to the end of the path. 
@@ -22,9 +24,12 @@ When all fields is set click on the install button, on the next page it tries to
 file and lets you choose if you want to install the application with some dummy data. 
 
 When the installation is done, set as restrictive permissions on the config folder in /Src and remove
-the /install directory.
+the /install directory. 
+
 
 Congratulations, your application is now ready for use!
+
+
 
 
 
