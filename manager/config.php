@@ -48,6 +48,7 @@
 	
 	
 	//Settings for the database connection	
+	define("USE_DB", true);
 	require_once(PATH_CONFIG . "sql-config.php");
 	
 	$menuArr = array();

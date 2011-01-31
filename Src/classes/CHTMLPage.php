@@ -38,8 +38,12 @@
 			$this->addJavascriptSrc("std.js");
 			
 			//Sets default edtior
-			$config = new Configuration();
-			$this->setHtmlEditor($config->getSelectedEditor());
+			$editor = "plain";
+			if (USE_DB == true) {
+				$config = new Configuration();
+				$editor = $config->getSelectedEditor();
+			}
+			$this->setHtmlEditor($editor);
 			
 			//Creates the menu
 			$this->menuArr = ($menuArr != false) ? $menuArr : unserialize(APP_MENU);

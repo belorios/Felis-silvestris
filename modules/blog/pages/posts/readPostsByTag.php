@@ -30,7 +30,7 @@
 	}
 	
 	$body = "
-		<div style='float:left;'>
+		<div class='postsHolder'>
 			<h1>$lang[POSTS_TAGGED_BY] $TagName[tagname]</h1> 
 			$body
 		</div>

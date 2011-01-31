@@ -1,1 +1,75 @@
-Code programmed for a PHP/MySQL course at BTH Sweden.
+***************************************************************
+ Original code programmed for a PHP/MySQL course at BTH Sweden 
+ by Kristoffer Larsson.
+***************************************************************
+
+
+**********************************************
+***       Installation instructions        ***
+**********************************************
+
+Unpack and upload the files to the place you want to run the application from.
+
+Navigate with your favorite browser to the path where you placed your installation and 
+add /install to the end of the path. 
+
+Set your desired text for the applicaiton name, footer and payoff and then set the settings 
+for your databaseconnection. In this step you are also prompted to give information for the 
+admintrator for your application, dont forget these settings because the password cannot be 
+restored for this user.
+	
+When all fields is set click on the install button, on the next page it tries to build your config 
+file and lets you choose if you want to install the application with some dummy data. 
+
+When the installation is done, set as restrictive permissions on the config folder in /Src and remove
+the /install directory.
+
+Congratulations, your application is now ready for use!
+
+
+
+**********************************************
+***                Features                ***
+**********************************************
+
+# Modulebased
+# A management page for configuration
+# Includes a simple forum and blog
+# The forum uses a modern ajaxified editing solution with autosave
+# Slick html5 and css3 design for modern browsers
+# Language engine
+# Simple Layout engine
+# A slick installer
+
+
+
+**********************************************
+***       	  Supported browsers           ***
+**********************************************
+
+# Opera 10.x – 11.x (background color gradients doesnt seem to work yet)
+# Firefox 3.6 (problably works fine with 4 beta but this is not tested)
+# Ie 7 and 8, but rounded corners, gradients and shadows doesnt work here
+# Apple Safarai 5
+# Google Chrome 9 (other version would probably work to) 
+
+
+
+**********************************************
+***              Known issues              ***
+**********************************************
+
+# Some parts of the code is badly commented in swedish, working on translate all to english
+
+# The language support is not implemented in all modules yet and the only complete language right now is english.
+
+# The forums autosave function does not fully work with all editors that is available for use. 
+
+	Plain and markitup
+	Everything works flawless
+
+	Tinymce and wymEditor
+	It doesnt initiat the autosave when you are writing in the editor, it will only initiate when you are writing the title. 
+
+	NicEdit
+	It doesnt work from start, you need to press the button "save draft" before it will work, after the first manual save it will work by itself tho.

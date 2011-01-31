@@ -36,7 +36,7 @@
 		}
 		
 		public function getConnection() {
-			if (!is_object($this->db)) {
+			if (!is_object($this->db) && USE_DB == true) {
 				$this->pdo = new pdoConnection();
 				$this->db = $this->pdo->getConnection();
 			}

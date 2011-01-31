@@ -330,7 +330,7 @@
 				$this->lastInsertedId = $this->db->lastInsertId();
 
 				if (strlen($tags) > 0) {
-					$this->saveTags($tags, $postId);
+					$this->saveTags($tags, $this->lastInsertedId);
 				}
 				
 				$this->unsetSessions();

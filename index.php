@@ -1,6 +1,12 @@
 <?php
 	#session_save_path('/home/saxon/students/20101/krlb10/sessions');
 	
+	if (!file_exists(dirname(__FILE__) . "/Src/config/sql-config.php")) {
+		$webPath = $_SERVER['SERVER_NAME'] . preg_replace("/[A-Z]+.php/i", "", $_SERVER['SCRIPT_NAME']);
+		echo "Please visit <a href='http://$webPath/install'>this page</a> to install this application</a>";
+		exit;
+	}
+	
 	session_start();
 	
 	//Configfile holding most configvalue

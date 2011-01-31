@@ -30,7 +30,7 @@
 	}
 	
 	
-	$body = "<div style='float:left'>$posts</div>";
+	$body = "<div class='postsHolder'>$posts</div>";
 	
 	$sideBox = require_once(THIS_PATH . "sideboxes/latestPosts.php");
 	$sideBox .= require_once(THIS_PATH . "sideboxes/allAuthors.php");

@@ -110,7 +110,7 @@
 	
 	$comments .= commentsForm($id, $comHeader, $comContent, $comName, $comEmail, $comSite) . "<p></p>"; 
 	$body 	   = "
-		<div style='float:left'> 
+		<div class='postsHolder'> 
 			" . post_Layout($id, $getPost['header'], $getPost['content'], $getPost['date'], $getPost['author'], $getPost['authorId'], $comAmount, $comments) . "
 		</div>
 	";

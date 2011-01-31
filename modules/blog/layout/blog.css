@@ -1,5 +1,7 @@
-
-
+.postsHolder {
+	float: left;
+	width: 100%;
+}
 
 .mark {
 	color: #2E5480;
@@ -27,7 +29,7 @@
 	}
 	
 	.Post_comments {
-		margin: 23px 15px 0px 0px;
+		margin: 23px 25px 0px 0px;
 		font-weight: normal;
 		font-size: 13pt;
 		float: right;
@@ -131,6 +133,6 @@
 
 .code {
 	background: #d6d6d6;
-	width: 700px;
+	width: auto;
 	overflow: auto;
 }
