@@ -17,7 +17,6 @@
 		"app_footer" => "APP_FOOTER",
 		"app_theme" => "APP_THEME",
 		"app_payoff" => "APP_DESCRIPTION",
-		"app_theme"  => "APP_THEME",
 	);
 	
 	foreach ($ConfItems as $item) {

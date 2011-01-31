@@ -80,8 +80,8 @@
 		public function getSelectedEditor() {
 					
 			$sql = "
-				SELECT cv.name FROM felis_config c
-				LEFT JOIN felis_configValues cv ON c.idConfig = cv.idConfig 
+				SELECT cv.name FROM {$this->tableConfig} c
+				LEFT JOIN {$this->tableConfigValues} cv ON c.idConfig = cv.idConfig 
 				WHERE c.name = 'editor' AND c.active = 'y' AND cv.active = 'y' AND cv.value = '1'
 			";
 			

@@ -52,9 +52,6 @@
 	if (file_exists(PATH_CONFIG . "sql-config.php")) {
 		require_once(PATH_CONFIG . "sql-config.php");
 	}
-	elseif (file_exists(PATH_CONFIG . "sql-config.sample.php")) {
-		require_once(PATH_CONFIG . "sql-config.sample.php");
-	}
 	
 	
 	$menuArr = array();

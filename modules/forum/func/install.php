@@ -180,3 +180,17 @@
 			END IF;
 		END
 	";
+	
+	if ($_POST['dummyData'] == '1') {
+		$sqlCreateData = array();
+		$sqlCreateData['topics'] = "
+			INSERT INTO $tables[topics] (title, created, idUsers)
+				VALUES ('Default topic', '".time()."', 1)
+			";
+		
+		$sqlCreateData['posts'] = "
+			INSERT INTO $tables[posts] (title, post, created, updated, idUsers, idTopics, Published) 
+				VALUES ('Default topic', 'This is just the default post in the default topic', '".time()."', '".time()."', 1, 1, 1)
+			";
+	
+	}
