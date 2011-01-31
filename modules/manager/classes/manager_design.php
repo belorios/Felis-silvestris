@@ -4,7 +4,7 @@
 		
 		protected $managerTopMenu;
 		
-		public function __construct($layout = false, $menuArr = false, $db, $stylesheet = APP_STYLE) {
+		public function __construct($layout = false, $menuArr = false, $stylesheet = APP_STYLE) {
 			parent::__construct($layout, $menuArr, $stylesheet);
 			$this->buildManagerTopMenu();
 		}

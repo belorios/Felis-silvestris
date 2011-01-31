@@ -9,8 +9,8 @@
 **********************************************
 
 Unpack and upload the files to the place you want to run the application from.
-When all files are uploaded check so that the application has write permissions on /Src/config
-and och /src/rss
+When all files are uploaded check so that the application has write permissions on /Src/config, /src/rss
+and on /libs/htmlpurifier/library/HTMLPurifier/DefinitionCache and on /libs/htmlpurifier/library/HTMLPurifier/DefinitionCache/Serializer.
 
 Navigate with your favorite browser to the path where you placed your installation and 
 add /install to the end of the path. 
@@ -38,6 +38,8 @@ Congratulations, your application is now ready for use!
 **********************************************
 
 # Modulebased
+# CSS3 and HTML 5 with wide browser support
+# Recaptcha and gravatar 
 # A management page for configuration
 # Includes a simple forum and blog
 # The forum uses a modern ajaxified editing solution with autosave
@@ -53,12 +55,12 @@ Congratulations, your application is now ready for use!
 **********************************************
 
 # Opera 10.x – 11.x (background color gradients doesnt seem to work yet)
-# Firefox 3.6 (problably works fine with 4 beta but this is not tested)
-# Ie 7 and 8, but rounded corners, gradients and shadows doesnt work here
+# Firefox 3.6 (should also work fine with 4 beta but this is untested)
+# Internet Explorer 7 and 8 (rounded corners, gradients and shadows doesnt work with these)
 # Apple Safarai 5
-# Google Chrome 9 (other version would probably work to) 
+# Google Chrome 9 (some older versions should also work) 
 
-
+The application should work fine with other browsers to but this is the one I have had the ability to test it in. 
 
 **********************************************
 ***              Known issues              ***
