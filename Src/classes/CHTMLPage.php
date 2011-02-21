@@ -83,6 +83,7 @@
 			$menuItems = null;
 			$_SESSION['topPage'] = isset($_SESSION['topPage']) ? $_SESSION['topPage'] : null;
 			foreach ($this->menuArr as $link => $name) {
+				$_SESSION['currentPage'] = (isset($_SESSION['currentPage'])) ? $_SESSION['currentPage'] : null;
 				$_SESSION['topPage'] = ($_SESSION['currentPage'] == $link) ? $_SESSION['currentPage'] : $_SESSION['topPage'];
 			}
 			foreach ($this->menuArr as $link => $name) {
