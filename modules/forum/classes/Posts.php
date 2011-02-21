@@ -117,7 +117,7 @@
 		}
 		
 		public function editCreatePost($idPosts, $idTopics, $title, $content, $flush=true) {
-			
+					
 			$user = $_SESSION['userId'];
 			$date   = time();
 				
@@ -133,6 +133,13 @@
 			
       		//Kontrollerar så att databastransaktionen lyckades
 			if ($get->execute()) {
+				
+				$getId = $this->db->query("SELECT @outId");
+				$fetId = $getId->fetch();
+				$this->lastInsertedId = $fetId['@outId'];
+				
+				$idPosts = ($idPosts == 0) ? $this->lastInsertedId : $idPosts;
+				
 				if ($flush == true) {
 					$query = "call {$this->procPublishPost}(:postId);";
 					$get = $this->db->prepare($query);
@@ -145,9 +152,6 @@
 						$this->unsetSessions();
 					}
 				}
-					$getId = $this->db->query("SELECT @outId");
-					$fetId = $getId->fetch();
-					$this->lastInsertedId = $fetId['@outId'];
 				
 				return true;
 			}

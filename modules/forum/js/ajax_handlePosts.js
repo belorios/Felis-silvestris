@@ -42,10 +42,10 @@ $(document).ready(function(){
 				else {
 					$.jGrowl(data.message);
 					if (flush == 1) {
-						$.jGrowl("You are being redirected");
-						setTimeout(function() {
-							window.location=data.path;
-						}, 2000);
+						//$.jGrowl("You are being redirected");
+						//setTimeout(function() {
+						//	window.location=data.path;
+						//}, 2000);
 					}
 				}
 					
