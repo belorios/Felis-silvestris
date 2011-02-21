@@ -1,6 +1,6 @@
 <?php
 	
-	ini_set('display_errors', '1');
+	ini_set('display_errors', '0');
 	
 	//Script webpath
 	$webPath = $_SERVER['SERVER_NAME'] . preg_replace("/[A-Z]+.php/i", "", $_SERVER['SCRIPT_NAME']);
